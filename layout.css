@@ -481,7 +481,9 @@ margin-right:auto;
 }
 .katsarisleads {
 position: relative;
-margin:15px auto 0px auto;
+float:none;
+margin:auto;  
+width:100%;
 }
 .leadparagraph {
 font-family:Montserrat-LightItalic;
@@ -704,19 +706,34 @@ scroll-margin-top:15px;
 #summary {
 scroll-margin-top:15px;
 }
-/* Tablet Layout 701px to 835px - Ipad Pro 11-inch
-down to 600px wide Kindle Fires and Samsung Galaxy Tab 2. These are 600px
-wide but I take it to 701 to be on the safe side. Most of my images
-are 700px max so stop here.
+/* Tablet Layout Ipad Mini and 480 to 768
+This section is for exceptions. All CSS
+must be followed by !important to override the
+following CSS block */
+@media (min-width:480px) and (max-width:768px) {
+.flex-container {
+display: block !important;
+}
+.katsarisleads {
+float: left !important;
+width: 430px !important;
+margin:0px 15px 0px 0px !important;
+}
+}
+/* Tablet Layout Over Ipad Mini 769 to 835px - Ipad Pro 11-inch
 Inherits styles from: Mobile Layout. */
-@media only screen and (min-width: 701px) {
+@media only screen and (min-width: 768px) {
 
 /* Responsive flex two-column layout over 701px */
 .flex-container {
 display: flex;
 flex-direction: row;
-flex-shrink: 0;
 align-items:center;
+gap: 1rem;
+}
+.flexcenter {
+display: flex;
+justify-content: center;
 }
 .leftphoto {
 position: relative;
@@ -989,9 +1006,8 @@ margin-right:auto;
 }
 .katsarisleads {
 position: relative;
-width:400px;
-float:left;
-margin:5px 15px 5px auto;
+flex: 0 0 400px;
+margin:auto;
 }
 .leadparagraph {
 font-family:Montserrat-LightItalic;
@@ -1335,35 +1351,10 @@ scroll-margin-top:15px;
 }
 }
 
-/* For centering content while holding horizontally rotated mobile phones up to 1000px long into account.*/
-@media only screen and (min-width: 900px) {
-
-.borderfacade {
-min-height: 100vh;
-display:flex;
-flex-direction:column;
-margin:15px auto 15px;
-border:1px solid #555;
-border-width:1px 1px 1px 1px;
-border-radius:12px;
-max-width:600px;
-}
-.borderresearch {
-min-height: 100vh;
-display:flex;
-flex-direction:column;
-margin:15px auto 15px;
-border:1px solid #555;
-border-width:1px 1px 1px 1px;
-border-radius:12px;
-max-width:1000px;
-}
-}
-
-/* 12.9 inch Ipad 1024x1366 Custom. This is just for 12-inch Ipad layouts holding
+/* 12.9 inch Ipad ONLY 1024x1366 This is just for 12-inch Ipad layouts holding
 rotated mobile phones up to 1000px long into account. Inherits styles from: 
 Mobile Layout and Tablet Layout. */
-@media only screen and (min-width: 1001px) {
+@media only screen and (min-width:1024px) and (max-width:1024px) {
 
 .leftphoto {
 position: relative;
@@ -1556,9 +1547,8 @@ margin-right:15px;
 }
 .katsarisleads {
 position: relative;
-width:450px;
-float:left;
-margin:5px 15px 5px auto;
+flex: 0 0 450px;
+margin:auto;
 }
 .leadparagraph {
 font-family:Montserrat-LightItalic;
@@ -1626,15 +1616,19 @@ margin-right:15px;
 }
 }
 
-/* Desktop Layout: 1025px to a max of 1366px - Everything above Ipad Pro 11-inch. Inherits styles from: Mobile Layout and Tablet Layout. */
-@media only screen and (min-width: 1025px) {
+/* Desktop Layout: 1280px to a max of 1366px - Everything above Ipad Pro 11-inch. Inherits styles from: Mobile Layout and Tablet Layout. */
+@media only screen and (min-width: 1279px) {
 
 /* Responsive flex two-column layout over 835px */
 .flex-container {
 display: flex;
 flex-direction: row;
-flex-shrink: 0;
 align-items:center;
+gap: 1rem;
+}
+.flexcenter {
+display: flex;
+justify-content: center;
 }
 .leftphoto {
 position: relative;
@@ -1892,9 +1886,8 @@ margin-right:15px;
 }
 .katsarisleads {
 position: relative;
-width:450px;
-float:left;
-margin:5px 15px 5px auto;
+flex: 0 0 450px;
+margin:auto;
 }
 .leadparagraph {
 font-family:Montserrat-LightItalic;
