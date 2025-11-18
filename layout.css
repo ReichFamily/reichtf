@@ -1599,9 +1599,8 @@ margin-right:15px;
 }
 .katsarisbreakfast {
 position: relative;
-max-width:700px;
-float:right;
-margin-left:15px;
+margin-left:auto;
+margin-right:auto;
 }
 }
 
