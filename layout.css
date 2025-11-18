@@ -161,6 +161,12 @@ margin:10px auto 10px;
 line-height:1.8;
 text-align:justify;
 }
+.caption {
+font-family:Montserrat-LightItalic;
+font-size: 0.9rem;
+line-height:1.8;
+text-align:justify;
+}
 .sources {
 display:flex;
 flex-direction:column;
@@ -473,10 +479,15 @@ position: relative;
 margin-left:auto;
 margin-right:auto;
 }
-.mariaanthonykatsarissmall {
+.katsarisleads {
 position: relative;
-margin:8px auto 14px auto;
-border-radius:10px;
+margin:15px auto 0px auto;
+}
+.leadparagraph {
+font-family:Montserrat-LightItalic;
+font-size: 0.9rem;
+line-height:1.8;
+text-align:justify;
 }
 .stevenkatsaris {
 position: relative;
@@ -699,6 +710,7 @@ Inherits styles from: Mobile Layout. */
 .flex-container {
 display: flex;
 flex-direction: row;
+flex-shrink: 0;
 align-items:center;
 }
 .leftphoto {
@@ -970,12 +982,17 @@ max-width:850px;
 margin-left:auto;
 margin-right:auto;
 }
-.mariaanthonykatsarissmall {
+.katsarisleads {
 position: relative;
-max-width:250px;
+width:400px;
 float:left;
-margin:auto 15px auto auto;
-border-radius:10px;
+margin:5px 15px 5px auto;
+}
+.leadparagraph {
+font-family:Montserrat-LightItalic;
+font-size: 1.0rem;
+line-height:1.8;
+text-align:justify;
 }
 .mariakatsaristeen {
 position: relative;
@@ -1083,6 +1100,13 @@ font-family:Montserrat-LightItalic;
 font-size: 1.0rem;
 margin:10px auto 10px;
 line-height:1.8;
+text-align:justify;
+}
+.caption {
+font-family:Montserrat-LightItalic;
+font-size: 1.0rem;
+margin:10px auto 10px;
+line-height:1.6;
 text-align:justify;
 }
 .sources {
@@ -1318,13 +1342,6 @@ border-width:1px 1px 1px 1px;
 border-radius:12px;
 max-width:1000px;
 }
-.mariaanthonykatsarissmall {
-position: relative;
-max-width:250px;
-float:left;
-margin:auto 15px auto auto;
-border-radius:10px;
-}
 }
 
 /* 12.9 inch Ipad 1024x1366 Custom. This is just for 12-inch Ipad layouts holding
@@ -1521,12 +1538,18 @@ max-width:700px;
 float:left;
 margin-right:15px;
 }
-.mariaanthonykatsarissmall {
+.katsarisleads {
 position: relative;
-max-width:250px;
+width:450px;
 float:left;
-margin:8px 15px 8px auto;
-border-radius:10px;
+margin:5px 15px 5px auto;
+}
+.leadparagraph {
+font-family:Montserrat-LightItalic;
+font-size: 1.0rem;
+line-height:1.8;
+text-align:justify;
+max-width:420px;
 }
 /*maxwidth changed for
 each photo inline*/
@@ -1541,6 +1564,12 @@ font-family:Montserrat-LightItalic;
 font-size: 1.0rem;
 margin:10px auto 10px;
 line-height:1.8;
+text-align:justify;
+}
+.caption {
+font-family:Montserrat-LightItalic;
+font-size: 1.0rem;
+line-height:1.6;
 text-align:justify;
 }
 .sources {
@@ -1571,8 +1600,8 @@ margin-right:15px;
 .katsarisbreakfast {
 position: relative;
 max-width:700px;
-float:left;
-margin-right:15px;
+float:right;
+margin-left:15px;
 }
 }
 
@@ -1583,6 +1612,7 @@ margin-right:15px;
 .flex-container {
 display: flex;
 flex-direction: row;
+flex-shrink: 0;
 align-items:center;
 }
 .leftphoto {
@@ -1840,12 +1870,18 @@ max-width:850px;
 float:left;
 margin-right:15px;
 }
-.mariaanthonykatsarissmall {
+.katsarisleads {
 position: relative;
-max-width:250px;
+width:450px;
 float:left;
-margin:8px 15px 8px auto;
-border-radius:10px;
+margin:5px 15px 5px auto;
+}
+.leadparagraph {
+font-family:Montserrat-LightItalic;
+line-height:1.8;
+text-align:justify;
+max-width:420px;
+font-size: 1.0rem;
 }
 .mariakatsaristeen {
 position: relative;
@@ -1862,8 +1898,8 @@ margin-right:15px;
 .katsarisbreakfast {
 position: relative;
 max-width:850px;
-float:left;
-margin-right:15px;
+float:right;
+margin-left:15px;
 }
 .johnvictorstoen {
 position: relative;
@@ -1944,6 +1980,12 @@ font-family:Montserrat-LightItalic;
 font-size: 1.0rem;
 margin:10px auto 10px;
 line-height:1.8;
+text-align:justify;
+}
+.caption {
+font-family:Montserrat-LightItalic;
+font-size: 1.0rem;
+line-height:1.6;
 text-align:justify;
 }
 .sources {
