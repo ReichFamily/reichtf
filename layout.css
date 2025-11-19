@@ -706,7 +706,7 @@ scroll-margin-top:15px;
 #summary {
 scroll-margin-top:15px;
 }
-/* Tablet Layout Ipad Mini and 480 to 768
+/* Tablet Layout Ipad Mini down to 480px
 This section is for exceptions. All CSS
 must be followed by !important to override the
 following CSS block */
@@ -720,8 +720,8 @@ width: 430px !important;
 margin:0px 15px 0px 0px !important;
 }
 }
-/* Tablet Layout Over Ipad Mini 769 to 835px - Ipad Pro 11-inch
-Inherits styles from: Mobile Layout. */
+/* Tablet Layout including Ipad Mini 768 to 835px 
+up to Ipad Pro 11-inch */
 @media only screen and (min-width: 768px) {
 
 /* Responsive flex two-column layout over 701px */
