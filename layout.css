@@ -172,7 +172,7 @@ display:flex;
 flex-direction:column;
 font-size: 0.9rem;
 margin:26px auto 20px;
-max-width:600px;
+max-width:700px;
 text-align:center;
 justify-content:space-around;
 }
@@ -706,6 +706,9 @@ scroll-margin-top:15px;
 #summary {
 scroll-margin-top:15px;
 }
+#notacult {
+scroll-margin-top:15px;
+}
 /* Tablet Layout Ipad Mini down to 480px
 This section is for exceptions. All CSS
 must be followed by !important to override the
@@ -1146,7 +1149,7 @@ display:flex;
 flex-direction:column;
 font-size: 1.0rem;
 margin:0px auto 26px;
-max-width:600px;
+max-width:700px;
 text-align:center;
 justify-content:space-around;
 }
@@ -1347,6 +1350,9 @@ scroll-margin-top:15px;
 scroll-margin-top:15px;
 }
 #summary {
+scroll-margin-top:15px;
+}
+#notacult {
 scroll-margin-top:15px;
 }
 }
@@ -1583,7 +1589,7 @@ display:flex;
 flex-direction:column;
 font-size: 1.0rem;
 margin:0px auto 26px;
-max-width:600px;
+max-width:700px;
 text-align:center;
 justify-content:space-around;
 }
@@ -2012,7 +2018,7 @@ display:flex;
 flex-direction:column;
 font-size: 1.0rem;
 margin:0px auto 26px;
-max-width:600px;
+max-width:700px;
 text-align:center;
 justify-content:space-around;
 }
@@ -2234,6 +2240,9 @@ scroll-margin-top:15px;
 scroll-margin-top:15px;
 }
 #summary {
+scroll-margin-top:15px;
+}
+#notacult {
 scroll-margin-top:15px;
 }
 }
