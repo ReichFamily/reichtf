@@ -312,6 +312,62 @@ style="-webkit-filter: drop-shadow(0px 5px 15px #fff);filter: drop-shadow(0px 5p
 
 <p>Reich is our anointed earthly Father, whom we dearly love and deeply respect. He is the Supreme Head of our family. We rely upon the guidance and teachings of His Eminence. We exalt our leader but we do not worship Reich as our God. Our high regard for Reich is similar to the Roman Catholic's respect for their Cardinals, whom they also respectfully address with the Ecclesiastical title, <i>His Eminence</i> or <i>Your Eminence</i> when in the Cardinal's presence. Though Cardinals are esteemed clergy in the Roman Catholic Church, they are not worshipped as Gods by Roman Catholics. Similarly, Reich is not worshipped as the God of the Reich Family; nor is any other earthly man, woman, or child.</p>
 
+<style>
+#read-more-content img,
+#read-more-content figcaption,
+#read-more-content .photolayout,
+#read-more-content .leftphoto {
+  display: none;
+}
+</style>
+
+<div class="read-more-wrapper">
+  <p>
+    Some visitors prefer to begin with a brief orientation. For this purpose, you can read our guiding beliefs and family practices in condensed form. Tap to expand the 
+    <a href="#summary" id="summary-link">Summary of Our Religion and Way of Life</a>
+    which unfolds here on the same page so you can continue reading without interruption.
+  </p>
+
+  <!-- Inline expansion container -->
+  <div id="read-more-content"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const link   = document.getElementById('summary-link');
+  const target = document.getElementById('read-more-content');
+  const source = document.getElementById('summary');
+
+  if (!link || !target || !source) return;
+
+  let isOpen = false;
+
+  link.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    if (!isOpen) {
+      // clone the summary instead of moving it
+      const clone = source.cloneNode(true);
+      target.appendChild(clone);
+
+      // append concluding paragraph
+      const conclusion = document.createElement('p');
+      conclusion.className = 'summary-conclusion';
+      conclusion.textContent =
+        "This summary has outlined the essence of our Family: our Trinitarian faith, our governance and unity, our devotion in prayer and stewardship, our way of raising and guiding children, and our commitment to living faithfully in the world. This is only a glimpse of who we are. The detailed exposition that follows reveals the deeper meaning of our beliefs, practices, and traditions, offering a fuller understanding for readers who proceed into the detailed sections that follow.";
+      target.appendChild(conclusion);
+
+      isOpen = true;
+    } else {
+      // clear the expansion area
+      target.innerHTML = '';
+      isOpen = false;
+    }
+  });
+});
+</script>
+
+
 <div style="display:flex;">
 <div id="religion" style="margin:auto;">
 <div class="sectionheadings titlelinesheadings">The Family's Trinitarian Religion</div>
@@ -708,9 +764,10 @@ style="-webkit-filter: drop-shadow(5px 5px 5px #000);filter: drop-shadow(5px 5px
 
 <p>The Genealogical Research Project is more than a collection of documents. It is a reflection of our sacred duty to remember, to preserve, and to pass on the truth. It is an expression of our love for one another and our reverence for the lives that have shaped our Family. Through this work, we remain connected to our past, grounded in our present, and prepared for the future that awaits us.</p>
 
-<div style="display:flex;">
 <div id="summary" style="margin:auto;">
-<div class="sectionheadings titlelinesheadings">A Summary of Our Religion and Way of Life</div>
+<div style="display:flex; justify-content:center;">
+<div class="sectionheadings titlelinesheadings">
+A Summary of Our Religion and Way of Life
 </div>
 </div>
 
@@ -762,7 +819,9 @@ style="-webkit-filter: drop-shadow(5px 5px 5px #000);filter: drop-shadow(5px 5px
 
 <p>We cherish our genealogy as a sacred work of remembrance and truth. Using trusted platforms and historical documents, we preserve the lives and legacies of those before us in private memorials, sharing select public pieces only when they serve the broader historical record. Each thread we uncover strengthens our identity and honours those whose stories guide us forward.</p>
 
-<p style="margin-bottom:36px;">We are the Family of Reich, our anointed earthly Father, whom we dearly love and deeply respect as the Supreme Head of the Reich Family. We rely upon the guidance and teachings of His Eminence. We are immersed in the body of our family, allowing us to express our eternal love and loyalty, one to another. We pray that His Eminence, Blessed and Powerful, will intercede on our behalf to Almighty God, His Son Jesus Christ, and the Holy Spirit, that the Holy Trinity might grant us a good and pure life of happiness; to forgive us of our sins; and to grant us eternal life. Through the Infinite Wisdom of His Eminence Reich, the way is paved.</p>
+<p>We are the Family of Reich, our anointed earthly Father, whom we dearly love and deeply respect as the Supreme Head of the Reich Family. We rely upon the guidance and teachings of His Eminence. We are immersed in the body of our family, allowing us to express our eternal love and loyalty, one to another. We pray that His Eminence, Blessed and Powerful, will intercede on our behalf to Almighty God, His Son Jesus Christ, and the Holy Spirit, that the Holy Trinity might grant us a good and pure life of happiness; to forgive us of our sins; and to grant us eternal life. Through the Infinite Wisdom of His Eminence Reich, the way is paved.</p>
+
+</div>
 
 <div class="footerhr"></div>
 
@@ -797,3 +856,4 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 
 </body>
 </html>
+
