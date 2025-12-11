@@ -286,12 +286,26 @@ function saveVoteLocally(voteData) {
 }
 
 async function submitToGitHub(voteData) {
+    // --- YOU MUST EDIT THESE TWO LINES ---
+    const GITHUB_TOKEN = 'PASTE_YOUR_TOKEN_HERE'; // Get from: GitHub Settings → Developer Settings → Tokens
+    const REPO_PATH = 'ReichFamily/reich.tf';     // Format: 'YourUsername/YourRepoName'
+    // -------------------------------------
+    
+    const candidateFolder = 'votes/membership-2026/emma-cambridge';
+    const fileName = `vote_${Date.now()}.json`;
+    const apiUrl = `https://api.github.com/repos/${REPO_PATH}/contents/${candidateFolder}/${fileName}`;
+    
+    const contentBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(voteData, null, 2))));
+    
     try {
-        // Send vote to a webhook or API endpoint
-        // This will be handled by GitHub Actions
-        return true; // Simulate success
+        const response = await fetch(apiUrl, {
+            method: 'PUT',
+            headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: `New vote for ${voteData.candidate}`, content: contentBase64, branch: 'main' })
+        });
+        return response.ok;
     } catch (error) {
-        console.error('GitHub submission failed:', error);
+        console.error('Save failed:', error);
         return false;
     }
 }
