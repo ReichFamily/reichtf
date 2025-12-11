@@ -189,7 +189,7 @@
         <p>Need assistance? Contact: voting@yourorganization.org</p>
     </footer>
     
-    <script>
+<script>
 // Configuration
 const CANDIDATE_NAME = "Emma Cambridge";
 const ELECTION_ID = "membership-2026";
@@ -286,26 +286,43 @@ function saveVoteLocally(voteData) {
 }
 
 async function submitToGitHub(voteData) {
-    // --- YOU MUST EDIT THESE TWO LINES ---
-    const GITHUB_TOKEN = 'PASTE_YOUR_TOKEN_HERE'; // Get from: GitHub Settings → Developer Settings → Tokens
-    const REPO_PATH = 'ReichFamily/reich.tf';     // Format: 'YourUsername/YourRepoName'
-    // -------------------------------------
+    // --- YOU MUST EDIT THESE VALUES ---
+    const GITHUB_TOKEN = 'PASTE_YOUR_TOKEN_HERE'; // Get from GitHub Settings
+    const REPO_OWNER = 'ReichFamily';              // Your GitHub username
+    const REPO_NAME = 'reich.tf';                  // Your repository
+    // ----------------------------------
     
     const candidateFolder = 'votes/membership-2026/emma-cambridge';
     const fileName = `vote_${Date.now()}.json`;
-    const apiUrl = `https://api.github.com/repos/${REPO_PATH}/contents/${candidateFolder}/${fileName}`;
+    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${candidateFolder}/${fileName}`;
     
-    const contentBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(voteData, null, 2))));
+    // Encode data for GitHub API
+    const contentString = JSON.stringify(voteData, null, 2);
+    const contentBase64 = btoa(unescape(encodeURIComponent(contentString)));
     
     try {
         const response = await fetch(apiUrl, {
             method: 'PUT',
-            headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: `New vote for ${voteData.candidate}`, content: contentBase64, branch: 'main' })
+            headers: {
+                'Authorization': `token ${GITHUB_TOKEN}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: `New vote for ${voteData.candidate}`,
+                content: contentBase64,
+                branch: 'main'
+            })
         });
-        return response.ok;
+        
+        if (response.ok) {
+            console.log('✅ Vote JSON file saved to GitHub.');
+            return true;
+        } else {
+            console.error('❌ Failed to save JSON file to GitHub.');
+            return false;
+        }
     } catch (error) {
-        console.error('Save failed:', error);
+        console.error('Network error:', error);
         return false;
     }
 }
@@ -341,6 +358,7 @@ function showMessage(text, type) {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Voting page loaded for', CANDIDATE_NAME);
 });
-    </script>
+</script>
+
 </body>
 </html>
