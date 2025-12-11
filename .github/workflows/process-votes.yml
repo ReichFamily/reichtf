@@ -1,0 +1,56 @@
+name: Process Votes
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Runs every 5 minutes
+  workflow_dispatch:        # Lets you run it manually
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.VOTING_TOKEN }}
+    
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Process votes
+      env:
+        GITHUB_TOKEN: ${{ secrets.VOTING_TOKEN }}
+      run: |
+        # This script will:
+        # 1. Find all vote.html files
+        # 2. Check for new votes in each folder
+        # 3. Create GitHub Issues for new votes
+        # 4. Count votes for each candidate
+        # 5. Update results files
+        
+        echo "Vote processing started at $(date)"
+        
+        # Find all voting folders
+        find votes -name "vote.html" -type f | while read vote_file; do
+          folder=$(dirname "$vote_file")
+          candidate=$(basename "$folder")
+          election=$(basename $(dirname "$folder"))
+          
+          echo "Processing: $election - $candidate"
+          
+          # Create results file if it doesn't exist
+          results_file="$folder/results.json"
+          [ -f "$results_file" ] || echo '{"yes":0,"no":0,"notes":[]}' > "$results_file"
+        done
+        
+        echo "Processing complete"
+    
+    - name: Commit and push if changes
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add .
+        git commit -m "Update vote counts" || echo "No changes to commit"
+        git push
