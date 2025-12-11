@@ -245,8 +245,18 @@
                 ipHash: await getIPHash()
             };
             
-            // Save vote locally
-            saveVoteLocally(voteData);
+function saveVoteLocally(voteData) {
+    // Save to browser storage for GitHub Actions to find
+    const pendingVotes = JSON.parse(localStorage.getItem('pendingVotes') || '[]');
+    pendingVotes.push(voteData);
+    localStorage.setItem('pendingVotes', JSON.stringify(pendingVotes));
+    
+    // Also save to sessionStorage for this page
+    sessionStorage.setItem('lastVote', JSON.stringify(voteData));
+    
+    // NO DOWNLOAD - GitHub Actions will collect from localStorage
+    console.log('Vote saved locally:', voteData);
+}
             
             // Disable form
             document.getElementById('submitBtn').disabled = true;
