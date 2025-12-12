@@ -1,15 +1,11 @@
 name: Process Votes
 on:
-  # 🔥 NEW: Triggers IMMEDIATELY when a vote file is saved
   push:
     paths:
       - 'votes/**/*.json'
-  # Keep manual trigger for testing
   workflow_dispatch:
-  # Optional: Keep schedule as a safety net (change to every 5 min)
   schedule:
     - cron: '*/5 * * * *'
-  workflow_dispatch:
 
 jobs:
   process-votes:
@@ -39,35 +35,39 @@ jobs:
           
           results_file="$DIR/results.json"
           
-          # Read existing results
+          # LOAD EXISTING RESULTS AND COMMENTS (PERMANENT)
           if [ -f "$results_file" ]; then
             yes_votes=$(jq -r '.yes // 0' "$results_file")
             no_votes=$(jq -r '.no // 0' "$results_file")
+            yes_comments_existing=$(jq -c '.yesComments // []' "$results_file")
+            no_comments_existing=$(jq -c '.noComments // []' "$results_file")
             echo "Existing: $yes_votes YES, $no_votes NO"
+            echo "Existing comments loaded"
           else
             yes_votes=0
             no_votes=0
+            yes_comments_existing="[]"
+            no_comments_existing="[]"
           fi
           
-          # Arrays to collect comments
-          yes_comments=()
-          no_comments=()
+          # Arrays for NEW comments
+          yes_comments_new=()
+          no_comments_new=()
           new_yes=0
           new_no=0
           
           echo "=== PROCESSING VOTE FILES ==="
-          # Single pass: count votes AND collect comments
           for vote_file in "$DIR"/vote_*.json; do
             if [ -f "$vote_file" ]; then
               echo "Processing: $(basename "$vote_file")"
               
-              # Extract all data
+              # Extract data
               vote=$(jq -r '.vote' "$vote_file" 2>/dev/null || echo "")
               notes=$(jq -r '.notes // ""' "$vote_file" 2>/dev/null || echo "")
               email=$(jq -r '.email // ""' "$vote_file" 2>/dev/null || echo "")
               timestamp=$(jq -r '.timestamp // ""' "$vote_file" 2>/dev/null || echo "")
               
-              # Count the vote
+              # Count vote
               if [ "$vote" = "yes" ]; then
                 new_yes=$((new_yes + 1))
                 yes_votes=$((yes_votes + 1))
@@ -76,35 +76,35 @@ jobs:
                 new_no=$((new_no + 1))
                 no_votes=$((no_votes + 1))
                 echo "  ✓ NO vote"
-              else
-                echo "  ✗ INVALID vote value"
               fi
               
-              # Collect comment if it exists
+              # Collect NEW comment (filter out placeholder)
               if [ -n "$notes" ] && [ "$notes" != "null" ] && [ "$notes" != "" ]; then
-                comment_obj=$(jq -n \
-                  --arg notes "$notes" \
-                  --arg email "$email" \
-                  --arg timestamp "$timestamp" \
-                  '{notes: $notes, email: $email, timestamp: $timestamp}')
-                
-                if [ "$vote" = "yes" ]; then
-                  yes_comments+=("$comment_obj")
-                  echo "  💬 Has YES comment"
-                elif [ "$vote" = "no" ]; then
-                  no_comments+=("$comment_obj")
-                  echo "  💬 Has NO comment"
+                DEFAULT_PLACEHOLDER="Please provide any comments about your vote. These will be visible with the results."
+                if [ "$notes" != "$DEFAULT_PLACEHOLDER" ]; then
+                  comment_obj=$(jq -n \
+                    --arg notes "$notes" \
+                    --arg email "$email" \
+                    --arg timestamp "$timestamp" \
+                    '{notes: $notes, email: $email, timestamp: $timestamp}')
+                  
+                  if [ "$vote" = "yes" ]; then
+                    yes_comments_new+=("$comment_obj")
+                    echo "  💬 New YES comment"
+                  elif [ "$vote" = "no" ]; then
+                    no_comments_new+=("$comment_obj")
+                    echo "  💬 New NO comment"
+                  fi
                 fi
               fi
               
-              # Delete the processed file
               rm "$vote_file"
             fi
           done
           
-          echo "New votes processed: $new_yes YES, $new_no NO"
+          echo "New votes: $new_yes YES, $new_no NO"
           
-          # Calculate percentages
+          # Calculate
           total_votes=$((yes_votes + no_votes))
           if [ $total_votes -gt 0 ]; then
             yes_percent=$(echo "scale=1; $yes_votes * 100 / $total_votes" | bc)
@@ -114,13 +114,17 @@ jobs:
             no_percent=0
           fi
           
-          # Convert comment arrays to JSON
-          yes_comments_json=$(printf '%s\n' "${yes_comments[@]}" | jq -s '.')
-          no_comments_json=$(printf '%s\n' "${no_comments[@]}" | jq -s '.')
+          # MERGE OLD + NEW COMMENTS
+          echo "=== COMBINING COMMENTS ==="
+          yes_comments_new_json=$(printf '%s\n' "${yes_comments_new[@]}" | jq -s '.')
+          no_comments_new_json=$(printf '%s\n' "${no_comments_new[@]}" | jq -s '.')
           
-          echo "Comments collected: YES=${#yes_comments[@]}, NO=${#no_comments[@]}"
+          yes_comments_final=$(jq -c --argjson old "$yes_comments_existing" --argjson new "$yes_comments_new_json" '$old + $new' <<< '[]')
+          no_comments_final=$(jq -c --argjson old "$no_comments_existing" --argjson new "$no_comments_new_json" '$old + $new' <<< '[]')
           
-          # Write results.json WITH comments
+          echo "Total comments: YES=$(echo "$yes_comments_final" | jq length), NO=$(echo "$no_comments_final" | jq length)"
+          
+          # WRITE FINAL RESULTS WITH ALL COMMENTS
           echo "=== WRITING RESULTS.JSON ==="
           jq -n \
             --arg candidate "emma-cambridge" \
@@ -130,8 +134,8 @@ jobs:
             --argjson total "$total_votes" \
             --arg yesPercent "$yes_percent" \
             --arg noPercent "$no_percent" \
-            --argjson yesComments "$yes_comments_json" \
-            --argjson noComments "$no_comments_json" \
+            --argjson yesComments "$yes_comments_final" \
+            --argjson noComments "$no_comments_final" \
             --arg lastUpdated "$(date -Iseconds)Z" \
             '{
               candidate: $candidate,
