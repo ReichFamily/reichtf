@@ -5,7 +5,7 @@ on:
   workflow_dispatch:        # Manual trigger
   push:
     paths:
-      - 'votes/**'
+      - 'votes/**/*.json'    # ← CHANGED: Only .json files in votes/ folder
 
 jobs:
   process-votes:
