@@ -15,72 +15,100 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Count votes and update results
         run: |
-          echo "Processing votes for membership-2026/emma-cambridge..."
+          set -e
+          echo "Starting vote processing..."
           
-          FOLDER="votes/membership-2026/emma-cambridge"
-          RESULTS="$FOLDER/results.json"
-          
-          # Initialize
-          yes=0
-          no=0
-          
-          # Read existing results
-          if [ -f "$RESULTS" ]; then
-            yes=$(jq -r '.yes // 0' "$RESULTS")
-            no=$(jq -r '.no // 0' "$RESULTS")
-          fi
-          
-          # Count new votes
-          for vote_file in "$FOLDER"/vote_*.json; do
-            if [ -f "$vote_file" ]; then
-              vote=$(jq -r '.vote' "$vote_file" 2>/dev/null)
-              if [ "$vote" = "yes" ]; then
-                yes=$((yes + 1))
-              elif [ "$vote" = "no" ]; then
-                no=$((no + 1))
+          # Process all election/candidate folders
+          for election_dir in votes/*/; do
+            election=$(basename "$election_dir")
+            echo "Election: $election"
+            
+            for candidate_dir in "$election_dir"*/; do
+              candidate=$(basename "$candidate_dir")
+              echo "  Candidate: $candidate"
+              
+              results_file="$candidate_dir/results.json"
+              
+              # Initialize or read existing results
+              if [ -f "$results_file" ]; then
+                yes_votes=$(jq -r '.yes // 0' "$results_file")
+                no_votes=$(jq -r '.no // 0' "$results_file")
+                echo "    Existing: $yes_votes YES, $no_votes NO"
+              else
+                yes_votes=0
+                no_votes=0
+                echo "    No existing results"
               fi
-              rm "$vote_file"
-            fi
+              
+              # Count new votes
+              new_yes=0
+              new_no=0
+              for vote_file in "$candidate_dir"vote_*.json; do
+                if [ -f "$vote_file" ]; then
+                  vote=$(jq -r '.vote' "$vote_file" 2>/dev/null || echo "")
+                  if [ "$vote" = "yes" ]; then
+                    ((new_yes++))
+                    ((yes_votes++))
+                    echo "    ✓ YES vote"
+                  elif [ "$vote" = "no" ]; then
+                    ((new_no++))
+                    ((no_votes++))
+                    echo "    ✓ NO vote"
+                  else
+                    echo "    ✗ Invalid vote format"
+                  fi
+                  rm "$vote_file"
+                fi
+              done
+              
+              echo "    New votes: $new_yes YES, $new_no NO"
+              
+              # Calculate percentages
+              total_votes=$((yes_votes + no_votes))
+              if [ $total_votes -gt 0 ]; then
+                yes_percent=$(echo "scale=1; $yes_votes * 100 / $total_votes" | bc)
+                no_percent=$(echo "scale=1; $no_votes * 100 / $total_votes" | bc)
+              else
+                yes_percent=0
+                no_percent=0
+              fi
+              
+              # Write results
+              jq -n \
+                --arg candidate "$candidate" \
+                --arg election "$election" \
+                --argjson yes "$yes_votes" \
+                --argjson no "$no_votes" \
+                --argjson total "$total_votes" \
+                --arg yesPercent "$yes_percent" \
+                --arg noPercent "$no_percent" \
+                --arg lastUpdated "$(date -Iseconds)Z" \
+                '{
+                  candidate: $candidate,
+                  election: $election,
+                  yes: $yes,
+                  no: $no,
+                  total: $total,
+                  yesPercent: ($yesPercent | tonumber),
+                  noPercent: ($noPercent | tonumber),
+                  lastUpdated: $lastUpdated
+                }' > "$results_file"
+              
+              echo "    Final: $yes_votes YES, $no_votes NO"
+              echo ""
+            done
           done
           
-          # Calculate
-          total=$((yes + no))
-          if [ $total -gt 0 ]; then
-            yes_pct=$(echo "scale=1; $yes * 100 / $total" | bc)
-            no_pct=$(echo "scale=1; $no * 100 / $total" | bc)
-          else
-            yes_pct=0
-            no_pct=0
-          fi
-          
-          # Save
-          jq -n \
-            --arg cand "emma-cambridge" \
-            --arg elec "membership-2026" \
-            --argjson y "$yes" \
-            --argjson n "$no" \
-            --argjson t "$total" \
-            --arg yp "$yes_pct" \
-            --arg np "$no_pct" \
-            --arg updated "$(date -Iseconds)Z" \
-            '{
-              candidate: $cand,
-              election: $elec,
-              yes: $y,
-              no: $n,
-              total: $t,
-              yesPercent: ($yp | tonumber),
-              noPercent: ($np | tonumber),
-              lastUpdated: $updated
-            }' > "$RESULTS"
-          
-          echo "Done: $yes YES, $no NO"
-      
+          echo "Vote processing complete"
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./votes
+          keep_files: false
