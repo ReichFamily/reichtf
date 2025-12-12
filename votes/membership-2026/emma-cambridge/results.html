@@ -265,6 +265,45 @@ async function loadResults() {
         document.getElementById('noBar').style.width = noPct + '%';
         document.getElementById('lastUpdated').textContent = 
             'Last updated: ' + new Date(results.lastUpdated).toLocaleString();
+
+            document.getElementById('lastUpdated').textContent = 
+            'Last updated: ' + new Date(results.lastUpdated).toLocaleString();
+        
+        // === ADD COMMENT DISPLAY CODE HERE ===
+        // Display YES comments
+        const yesNotesDiv = document.getElementById('yesNotes');
+        if (results.yesComments && results.yesComments.length > 0) {
+          let html = '';
+          results.yesComments.forEach(comment => {
+            html += `<div class="note">
+                      <p>${comment.notes || ''}</p>
+                      <div class="note-meta">
+                        <span>${new Date(comment.timestamp).toLocaleString()}</span>
+                      </div>
+                    </div>`;
+          });
+          yesNotesDiv.innerHTML = html;
+        } else {
+          yesNotesDiv.innerHTML = '<p class="no-notes-message">No comments from YES votes</p>';
+        }
+
+        // Display NO comments  
+        const noNotesDiv = document.getElementById('noNotes');
+        if (results.noComments && results.noComments.length > 0) {
+          let html = '';
+          results.noComments.forEach(comment => {
+            html += `<div class="note">
+                      <p>${comment.notes || ''}</p>
+                      <div class="note-meta">
+                        <span>${new Date(comment.timestamp).toLocaleString()}</span>
+                      </div>
+                    </div>`;
+          });
+          noNotesDiv.innerHTML = html;
+        } else {
+          noNotesDiv.innerHTML = '<p class="no-notes-message">No comments from NO votes</p>';
+        }
+        // === END COMMENT CODE ===
             
     } catch (error) {
         console.error("Error:", error);
