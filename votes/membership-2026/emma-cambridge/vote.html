@@ -220,34 +220,18 @@ async function submitVote() {
         return;
     }
     
-// Add this function
-function looksLikeRealEmail(email) {
-    const username = email.split('@')[0];
+    // Domain-restricted email validation
+    if (!validateEmail(email)) {
+        showMessage('Please enter a valid email address (.tf, .com, .org, .edu, .net, .gov, .io domains only)', 'error');
+        return;
+    }
     
-    // Real emails usually have:
-    // 1. At least 2 letters
-    // 2. Not all numbers
-    // 3. At least one vowel (usually)
-    // 4. Reasonable length (3-30 chars before @)
-    
-    if (username.length < 3) return false;
-    if (/^[0-9]+$/.test(username)) return false;
-    if (!/[a-zA-Z]/.test(username)) return false;
-    
-    return true;
-}
-
-// Update your validation block
-if (!validateEmail(email)) {
-    showMessage('Please enter a valid email address (.tf, .com, .org, .edu domains only)', 'error');
-    return;
-}
-
-// ADD THIS ONE CHECK
-if (!looksLikeRealEmail(email)) {
-    showMessage('Please use a real email address', 'error');
-    return;
-}
+    // Check if already voted
+    const voteKey = `vote-${ELECTION_ID}-${CANDIDATE_ID}-${email}`;
+    if (localStorage.getItem(voteKey)) {
+        showMessage('This email has already voted for this candidate', 'error');
+        return;
+    }
     
     // Create vote data
     const voteData = {
@@ -269,12 +253,8 @@ if (!looksLikeRealEmail(email)) {
     document.getElementById('submitBtn').disabled = true;
     document.getElementById('submitBtn').textContent = 'Processing...';
     
-    // Send to Cloudflare Worker - TRY DIFFERENT URLS HERE
-    // CURRENT URL: (May be wrong)
-    const WORKER_URL = 'https://lingering-thunder-658e.reich-family.workers.dev/'; // TEST THIS ONE
-    // ALTERNATIVE 1: 'https://reich.tf/votes/api'
-    // ALTERNATIVE 2: 'https://reich.tf/votes/api/submit'
-    
+    // Send to Cloudflare Worker
+    const WORKER_URL = 'https://lingering-thunder-658e.reich-family.workers.dev/';
     const submitted = await submitToGitHub(voteData, WORKER_URL);
     
     if (submitted) {
@@ -346,7 +326,17 @@ async function getIPHash() {
 }
 
 function validateEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    // 1. Basic email format
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return false;
+    }
+    
+    // 2. Allowed domain extensions
+    const domain = email.split('@')[1];
+    const extension = domain.split('.').pop().toLowerCase();
+    const allowedExtensions = ['tf', 'com', 'org', 'edu', 'net', 'gov', 'io'];
+    
+    return allowedExtensions.includes(extension);
 }
 
 function showMessage(text, type) {
