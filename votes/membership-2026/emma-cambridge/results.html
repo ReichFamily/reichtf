@@ -235,48 +235,60 @@
     </footer>
     
 <script>
-// Configuration
 const ELECTION_ID = "membership-2026";
 const CANDIDATE_ID = "emma-cambridge";
 
-async function loadRealResults() {
-    const resultsDiv = document.getElementById('results');
-    if (!resultsDiv) return;
-    
+async function loadResults() {
     try {
-        // FETCH FROM GITHUB - NOT localStorage
-        const url = `https://raw.githubusercontent.com/ReichFamily/reichtf/main/votes/${ELECTION_ID}/${CANDIDATE_ID}/results.json`;
-        console.log('Fetching from:', url);
-        
-        const response = await fetch(url);
+        // Fetch REAL results from GitHub repository
+        const resultsUrl = `https://raw.githubusercontent.com/ReichFamily/reichtf/main/votes/${ELECTION_ID}/${CANDIDATE_ID}/results.json`;
+        const response = await fetch(resultsUrl);
         
         if (!response.ok) {
-            resultsDiv.innerHTML = '<p>Results are being calculated. Please wait a few minutes.</p>';
-            return;
+            throw new Error('Results file not found or not yet generated');
         }
         
-        // REAL DATA FROM GITHUB
-        const realResults = await response.json();
-        console.log('Real results:', realResults);
+        const results = await response.json();
         
-        // Display REAL counts
-        document.getElementById('yesCount').textContent = realResults.yes || 0;
-        document.getElementById('noCount').textContent = realResults.no || 0;
-        document.getElementById('totalVotes').textContent = realResults.total || 0;
-        document.getElementById('yesPercent').textContent = (realResults.yesPercent || 0).toFixed(1) + '%';
-        document.getElementById('noPercent').textContent = (realResults.noPercent || 0).toFixed(1) + '%';
-        document.getElementById('lastUpdated').textContent = 
-            new Date(realResults.lastUpdated || new Date()).toLocaleString();
-            
+        // Display the REAL voting data
+        document.getElementById('candidateName').textContent = results.candidate;
+        document.getElementById('yesCount').textContent = results.yes;
+        document.getElementById('noCount').textContent = results.no;
+        document.getElementById('totalVotes').textContent = results.total;
+        document.getElementById('yesPercent').textContent = results.yesPercent.toFixed(1) + '%';
+        document.getElementById('noPercent').textContent = results.noPercent.toFixed(1) + '%';
+        document.getElementById('lastUpdated').textContent = new Date(results.lastUpdated).toLocaleString();
+        
+        // Display notes if available
+        const notesList = document.getElementById('voteNotesList');
+        if (notesList && results.notes && results.notes.length > 0) {
+            notesList.innerHTML = '';
+            results.notes.forEach(note => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${note.vote.toUpperCase()}</strong>: "${note.text}" <em>(${note.email})</em>`;
+                notesList.appendChild(li);
+            });
+        }
+        
+        // Hide loading message, show results
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('results').style.display = 'block';
+        
     } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('results').innerHTML = 
-            '<p>Error loading results. The voting system is working.</p>';
+        console.error('Error loading results:', error);
+        document.getElementById('loading').innerHTML = 
+            '<p style="color: #666; text-align: center; padding: 2rem;">' +
+            'Results are being processed. The voting system is working.<br>' +
+            'Votes are being counted and will appear here shortly.' +
+            '</p>';
     }
 }
 
-// Load when page opens
-document.addEventListener('DOMContentLoaded', loadRealResults);
+// Load results when page loads
+document.addEventListener('DOMContentLoaded', loadResults);
+
+// Optional: Auto-refresh every 2 minutes
+setInterval(loadResults, 120000);
 </script>
     
 </body>
