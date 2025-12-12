@@ -1,11 +1,10 @@
 {
   "candidate": "emma-cambridge",
   "election": "membership-2026",
-  "yes": 0,
+  "yes": 1,
   "no": 0,
-  "total": 0,
-  "yesPercent": 0,
+  "total": 1,
+  "yesPercent": 100.0,
   "noPercent": 0,
-  "notes": [],
-  "lastUpdated": "2025-12-12T05:44:54.913986Z"
+  "lastUpdated": "2025-12-12T06:00:05+00:00Z"
 }
