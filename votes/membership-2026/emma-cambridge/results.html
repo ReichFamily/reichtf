@@ -235,66 +235,51 @@
     </footer>
     
 <script>
-// Guard against duplicate execution
-if (window.resultsLoaded) {
-  console.log('Results already loaded');
-} else {
-  window.resultsLoaded = true;
-  
-  const ELECTION_ID = "membership-2026";
-  const CANDIDATE_ID = "emma-cambridge";
-  let refreshInterval;
+const ELECTION_ID = "membership-2026";
+const CANDIDATE_ID = "emma-cambridge";
 
-  async function loadResults() {
-      try {
-     const resultsUrl = `https://reich.tf/votes/${ELECTION_ID}/${CANDIDATE_ID}/results.json?t=${Date.now()}`;
-          const response = await fetch(resultsUrl);
-          
-          if (!response.ok) {
-              document.getElementById('lastUpdated').textContent = 'No results available yet.';
-              document.getElementById('yesCount').textContent = '0';
-              document.getElementById('noCount').textContent = '0';
-              document.getElementById('totalVotes').textContent = '0';
-              document.getElementById('yesPercent').textContent = '0%';
-              document.getElementById('noPercent').textContent = '0%';
-              document.getElementById('yesBar').style.width = '0%';
-              document.getElementById('noBar').style.width = '0%';
-              return;
-          }
-          
-          const results = await response.json();
-          
-          // Update existing DOM elements
-          document.getElementById('yesCount').textContent = results.yes || 0;
-          document.getElementById('noCount').textContent = results.no || 0;
-          document.getElementById('totalVotes').textContent = results.total || 0;
-          
-          const yesPct = parseFloat(results.yesPercent) || 0;
-          const noPct = parseFloat(results.noPercent) || 0;
-          
-          document.getElementById('yesPercent').textContent = yesPct.toFixed(1) + '%';
-          document.getElementById('noPercent').textContent = noPct.toFixed(1) + '%';
-          document.getElementById('yesBar').style.width = yesPct + '%';
-          document.getElementById('noBar').style.width = noPct + '%';
-          document.getElementById('lastUpdated').textContent = 
-              'Last updated: ' + new Date(results.lastUpdated).toLocaleString();
-              
-      } catch (error) {
-          console.error('Error loading results:', error);
-          document.getElementById('lastUpdated').textContent = 'Error loading results.';
-      }
-  }
-
-  // Load when page opens
-  document.addEventListener('DOMContentLoaded', function() {
-      loadResults();
-      // Refresh every 30 seconds
-      refreshInterval = setInterval(loadResults, 30000);
-  });
-
-  // Make loadResults available globally for the refresh button
-  window.loadResults = loadResults;
+async function loadResults() {
+    try {
+        const resultsUrl = `https://reich.tf/votes/${ELECTION_ID}/${CANDIDATE_ID}/results.json?t=${Date.now()}`;
+        console.log("Fetching:", resultsUrl);
+        const response = await fetch(resultsUrl);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const results = await response.json();
+        console.log("Results:", results);
+        
+        // Update display
+        document.getElementById('yesCount').textContent = results.yes || 0;
+        document.getElementById('noCount').textContent = results.no || 0;
+        document.getElementById('totalVotes').textContent = results.total || 0;
+        
+        const yesPct = results.yesPercent || 0;
+        const noPct = results.noPercent || 0;
+        
+        document.getElementById('yesPercent').textContent = yesPct.toFixed(1) + '%';
+        document.getElementById('noPercent').textContent = noPct.toFixed(1) + '%';
+        document.getElementById('yesBar').style.width = yesPct + '%';
+        document.getElementById('noBar').style.width = noPct + '%';
+        document.getElementById('lastUpdated').textContent = 
+            'Last updated: ' + new Date(results.lastUpdated).toLocaleString();
+            
+    } catch (error) {
+        console.error("Error:", error);
+        document.getElementById('lastUpdated').textContent = 'Loading results...';
+    }
 }
+
+// Load on page load and every 30 seconds
+document.addEventListener('DOMContentLoaded', () => {
+    loadResults();
+    setInterval(loadResults, 30000);
+});
+
+// Make function available for refresh button
+window.loadResults = loadResults;
 </script>
     
 </body>
