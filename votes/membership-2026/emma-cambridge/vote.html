@@ -248,12 +248,6 @@ if (!looksLikeRealEmail(email)) {
     showMessage('Please use a real email address', 'error');
     return;
 }
-    // Check if already voted
-    const voteKey = `vote-${ELECTION_ID}-${CANDIDATE_ID}-${email}`;
-    if (localStorage.getItem(voteKey)) {
-        showMessage('This email has already voted for this candidate', 'error');
-        return;
-    }
     
     // Create vote data
     const voteData = {
