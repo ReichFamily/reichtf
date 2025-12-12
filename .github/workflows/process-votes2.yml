@@ -22,60 +22,45 @@ jobs:
         run: |
           echo "Starting vote processing..."
           
-          # DIRECT PATH - NO LOOPS
           DIR="votes/membership-2026/emma-cambridge"
           echo "Processing directory: $DIR"
           
-          # Check if directory exists
           if [ ! -d "$DIR" ]; then
-            echo "ERROR: Directory $DIR not found"
-            ls -la votes/
+            echo "ERROR: Directory not found"
             exit 1
           fi
           
-          # List contents
-          echo "Directory contents:"
-          ls -la "$DIR"
-          
           results_file="$DIR/results.json"
           
-          # Initialize or read existing results
           if [ -f "$results_file" ]; then
             yes_votes=$(jq -r '.yes // 0' "$results_file")
             no_votes=$(jq -r '.no // 0' "$results_file")
-            echo "Existing results: $yes_votes YES, $no_votes NO"
+            echo "Existing: $yes_votes YES, $no_votes NO"
           else
             yes_votes=0
             no_votes=0
-            echo "No existing results"
           fi
           
-          # Count new votes
           new_yes=0
           new_no=0
           for vote_file in "$DIR"/vote_*.json; do
             if [ -f "$vote_file" ]; then
               vote=$(jq -r '.vote' "$vote_file" 2>/dev/null || echo "")
-              echo "Processing: $(basename "$vote_file") - Vote: $vote"
+              echo "Processing: $(basename "$vote_file") - $vote"
               
               if [ "$vote" = "yes" ]; then
                 new_yes=$((new_yes + 1))
                 yes_votes=$((yes_votes + 1))
-                echo "  ✓ Counting as YES"
               elif [ "$vote" = "no" ]; then
                 new_no=$((new_no + 1))
                 no_votes=$((no_votes + 1))
-                echo "  ✓ Counting as NO"
-              else
-                echo "  ✗ Invalid vote format"
               fi
               rm "$vote_file"
             fi
           done
           
-          echo "New votes processed: $new_yes YES, $new_no NO"
+          echo "New votes: $new_yes YES, $new_no NO"
           
-          # Calculate percentages
           total_votes=$((yes_votes + no_votes))
           if [ $total_votes -gt 0 ]; then
             yes_percent=$(echo "scale=1; $yes_votes * 100 / $total_votes" | bc)
@@ -85,7 +70,6 @@ jobs:
             no_percent=0
           fi
           
-          # Write results
           jq -n \
             --arg candidate "emma-cambridge" \
             --arg election "membership-2026" \
@@ -106,8 +90,21 @@ jobs:
               lastUpdated: $lastUpdated
             }' > "$results_file"
           
-          echo "Final results: $yes_votes YES, $no_votes NO"
+          echo "Final: $yes_votes YES, $no_votes NO"
           echo "Vote processing complete"
+
+      - name: Commit results to main branch
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add votes/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update vote results"
+            git pull origin main --rebase --autostash
+            git push origin main
+          fi
       
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
