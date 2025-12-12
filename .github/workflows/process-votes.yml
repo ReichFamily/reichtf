@@ -1,112 +1,167 @@
 name: Process Votes
 on:
   schedule:
-    - cron: '*/5 * * * *'
-  workflow_dispatch:
+    - cron: '*/5 * * * *'  # Every 5 minutes
+  workflow_dispatch:        # Manual trigger
   push:
     paths:
       - 'votes/**'
 
 jobs:
-  process:
+  process-votes:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-
+      issues: write
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
-
-      - name: Count votes and update results
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install Python dependencies
+        run: pip3 install PyGithub
+      
+      - name: Process votes script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
         run: |
-          echo "Starting vote count..."
-
-          # Find all candidate folders
-          find votes -type f -name "*.json" | grep -v "results.json" | while read vote_file; do
-            folder=$(dirname "$vote_file")
-            candidate=$(basename "$folder")
-            election=$(basename $(dirname "$folder"))
-
-            # Initialize or read existing results
-            results_file="$folder/results.json"
-            if [ -f "$results_file" ]; then
-              yes_votes=$(jq -r '.yes // 0' "$results_file")
-              no_votes=$(jq -r '.no // 0' "$results_file")
-              notes=$(jq -r '.notes // []' "$results_file")
-            else
-              yes_votes=0
-              no_votes=0
-              notes="[]"
-            fi
-
-            # Process this vote file
-            vote=$(jq -r '.vote' "$vote_file")
-            email=$(jq -r '.email' "$vote_file")
-            note=$(jq -r '.notes' "$vote_file")
-
-            if [ "$vote" = "yes" ]; then
-              yes_votes=$((yes_votes + 1))
-            elif [ "$vote" = "no" ]; then
-              no_votes=$((no_votes + 1))
-            fi
-
-            # Add note if it exists and isn't empty
-            if [ "$note" != "null" ] && [ "$note" != "" ]; then
-              new_note="{\"vote\": \"$vote\", \"text\": \"$note\", \"email\": \"${email:0:3}***${email#*@}\", \"time\": \"$(date -Iseconds)\"}"
-              notes=$(echo "$notes" | jq --argjson new "$new_note" '. + [$new]')
-            fi
-
-            # Delete the processed vote file
-            rm "$vote_file"
-
-            # Calculate totals
-            total=$((yes_votes + no_votes))
-            if [ $total -gt 0 ]; then
-              yes_percent=$(echo "scale=1; $yes_votes * 100 / $total" | bc)
-              no_percent=$(echo "scale=1; $no_votes * 100 / $total" | bc)
-            else
-              yes_percent=0
-              no_percent=0
-            fi
-
-            # Create new results.json
-            jq -n \
-              --arg candidate "$candidate" \
-              --arg election "$election" \
-              --argjson yes "$yes_votes" \
-              --argjson no "$no_votes" \
-              --argjson total "$total" \
-              --argjson yesPercent "$yes_percent" \
-              --argjson noPercent "$no_percent" \
-              --argjson notes "$notes" \
-              --arg lastUpdated "$(date -Iseconds)Z" \
-              '{
-                candidate: $candidate,
-                election: $election,
-                yes: $yes,
-                no: $no,
-                total: $total,
-                yesPercent: $yesPercent,
-                noPercent: $noPercent,
-                notes: $notes,
-                lastUpdated: $lastUpdated
-              }' > "$results_file"
-
-            echo "Updated: $election/$candidate - YES: $yes_votes, NO: $no_votes"
-          done
-
-          echo "Vote counting complete."
-
+          python3 << 'EOF'
+          import os
+          import json
+          import glob
+          from datetime import datetime
+          from github import Github
+          
+          # Initialize GitHub client
+          g = Github(os.environ['GITHUB_TOKEN'])
+          repo = g.get_repo(f"{os.environ['REPO_OWNER']}/{os.environ['REPO_NAME']}")
+          
+          # Find all voting folders
+          vote_folders = glob.glob('votes/*/*/', recursive=True)
+          
+          for folder in vote_folders:
+              # Extract election and candidate from path
+              parts = folder.strip('/').split('/')
+              if len(parts) < 3:
+                  continue
+                  
+              election = parts[1]
+              candidate = parts[2]
+              
+              print(f"Processing: {election} - {candidate}")
+              
+              # Label for GitHub Issues
+              issue_label = f"vote-{election}-{candidate}"
+              
+              # Find pending vote files
+              vote_files = glob.glob(f"{folder}*.json") + glob.glob(f"{folder}vote-*.json")
+              
+              # Track votes
+              yes_votes = 0
+              no_votes = 0
+              notes = []
+              
+              for vote_file in vote_files:
+                  try:
+                      with open(vote_file, 'r') as f:
+                          vote_data = json.load(f)
+                      
+                      # Check if vote already exists
+                      existing_issues = repo.get_issues(labels=[issue_label], state='all')
+                      already_voted = False
+                      
+                      for issue in existing_issues:
+                          if f"Email: {vote_data['email']}" in issue.body:
+                              already_voted = True
+                              break
+                      
+                      if already_voted:
+                          print(f"  Skipping duplicate vote from {vote_data['email']}")
+                          os.remove(vote_file)
+                          continue
+                      
+                      # Create GitHub Issue for this vote
+                      issue_title = f"Vote: {candidate} - {vote_data['email'][:3]}***"
+                      issue_body = f"""
+                      **Candidate:** {vote_data.get('candidate', candidate)}
+                      **Election:** {election}
+                      **Vote:** {vote_data['vote'].upper()}
+                      **Email:** {vote_data['email']}
+                      **Notes:** {vote_data.get('notes', 'None')}
+                      **Timestamp:** {vote_data['timestamp']}
+                      **IP Hash:** {vote_data.get('ipHash', 'N/A')}
+                      """
+                      
+                      issue = repo.create_issue(
+                          title=issue_title,
+                          body=issue_body,
+                          labels=[issue_label, f"vote-{vote_data['vote']}"]
+                      )
+                      print(f"  Created issue #{issue.number} for {vote_data['email']}")
+                      
+                      # Count vote
+                      if vote_data['vote'] == 'yes':
+                          yes_votes += 1
+                      else:
+                          no_votes += 1
+                      
+                      # Add note if present
+                      if vote_data.get('notes', '').strip():
+                          notes.append({
+                              'vote': vote_data['vote'],
+                              'text': vote_data['notes'],
+                              'email': vote_data['email'][:3] + '***' + vote_data['email'][vote_data['email'].index('@'):],
+                              'time': vote_data['timestamp']
+                          })
+                      
+                      # Remove processed vote file
+                      os.remove(vote_file)
+                      
+                  except Exception as e:
+                      print(f"  Error processing {vote_file}: {e}")
+              
+              # Generate results.json
+              total_votes = yes_votes + no_votes
+              results = {
+                  'candidate': candidate,
+                  'election': election,
+                  'yes': yes_votes,
+                  'no': no_votes,
+                  'total': total_votes,
+                  'yesPercent': round((yes_votes / total_votes * 100), 1) if total_votes > 0 else 0,
+                  'noPercent': round((no_votes / total_votes * 100), 1) if total_votes > 0 else 0,
+                  'notes': notes,
+                  'lastUpdated': datetime.utcnow().isoformat() + 'Z'
+              }
+              
+              # Save results.json
+              results_file = os.path.join(folder, 'results.json')
+              with open(results_file, 'w') as f:
+                  json.dump(results, f, indent=2)
+              
+              print(f"  Updated results: {yes_votes} YES, {no_votes} NO")
+          
+          print("Vote processing complete")
+          EOF
+      
       - name: Commit and push results
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add votes/*/*/results.json
           git add -u  # Remove deleted vote files
-
+          
+          # Check if there are changes
           if git diff --quiet && git diff --staged --quiet; then
             echo "No changes to commit"
           else
