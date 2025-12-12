@@ -240,54 +240,71 @@ const CANDIDATE_ID = "emma-cambridge";
 
 async function loadResults() {
     try {
-        // Fetch REAL results from GitHub repository
         const resultsUrl = `https://raw.githubusercontent.com/ReichFamily/reichtf/main/votes/${ELECTION_ID}/${CANDIDATE_ID}/results.json`;
+        console.log('Fetching from:', resultsUrl);
+        
         const response = await fetch(resultsUrl);
         
         if (!response.ok) {
-            throw new Error('Results file not found or not yet generated');
+            // Create results display if it doesn't exist
+            if (!document.getElementById('results')) {
+                const div = document.createElement('div');
+                div.id = 'results';
+                div.innerHTML = '<p>Results are being calculated. Please wait a few minutes.</p>';
+                document.body.appendChild(div);
+            } else {
+                document.getElementById('results').innerHTML = 
+                    '<p>Results are being calculated. Please wait a few minutes.</p>';
+            }
+            return;
         }
         
         const results = await response.json();
+        console.log('Results data:', results);
         
-        // Display the REAL voting data
-        document.getElementById('candidateName').textContent = results.candidate;
-        document.getElementById('yesCount').textContent = results.yes;
-        document.getElementById('noCount').textContent = results.no;
-        document.getElementById('totalVotes').textContent = results.total;
-        document.getElementById('yesPercent').textContent = results.yesPercent.toFixed(1) + '%';
-        document.getElementById('noPercent').textContent = results.noPercent.toFixed(1) + '%';
-        document.getElementById('lastUpdated').textContent = new Date(results.lastUpdated).toLocaleString();
-        
-        // Display notes if available
-        const notesList = document.getElementById('voteNotesList');
-        if (notesList && results.notes && results.notes.length > 0) {
-            notesList.innerHTML = '';
-            results.notes.forEach(note => {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>${note.vote.toUpperCase()}</strong>: "${note.text}" <em>(${note.email})</em>`;
-                notesList.appendChild(li);
-            });
+        // Create or update display elements
+        if (!document.getElementById('results')) {
+            const resultsDiv = document.createElement('div');
+            resultsDiv.id = 'results';
+            resultsDiv.innerHTML = `
+                <h2>Results for: <span id="candidateName">${results.candidate || 'Emma Cambridge'}</span></h2>
+                <p>✅ <strong>YES Votes:</strong> <span id="yesCount">${results.yes || 0}</span> (<span id="yesPercent">${results.yesPercent?.toFixed(1) || 0}%</span>)</p>
+                <p>❌ <strong>NO Votes:</strong> <span id="noCount">${results.no || 0}</span> (<span id="noPercent">${results.noPercent?.toFixed(1) || 0}%</span>)</p>
+                <p>📊 <strong>Total Votes:</strong> <span id="totalVotes">${results.total || 0}</span></p>
+                <p>⏰ <strong>Last Updated:</strong> <span id="lastUpdated">${new Date(results.lastUpdated).toLocaleString()}</span></p>
+            `;
+            document.body.appendChild(resultsDiv);
+        } else {
+            // Update existing elements
+            if (document.getElementById('candidateName')) 
+                document.getElementById('candidateName').textContent = results.candidate || 'Emma Cambridge';
+            if (document.getElementById('yesCount')) 
+                document.getElementById('yesCount').textContent = results.yes || 0;
+            if (document.getElementById('noCount')) 
+                document.getElementById('noCount').textContent = results.no || 0;
+            if (document.getElementById('totalVotes')) 
+                document.getElementById('totalVotes').textContent = results.total || 0;
+            if (document.getElementById('yesPercent')) 
+                document.getElementById('yesPercent').textContent = (results.yesPercent?.toFixed(1) || 0) + '%';
+            if (document.getElementById('noPercent')) 
+                document.getElementById('noPercent').textContent = (results.noPercent?.toFixed(1) || 0) + '%';
+            if (document.getElementById('lastUpdated')) 
+                document.getElementById('lastUpdated').textContent = new Date(results.lastUpdated).toLocaleString();
         }
-        
-        // Hide loading message, show results
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('results').style.display = 'block';
         
     } catch (error) {
         console.error('Error loading results:', error);
-        document.getElementById('loading').innerHTML = 
-            '<p style="color: #666; text-align: center; padding: 2rem;">' +
-            'Results are being processed. The voting system is working.<br>' +
-            'Votes are being counted and will appear here shortly.' +
-            '</p>';
+        // Create error display
+        const errorDiv = document.createElement('div');
+        errorDiv.innerHTML = '<p>Could not load results. The voting system is working.</p>';
+        document.body.appendChild(errorDiv);
     }
 }
 
-// Load results when page loads
+// Load when page opens
 document.addEventListener('DOMContentLoaded', loadResults);
 
-// Optional: Auto-refresh every 2 minutes
+// Auto-refresh every 2 minutes
 setInterval(loadResults, 120000);
 </script>
     
