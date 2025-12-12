@@ -331,11 +331,32 @@ function validateEmail(email) {
         return false;
     }
     
-    // 2. 🛡️ SIMPLE GIBBERISH BLOCKER
-    const username = email.split('@')[0];
-    if (/^[a-z]{6,}$/.test(username.toLowerCase())) {
-        showMessage('Please use a standard email address.', 'error');
-        return false;
+    // 2. 🛡️ BETTER GIBBERISH DETECTION
+    const username = email.split('@')[0].toLowerCase();
+    
+    // Common REAL name patterns (ALLOW these)
+    const realNamePatterns = [
+        /^[a-z]+[0-9]*$/,           // alice, john2024
+        /^[a-z]+\.[a-z]+$/,         // anna.marie
+        /^[a-z]+[_-][a-z]+$/,       // mary_jane, anne-marie
+    ];
+    
+    // If it looks like a real name, ALLOW it immediately
+    if (realNamePatterns.some(pattern => pattern.test(username))) {
+        // Continue to TLD check
+    } else {
+        // Block only true gibberish: random letters, no vowels, etc.
+        const gibberishPatterns = [
+            /^[bcdfghjklmnpqrstvwxyz]{6,}$/i,  // 6+ consecutive consonants
+            /^[a-z]{10,}$/,                    // 10+ random letters (jgerjer length)
+            /^(.)\1{5,}$/,                     // repeated single char (aaaaaa)
+            /^[0-9]{6,}$/                      // 6+ numbers only
+        ];
+        
+        if (gibberishPatterns.some(pattern => pattern.test(username))) {
+            showMessage('Please use a standard email address.', 'error');
+            return false;
+        }
     }
     
     // 3. Allowed TLDs
