@@ -1,10 +1,18 @@
 {
   "candidate": "emma-cambridge",
   "election": "membership-2026",
-  "yes": 12,
+  "yes": 13,
   "no": 3,
-  "total": 15,
-  "yesPercent": 80.0,
-  "noPercent": 20.0,
-  "lastUpdated": "2025-12-12T11:04:53+00:00Z"
+  "total": 16,
+  "yesPercent": 81.2,
+  "noPercent": 18.7,
+  "yesComments": [
+    {
+      "notes": "Please provide any comments about your vote. These will be visible with the results.",
+      "email": "htfd@jgjg.com",
+      "timestamp": "2025-12-12T11:23:36.466Z"
+    }
+  ],
+  "noComments": [],
+  "lastUpdated": "2025-12-12T11:24:57+00:00Z"
 }
