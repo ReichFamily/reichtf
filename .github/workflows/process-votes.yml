@@ -1,0 +1,153 @@
+name: Process Votes
+on:
+  schedule:
+    - cron: '*/1 * * * *'
+  workflow_dispatch:
+
+jobs:
+  process-votes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Count votes and update results
+        run: |
+          echo "Starting vote processing..."
+          
+          # DIRECT PATH - NO LOOPS
+          DIR="votes/membership-2026/emma-cambridge"
+          echo "Processing directory: $DIR"
+          
+          # Check if directory exists
+          if [ ! -d "$DIR" ]; then
+            echo "ERROR: Directory $DIR not found"
+            ls -la votes/
+            exit 1
+          fi
+          
+          # List contents
+          echo "Directory contents:"
+          ls -la "$DIR"
+          
+          results_file="$DIR/results.json"
+          
+          # Initialize or read existing results
+          if [ -f "$results_file" ]; then
+            yes_votes=$(jq -r '.yes // 0' "$results_file")
+            no_votes=$(jq -r '.no // 0' "$results_file")
+            echo "Existing results: $yes_votes YES, $no_votes NO"
+          else
+            yes_votes=0
+            no_votes=0
+            echo "No existing results"
+          fi
+          
+          # First pass: collect comments BEFORE deleting files
+          yes_comments=()
+          no_comments=()
+          
+          for vote_file in "$DIR"/vote_*.json; do
+            if [ -f "$vote_file" ]; then
+              vote=$(jq -r '.vote' "$vote_file" 2>/dev/null || echo "")
+              notes=$(jq -r '.notes // ""' "$vote_file" 2>/dev/null || echo "")
+              email=$(jq -r '.email // ""' "$vote_file" 2>/dev/null || echo "")
+              timestamp=$(jq -r '.timestamp // ""' "$vote_file" 2>/dev/null || echo "")
+              
+              if [ -n "$notes" ] && [ "$notes" != "null" ] && [ "$notes" != "" ]; then
+                comment_obj=$(jq -n \
+                  --arg notes "$notes" \
+                  --arg email "$email" \
+                  --arg timestamp "$timestamp" \
+                  '{notes: $notes, email: $email, timestamp: $timestamp}')
+                
+                if [ "$vote" = "yes" ]; then
+                  yes_comments+=("$comment_obj")
+                elif [ "$vote" = "no" ]; then
+                  no_comments+=("$comment_obj")
+                fi
+              fi
+            fi
+          done
+          
+          # Convert arrays to JSON
+          yes_comments_json=$(printf '%s\n' "${yes_comments[@]}" | jq -s '.')
+          no_comments_json=$(printf '%s\n' "${no_comments[@]}" | jq -s '.')
+          
+          # Second pass: count votes and delete files
+          new_yes=0
+          new_no=0
+          for vote_file in "$DIR"/vote_*.json; do
+            if [ -f "$vote_file" ]; then
+              vote=$(jq -r '.vote' "$vote_file" 2>/dev/null || echo "")
+              echo "Processing: $(basename "$vote_file") - Vote: $vote"
+              
+              if [ "$vote" = "yes" ]; then
+                new_yes=$((new_yes + 1))
+                yes_votes=$((yes_votes + 1))
+                echo "  ✓ Counting as YES"
+              elif [ "$vote" = "no" ]; then
+                new_no=$((new_no + 1))
+                no_votes=$((no_votes + 1))
+                echo "  ✓ Counting as NO"
+              else
+                echo "  ✗ Invalid vote format"
+              fi
+              rm "$vote_file"
+            fi
+          done
+          
+          echo "New votes processed: $new_yes YES, $new_no NO"
+          
+          # Calculate percentages
+          total_votes=$((yes_votes + no_votes))
+          if [ $total_votes -gt 0 ]; then
+            yes_percent=$(echo "scale=1; $yes_votes * 100 / $total_votes" | bc)
+            no_percent=$(echo "scale=1; $no_votes * 100 / $total_votes" | bc)
+          else
+            yes_percent=0
+            no_percent=0
+          fi
+          
+          # Write results with comments
+          jq -n \
+            --arg candidate "emma-cambridge" \
+            --arg election "membership-2026" \
+            --argjson yes "$yes_votes" \
+            --argjson no "$no_votes" \
+            --argjson total "$total_votes" \
+            --arg yesPercent "$yes_percent" \
+            --arg noPercent "$no_percent" \
+            --argjson yesComments "$yes_comments_json" \
+            --argjson noComments "$no_comments_json" \
+            --arg lastUpdated "$(date -Iseconds)Z" \
+            '{
+              candidate: $candidate,
+              election: $election,
+              yes: $yes,
+              no: $no,
+              total: $total,
+              yesPercent: ($yesPercent | tonumber),
+              noPercent: ($noPercent | tonumber),
+              yesComments: $yesComments,
+              noComments: $noComments,
+              lastUpdated: $lastUpdated
+            }' > "$results_file"
+          
+          echo "Final results: $yes_votes YES, $no_votes NO"
+          echo "Vote processing complete"
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./votes
+          force_orphan: true
+          keep_files: false
