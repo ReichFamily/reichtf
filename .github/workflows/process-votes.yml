@@ -86,15 +86,15 @@ jobs:
               no_percent=0
             fi
             
-            # Create results.json
+            # Create results.json - FIXED NUMBER CONVERSION
             jq -n \
               --arg candidate "$candidate" \
               --arg election "$election" \
               --argjson yes "$yes_votes" \
               --argjson no "$no_votes" \
               --argjson total "$total_votes" \
-              --argjson yesPercent "$yes_percent" \
-              --argjson noPercent "$no_percent" \
+              --arg yesPercent "$yes_percent" \
+              --arg noPercent "$no_percent" \
               --arg lastUpdated "$(date -Iseconds)Z" \
               '{
                 candidate: $candidate,
@@ -102,8 +102,8 @@ jobs:
                 yes: $yes,
                 no: $no,
                 total: $total,
-                yesPercent: $yesPercent,
-                noPercent: $noPercent,
+                yesPercent: ($yesPercent | tonumber),
+                noPercent: ($noPercent | tonumber),
                 lastUpdated: $lastUpdated
               }' > "$results_file"
             
