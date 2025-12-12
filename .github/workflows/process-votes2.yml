@@ -41,21 +41,32 @@ jobs:
             no_votes=0
           fi
           
-          new_yes=0
-          new_no=0
           for vote_file in "$DIR"/vote_*.json; do
             if [ -f "$vote_file" ]; then
-              vote=$(jq -r '.vote' "$vote_file" 2>/dev/null || echo "")
-              echo "Processing: $(basename "$vote_file") - $vote"
+              echo "=== DEBUG START ==="
+              echo "File: $(basename "$vote_file")"
+              echo "Content:"
+              cat "$vote_file"
+              echo ""
+              
+              vote=$(jq -r '.vote' "$vote_file")
+              echo "Extracted vote: '$vote'"
               
               if [ "$vote" = "yes" ]; then
-                new_yes=$((new_yes + 1))
                 yes_votes=$((yes_votes + 1))
+                new_yes=$((new_yes + 1))
+                echo "Counted as YES"
               elif [ "$vote" = "no" ]; then
-                new_no=$((new_no + 1))
                 no_votes=$((no_votes + 1))
+                new_no=$((new_no + 1))
+                echo "Counted as NO"
+              else
+                echo "ERROR: Invalid vote value"
               fi
+              
               rm "$vote_file"
+              echo "File deleted"
+              echo "=== DEBUG END ==="
             fi
           done
           
