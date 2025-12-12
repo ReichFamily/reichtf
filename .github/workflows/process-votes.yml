@@ -1,37 +1,21 @@
-name: Process Votes
-on:
-  schedule:
-    - cron: '*/1 * * * *'  # Every 1 minute for testing
-  workflow_dispatch:        # Manual trigger
-
-jobs:
-  process-votes:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0
-      
       - name: Count votes and update results
         run: |
           echo "🔍 Looking for vote files..."
           
-          # Find all candidate folders
-          find votes -type d -name "*" -path "*/votes/*/*" | while read folder; do
-            path_parts=(${folder//\// })
-            if [ ${#path_parts[@]} -lt 3 ]; then
+          # Find ALL directories under votes/
+          find votes -type d | while read folder; do
+            # Skip root votes folder
+            if [ "$folder" = "votes" ]; then
               continue
             fi
             
-            election=${path_parts[-2]}
-            candidate=${path_parts[-1]}
+            # Check if this is a candidate folder (has election/candidate structure)
+            if [[ "$folder" =~ votes/([^/]+)/([^/]+)$ ]]; then
+              election="${BASH_REMATCH[1]}"
+              candidate="${BASH_REMATCH[2]}"
+            else
+              continue
+            fi
             
             echo "📊 Processing: $election/$candidate"
             echo "   Folder path: $folder"
@@ -61,10 +45,6 @@ jobs:
             new_no=0
             while IFS= read -r vote_file; do
               echo "   Processing: $(basename "$vote_file")"
-              
-              # Debug: show file content
-              cat "$vote_file"
-              echo ""
               
               vote=$(jq -r '.vote' "$vote_file" 2>/dev/null || echo "ERROR")
               echo "   Vote value: $vote"
@@ -123,10 +103,3 @@ jobs:
           done
           
           echo "🎉 Vote processing complete"
-      
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./votes
-          keep_files: false
