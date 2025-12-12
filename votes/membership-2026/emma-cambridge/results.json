@@ -1,18 +1,18 @@
 {
   "candidate": "emma-cambridge",
   "election": "membership-2026",
-  "yes": 0,
-  "no": 1,
+  "yes": 1,
+  "no": 0,
   "total": 1,
-  "yesPercent": 0.0,
-  "noPercent": 100.0,
+  "yesPercent": 100.0,
+  "noPercent": 0.0,
   "notes": [
     {
-      "vote": "no",
-      "text": "dffsdfv dfgdfg",
-      "email": "dfd***@dfgdfgdfg.com",
-      "time": "2025-12-12T04:29:03.802Z"
+      "vote": "yes",
+      "text": "sdfdfdsdfsdfsdf dfds fsfsdf",
+      "email": "043***@oiihf.com",
+      "time": "2025-12-12T04:37:15.445Z"
     }
   ],
-  "lastUpdated": "2025-12-12T04:29:04.167180Z"
+  "lastUpdated": "2025-12-12T04:37:18.510954Z"
 }
