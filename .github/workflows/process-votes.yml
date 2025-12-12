@@ -1,7 +1,7 @@
 name: Process Votes
 on:
   schedule:
-    - cron: '*/5 * * * *'  # Every 5 minutes
+    - cron: '*/1 * * * *'  # Every 1 minute for testing
   workflow_dispatch:        # Manual trigger
 
 jobs:
@@ -34,17 +34,24 @@ jobs:
             candidate=${path_parts[-1]}
             
             echo "📊 Processing: $election/$candidate"
+            echo "   Folder path: $folder"
             
             results_file="$folder/results.json"
             if [ -f "$results_file" ]; then
               yes_votes=$(jq -r '.yes // 0' "$results_file")
               no_votes=$(jq -r '.no // 0' "$results_file")
+              echo "   Existing results: $yes_votes YES, $no_votes NO"
             else
               yes_votes=0
               no_votes=0
+              echo "   No existing results"
             fi
             
-            vote_files=$(find "$folder" -name "*.json" -not -name "results.json")
+            # Process new vote files (excluding results.json)
+            echo "   Looking for vote files..."
+            vote_files=$(find "$folder" -maxdepth 1 -name "*.json" -not -name "results.json")
+            echo "   Found files: $vote_files"
+            
             if [ -z "$vote_files" ]; then
               echo "   No new votes to process"
               continue
@@ -53,19 +60,34 @@ jobs:
             new_yes=0
             new_no=0
             while IFS= read -r vote_file; do
-              vote=$(jq -r '.vote' "$vote_file" 2>/dev/null || echo "")
+              echo "   Processing: $(basename "$vote_file")"
+              
+              # Debug: show file content
+              cat "$vote_file"
+              echo ""
+              
+              vote=$(jq -r '.vote' "$vote_file" 2>/dev/null || echo "ERROR")
+              echo "   Vote value: $vote"
               
               if [ "$vote" = "yes" ]; then
                 new_yes=$((new_yes + 1))
                 yes_votes=$((yes_votes + 1))
+                echo "   ✓ Counting as YES"
               elif [ "$vote" = "no" ]; then
                 new_no=$((new_no + 1))
                 no_votes=$((no_votes + 1))
+                echo "   ✓ Counting as NO"
+              else
+                echo "   ✗ INVALID VOTE FORMAT"
               fi
               
+              # Remove processed file
               rm "$vote_file"
+              echo "   ✓ File removed"
+              
             done <<< "$vote_files"
             
+            # Calculate totals
             total_votes=$((yes_votes + no_votes))
             if [ $total_votes -gt 0 ]; then
               yes_percent=$(echo "scale=1; $yes_votes * 100 / $total_votes" | bc)
@@ -75,6 +97,7 @@ jobs:
               no_percent=0
             fi
             
+            # Create results.json
             jq -n \
               --arg candidate "$candidate" \
               --arg election "$election" \
@@ -95,7 +118,8 @@ jobs:
                 lastUpdated: $lastUpdated
               }' > "$results_file"
             
-            echo "   ✅ $yes_votes YES, $no_votes NO"
+            echo "   ✅ Final: $yes_votes YES, $no_votes NO (new: $new_yes YES, $new_no NO)"
+            echo ""
           done
           
           echo "🎉 Vote processing complete"
