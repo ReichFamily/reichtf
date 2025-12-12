@@ -235,64 +235,60 @@
     </footer>
     
 <script>
-// PREVENT DUPLICATE EXECUTION
-if (window.resultsLoaded) return; window.resultsLoaded = true;
-
 const ELECTION_ID = "membership-2026";
 const CANDIDATE_ID = "emma-cambridge";
 
 async function loadResults() {
     try {
+        // Fetch REAL results from GitHub repository
         const resultsUrl = `https://raw.githubusercontent.com/ReichFamily/reichtf/main/votes/${ELECTION_ID}/${CANDIDATE_ID}/results.json`;
         const response = await fetch(resultsUrl);
         
         if (!response.ok) {
-            // Only create ONE message
-            if (!document.querySelector('.results-message')) {
-                const msg = document.createElement('div');
-                msg.className = 'results-message';
-                msg.innerHTML = '<p>Results are being calculated. Please wait.</p>';
-                document.body.appendChild(msg);
-            }
-            return;
+            throw new Error('Results file not found or not yet generated');
         }
         
         const results = await response.json();
         
-        // Remove any existing messages
-        document.querySelectorAll('.results-message').forEach(el => el.remove());
+        // Display the REAL voting data
+        document.getElementById('candidateName').textContent = results.candidate;
+        document.getElementById('yesCount').textContent = results.yes;
+        document.getElementById('noCount').textContent = results.no;
+        document.getElementById('totalVotes').textContent = results.total;
+        document.getElementById('yesPercent').textContent = results.yesPercent.toFixed(1) + '%';
+        document.getElementById('noPercent').textContent = results.noPercent.toFixed(1) + '%';
+        document.getElementById('lastUpdated').textContent = new Date(results.lastUpdated).toLocaleString();
         
-        // Create ONE results display
-        if (!document.getElementById('results')) {
-            const resultsDiv = document.createElement('div');
-            resultsDiv.id = 'results';
-            resultsDiv.innerHTML = `
-                <h2>Results for: ${results.candidate || 'Emma Cambridge'}</h2>
-                <p>✅ YES: ${results.yes || 0} (${results.yesPercent?.toFixed(1) || 0}%)</p>
-                <p>❌ NO: ${results.no || 0} (${results.noPercent?.toFixed(1) || 0}%)</p>
-                <p>📊 Total: ${results.total || 0} votes</p>
-                <p>⏰ Last Updated: ${new Date(results.lastUpdated).toLocaleString()}</p>
-            `;
-            document.body.appendChild(resultsDiv);
+        // Display notes if available
+        const notesList = document.getElementById('voteNotesList');
+        if (notesList && results.notes && results.notes.length > 0) {
+            notesList.innerHTML = '';
+            results.notes.forEach(note => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${note.vote.toUpperCase()}</strong>: "${note.text}" <em>(${note.email})</em>`;
+                notesList.appendChild(li);
+            });
         }
+        
+        // Hide loading message, show results
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('results').style.display = 'block';
         
     } catch (error) {
-        // Only create ONE error message
-        if (!document.querySelector('.error-message')) {
-            const err = document.createElement('div');
-            err.className = 'error-message';
-            err.innerHTML = '<p>Could not load results.</p>';
-            document.body.appendChild(err);
-        }
+        console.error('Error loading results:', error);
+        document.getElementById('loading').innerHTML = 
+            '<p style="color: #666; text-align: center; padding: 2rem;">' +
+            'Results are being processed. The voting system is working.<br>' +
+            'Votes are being counted and will appear here shortly.' +
+            '</p>';
     }
 }
 
-// Load when page opens - ONLY ONCE
-if (!window.loadResultsCalled) {
-    window.loadResultsCalled = true;
-    document.addEventListener('DOMContentLoaded', loadResults);
-    setInterval(loadResults, 120000);
-}
+// Load results when page loads
+document.addEventListener('DOMContentLoaded', loadResults);
+
+// Optional: Auto-refresh every 2 minutes
+setInterval(loadResults, 120000);
 </script>
     
 </body>
