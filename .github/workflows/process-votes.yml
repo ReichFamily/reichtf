@@ -166,5 +166,5 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "Update voting results"
-            git push
+            git push --force
           fi
