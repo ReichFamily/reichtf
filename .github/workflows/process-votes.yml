@@ -1,64 +1,128 @@
+name: Process Votes
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Every 5 minutes
+  workflow_dispatch:        # Manual trigger
+
+jobs:
+  process-votes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+      
       - name: Count votes and update results
         run: |
-          echo "Counting votes..."
+          echo "🔍 Looking for vote files..."
           
-          # Process each candidate folder
-          find votes -type f -name "*.json" ! -name "results.json" | while read vote_file; do
-            folder=$(dirname "$vote_file")
-            candidate=$(basename "$folder")
-            election=$(basename $(dirname "$folder"))
+          # Find all candidate folders
+          find votes -type d -name "*" -path "*/votes/*/*" | while read folder; do
+            # Extract election and candidate from path
+            path_parts=(${folder//\// })
+            if [ ${#path_parts[@]} -lt 3 ]; then
+              continue
+            fi
             
-            # Initialize or read existing results
+            election=${path_parts[-2]}
+            candidate=${path_parts[-1]}
+            
+            echo "📊 Processing: $election/$candidate"
+            
+            # Initialize counters from existing results.json
             results_file="$folder/results.json"
             if [ -f "$results_file" ]; then
-              yes=$(jq -r '.yes // 0' "$results_file")
-              no=$(jq -r '.no // 0' "$results_file")
+              yes_votes=$(jq -r '.yes // 0' "$results_file")
+              no_votes=$(jq -r '.no // 0' "$results_file")
+              echo "   Found existing results: $yes_votes YES, $no_votes NO"
             else
-              yes=0
-              no=0
+              yes_votes=0
+              no_votes=0
+              echo "   No existing results found"
             fi
             
-            # Count this vote
-            vote=$(jq -r '.vote' "$vote_file")
-            if [ "$vote" = "yes" ]; then
-              yes=$((yes + 1))
-            elif [ "$vote" = "no" ]; then
-              no=$((no + 1))
+            # Process new vote files (excluding results.json)
+            vote_files=$(find "$folder" -name "*.json" -not -name "results.json")
+            if [ -z "$vote_files" ]; then
+              echo "   No new votes to process"
+              continue
             fi
             
-            # Delete processed vote file
-            rm "$vote_file"
+            # Count votes
+            new_yes=0
+            new_no=0
+            while IFS= read -r vote_file; do
+              vote=$(jq -r '.vote' "$vote_file" 2>/dev/null || echo "")
+              
+              if [ "$vote" = "yes" ]; then
+                new_yes=$((new_yes + 1))
+                yes_votes=$((yes_votes + 1))
+                echo "   ✓ YES vote: $(basename "$vote_file")"
+              elif [ "$vote" = "no" ]; then
+                new_no=$((new_no + 1))
+                no_votes=$((no_votes + 1))
+                echo "   ✓ NO vote: $(basename "$vote_file")"
+              else
+                echo "   ✗ Invalid vote in: $(basename "$vote_file")"
+              fi
+              
+              # Remove processed file
+              rm "$vote_file"
+              
+            done <<< "$vote_files"
             
-            # Calculate percentages
-            total=$((yes + no))
-            if [ $total -gt 0 ]; then
-              yes_pct=$(echo "scale=1; $yes * 100 / $total" | bc)
-              no_pct=$(echo "scale=1; $no * 100 / $total" | bc)
+            # Calculate totals
+            total_votes=$((yes_votes + no_votes))
+            if [ $total_votes -gt 0 ]; then
+              yes_percent=$(echo "scale=1; $yes_votes * 100 / $total_votes" | bc)
+              no_percent=$(echo "scale=1; $no_votes * 100 / $total_votes" | bc)
             else
-              yes_pct=0
-              no_pct=0
+              yes_percent=0
+              no_percent=0
             fi
             
-            # Create/update results.json
+            # Create results.json
             jq -n \
-              --arg cand "$candidate" \
-              --arg elec "$election" \
-              --argjson y "$yes" \
-              --argjson n "$no" \
-              --argjson t "$total" \
-              --argjson yp "$yes_pct" \
-              --argjson np "$no_pct" \
-              --arg updated "$(date -Iseconds)Z" \
+              --arg candidate "$candidate" \
+              --arg election "$election" \
+              --argjson yes "$yes_votes" \
+              --argjson no "$no_votes" \
+              --argjson total "$total_votes" \
+              --argjson yesPercent "$yes_percent" \
+              --argjson noPercent "$no_percent" \
+              --arg lastUpdated "$(date -Iseconds)Z" \
               '{
-                candidate: $cand,
-                election: $elec,
-                yes: $y,
-                no: $n,
-                total: $t,
-                yesPercent: $yp,
-                noPercent: $np,
-                lastUpdated: $updated
+                candidate: $candidate,
+                election: $election,
+                yes: $yes,
+                no: $no,
+                total: $total,
+                yesPercent: $yesPercent,
+                noPercent: $noPercent,
+                lastUpdated: $lastUpdated
               }' > "$results_file"
             
-            echo "Updated $election/$candidate: YES=$yes NO=$no"
+            echo "   ✅ Final results: $yes_votes YES, $no_votes NO ($new_yes new YES, $new_no new NO)"
+            echo ""
           done
+          
+          echo "🎉 Vote processing complete"
+      
+      - name: Commit and push results
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add votes/
+          
+          # Check for changes
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update voting results [automated]"
+            git push origin main
+          fi
