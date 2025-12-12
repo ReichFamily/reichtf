@@ -1,7 +1,14 @@
 name: Process Votes
 on:
+  # 🔥 NEW: Triggers IMMEDIATELY when a vote file is saved
+  push:
+    paths:
+      - 'votes/**/*.json'
+  # Keep manual trigger for testing
+  workflow_dispatch:
+  # Optional: Keep schedule as a safety net (change to every 5 min)
   schedule:
-    - cron: '*/1 * * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
