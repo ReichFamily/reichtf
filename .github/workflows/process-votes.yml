@@ -26,6 +26,9 @@ jobs:
         with:
           python-version: '3.10'
       
+      - name: Install Python dependencies
+        run: pip3 install PyGithub
+      
       - name: Process votes script
         env:
           GITHUB_TOKEN: ${{ secrets.VOTING_TOKEN }}
@@ -36,7 +39,6 @@ jobs:
           import os
           import json
           import glob
-          import hashlib
           from datetime import datetime
           from github import Github
           
