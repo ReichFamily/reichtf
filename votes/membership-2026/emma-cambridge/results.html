@@ -235,60 +235,66 @@
     </footer>
     
 <script>
-const ELECTION_ID = "membership-2026";
-const CANDIDATE_ID = "emma-cambridge";
+// Guard against duplicate execution
+if (window.resultsLoaded) {
+  console.log('Results already loaded');
+} else {
+  window.resultsLoaded = true;
+  
+  const ELECTION_ID = "membership-2026";
+  const CANDIDATE_ID = "emma-cambridge";
+  let refreshInterval;
 
-async function loadResults() {
-    try {
-        // Fetch REAL results from GitHub repository
-        const resultsUrl = `https://raw.githubusercontent.com/ReichFamily/reichtf/main/votes/${ELECTION_ID}/${CANDIDATE_ID}/results.json`;
-        const response = await fetch(resultsUrl);
-        
-        if (!response.ok) {
-            throw new Error('Results file not found or not yet generated');
-        }
-        
-        const results = await response.json();
-        
-        // Display the REAL voting data
-        document.getElementById('candidateName').textContent = results.candidate;
-        document.getElementById('yesCount').textContent = results.yes;
-        document.getElementById('noCount').textContent = results.no;
-        document.getElementById('totalVotes').textContent = results.total;
-        document.getElementById('yesPercent').textContent = results.yesPercent.toFixed(1) + '%';
-        document.getElementById('noPercent').textContent = results.noPercent.toFixed(1) + '%';
-        document.getElementById('lastUpdated').textContent = new Date(results.lastUpdated).toLocaleString();
-        
-        // Display notes if available
-        const notesList = document.getElementById('voteNotesList');
-        if (notesList && results.notes && results.notes.length > 0) {
-            notesList.innerHTML = '';
-            results.notes.forEach(note => {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>${note.vote.toUpperCase()}</strong>: "${note.text}" <em>(${note.email})</em>`;
-                notesList.appendChild(li);
-            });
-        }
-        
-        // Hide loading message, show results
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('results').style.display = 'block';
-        
-    } catch (error) {
-        console.error('Error loading results:', error);
-        document.getElementById('loading').innerHTML = 
-            '<p style="color: #666; text-align: center; padding: 2rem;">' +
-            'Results are being processed. The voting system is working.<br>' +
-            'Votes are being counted and will appear here shortly.' +
-            '</p>';
-    }
+  async function loadResults() {
+      try {
+          const resultsUrl = `https://raw.githubusercontent.com/ReichFamily/reichtf/main/votes/${ELECTION_ID}/${CANDIDATE_ID}/results.json?t=${Date.now()}`;
+          const response = await fetch(resultsUrl);
+          
+          if (!response.ok) {
+              document.getElementById('lastUpdated').textContent = 'No results available yet.';
+              document.getElementById('yesCount').textContent = '0';
+              document.getElementById('noCount').textContent = '0';
+              document.getElementById('totalVotes').textContent = '0';
+              document.getElementById('yesPercent').textContent = '0%';
+              document.getElementById('noPercent').textContent = '0%';
+              document.getElementById('yesBar').style.width = '0%';
+              document.getElementById('noBar').style.width = '0%';
+              return;
+          }
+          
+          const results = await response.json();
+          
+          // Update existing DOM elements
+          document.getElementById('yesCount').textContent = results.yes || 0;
+          document.getElementById('noCount').textContent = results.no || 0;
+          document.getElementById('totalVotes').textContent = results.total || 0;
+          
+          const yesPct = parseFloat(results.yesPercent) || 0;
+          const noPct = parseFloat(results.noPercent) || 0;
+          
+          document.getElementById('yesPercent').textContent = yesPct.toFixed(1) + '%';
+          document.getElementById('noPercent').textContent = noPct.toFixed(1) + '%';
+          document.getElementById('yesBar').style.width = yesPct + '%';
+          document.getElementById('noBar').style.width = noPct + '%';
+          document.getElementById('lastUpdated').textContent = 
+              'Last updated: ' + new Date(results.lastUpdated).toLocaleString();
+              
+      } catch (error) {
+          console.error('Error loading results:', error);
+          document.getElementById('lastUpdated').textContent = 'Error loading results.';
+      }
+  }
+
+  // Load when page opens
+  document.addEventListener('DOMContentLoaded', function() {
+      loadResults();
+      // Refresh every 30 seconds
+      refreshInterval = setInterval(loadResults, 30000);
+  });
+
+  // Make loadResults available globally for the refresh button
+  window.loadResults = loadResults;
 }
-
-// Load results when page loads
-document.addEventListener('DOMContentLoaded', loadResults);
-
-// Optional: Auto-refresh every 2 minutes
-setInterval(loadResults, 120000);
 </script>
     
 </body>
