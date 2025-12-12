@@ -220,25 +220,34 @@ async function submitVote() {
         return;
     }
     
-    // NEW: Validate email format AND domain
-    if (!validateEmail(email)) {
-        showMessage('Please enter a valid email address (.tf, .com, .org, .edu, .net, .gov, .io domains only)', 'error');
-        return;
-    }
+// Add this function
+function looksLikeRealEmail(email) {
+    const username = email.split('@')[0];
     
-    // NEW: Check for obvious gibberish in username
-    const username = email.split('@')[0].toLowerCase();
-    const gibberishPatterns = [
-        /(.)\1{4,}/,        // Repeated characters: aaaaaaa
-        /^[0-9]{6,}$/,      // All numbers: 123456
-        /(asdf|qwer|zxcv|hjkl)/, // Keyboard mashing
-        /[^a-z0-9._-]/i,    // Weird special characters
-    ];
+    // Real emails usually have:
+    // 1. At least 2 letters
+    // 2. Not all numbers
+    // 3. At least one vowel (usually)
+    // 4. Reasonable length (3-30 chars before @)
     
-    if (gibberishPatterns.some(pattern => pattern.test(username))) {
-        showMessage('Please use a real email address', 'error');
-        return;
-    }
+    if (username.length < 3) return false;
+    if (/^[0-9]+$/.test(username)) return false;
+    if (!/[a-zA-Z]/.test(username)) return false;
+    
+    return true;
+}
+
+// Update your validation block
+if (!validateEmail(email)) {
+    showMessage('Please enter a valid email address (.tf, .com, .org, .edu domains only)', 'error');
+    return;
+}
+
+// ADD THIS ONE CHECK
+if (!looksLikeRealEmail(email)) {
+    showMessage('Please use a real email address', 'error');
+    return;
+}
     // Check if already voted
     const voteKey = `vote-${ELECTION_ID}-${CANDIDATE_ID}-${email}`;
     if (localStorage.getItem(voteKey)) {
