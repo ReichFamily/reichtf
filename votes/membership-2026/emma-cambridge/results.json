@@ -1,11 +1,18 @@
 {
   "candidate": "emma-cambridge",
   "election": "membership-2026",
-  "yes": 0,
+  "yes": 1,
   "no": 0,
-  "total": 0,
-  "yesPercent": 0,
-  "noPercent": 0,
-  "notes": [],
-  "lastUpdated": "2025-12-12T05:12:54.215349Z"
+  "total": 1,
+  "yesPercent": 100.0,
+  "noPercent": 0.0,
+  "notes": [
+    {
+      "vote": "yes",
+      "text": "dsfsdfsfdf",
+      "email": "sdf***@pojoij.com",
+      "time": "2025-12-12T05:15:03.923Z"
+    }
+  ],
+  "lastUpdated": "2025-12-12T05:15:05.583666Z"
 }
