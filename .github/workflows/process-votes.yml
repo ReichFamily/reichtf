@@ -18,12 +18,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Count votes and update results
+      - name: Count votes and update results WITH COMMENTS
         run: |
-          echo "Starting vote processing..."
+          echo "=== STARTING VOTE PROCESSING WITH COMMENTS ==="
           
           DIR="votes/membership-2026/emma-cambridge"
-          echo "Processing directory: $DIR"
+          echo "Processing: $DIR"
           
           if [ ! -d "$DIR" ]; then
             echo "ERROR: Directory not found"
@@ -32,6 +32,7 @@ jobs:
           
           results_file="$DIR/results.json"
           
+          # Read existing results
           if [ -f "$results_file" ]; then
             yes_votes=$(jq -r '.yes // 0' "$results_file")
             no_votes=$(jq -r '.no // 0' "$results_file")
@@ -41,37 +42,62 @@ jobs:
             no_votes=0
           fi
           
+          # Arrays to collect comments
+          yes_comments=()
+          no_comments=()
+          new_yes=0
+          new_no=0
+          
+          echo "=== PROCESSING VOTE FILES ==="
+          # Single pass: count votes AND collect comments
           for vote_file in "$DIR"/vote_*.json; do
             if [ -f "$vote_file" ]; then
-              echo "=== DEBUG START ==="
-              echo "File: $(basename "$vote_file")"
-              echo "Content:"
-              cat "$vote_file"
-              echo ""
+              echo "Processing: $(basename "$vote_file")"
               
-              vote=$(jq -r '.vote' "$vote_file")
-              echo "Extracted vote: '$vote'"
+              # Extract all data
+              vote=$(jq -r '.vote' "$vote_file" 2>/dev/null || echo "")
+              notes=$(jq -r '.notes // ""' "$vote_file" 2>/dev/null || echo "")
+              email=$(jq -r '.email // ""' "$vote_file" 2>/dev/null || echo "")
+              timestamp=$(jq -r '.timestamp // ""' "$vote_file" 2>/dev/null || echo "")
               
+              # Count the vote
               if [ "$vote" = "yes" ]; then
-                yes_votes=$((yes_votes + 1))
                 new_yes=$((new_yes + 1))
-                echo "Counted as YES"
+                yes_votes=$((yes_votes + 1))
+                echo "  ✓ YES vote"
               elif [ "$vote" = "no" ]; then
-                no_votes=$((no_votes + 1))
                 new_no=$((new_no + 1))
-                echo "Counted as NO"
+                no_votes=$((no_votes + 1))
+                echo "  ✓ NO vote"
               else
-                echo "ERROR: Invalid vote value"
+                echo "  ✗ INVALID vote value"
               fi
               
+              # Collect comment if it exists
+              if [ -n "$notes" ] && [ "$notes" != "null" ] && [ "$notes" != "" ]; then
+                comment_obj=$(jq -n \
+                  --arg notes "$notes" \
+                  --arg email "$email" \
+                  --arg timestamp "$timestamp" \
+                  '{notes: $notes, email: $email, timestamp: $timestamp}')
+                
+                if [ "$vote" = "yes" ]; then
+                  yes_comments+=("$comment_obj")
+                  echo "  💬 Has YES comment"
+                elif [ "$vote" = "no" ]; then
+                  no_comments+=("$comment_obj")
+                  echo "  💬 Has NO comment"
+                fi
+              fi
+              
+              # Delete the processed file
               rm "$vote_file"
-              echo "File deleted"
-              echo "=== DEBUG END ==="
             fi
           done
           
-          echo "New votes: $new_yes YES, $new_no NO"
+          echo "New votes processed: $new_yes YES, $new_no NO"
           
+          # Calculate percentages
           total_votes=$((yes_votes + no_votes))
           if [ $total_votes -gt 0 ]; then
             yes_percent=$(echo "scale=1; $yes_votes * 100 / $total_votes" | bc)
@@ -81,6 +107,14 @@ jobs:
             no_percent=0
           fi
           
+          # Convert comment arrays to JSON
+          yes_comments_json=$(printf '%s\n' "${yes_comments[@]}" | jq -s '.')
+          no_comments_json=$(printf '%s\n' "${no_comments[@]}" | jq -s '.')
+          
+          echo "Comments collected: YES=${#yes_comments[@]}, NO=${#no_comments[@]}"
+          
+          # Write results.json WITH comments
+          echo "=== WRITING RESULTS.JSON ==="
           jq -n \
             --arg candidate "emma-cambridge" \
             --arg election "membership-2026" \
@@ -89,6 +123,8 @@ jobs:
             --argjson total "$total_votes" \
             --arg yesPercent "$yes_percent" \
             --arg noPercent "$no_percent" \
+            --argjson yesComments "$yes_comments_json" \
+            --argjson noComments "$no_comments_json" \
             --arg lastUpdated "$(date -Iseconds)Z" \
             '{
               candidate: $candidate,
@@ -98,11 +134,13 @@ jobs:
               total: $total,
               yesPercent: ($yesPercent | tonumber),
               noPercent: ($noPercent | tonumber),
+              yesComments: $yesComments,
+              noComments: $noComments,
               lastUpdated: $lastUpdated
             }' > "$results_file"
           
           echo "Final: $yes_votes YES, $no_votes NO"
-          echo "Vote processing complete"
+          echo "=== PROCESSING COMPLETE ==="
 
       - name: Commit results to main branch
         run: |
