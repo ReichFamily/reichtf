@@ -247,7 +247,7 @@ if (window.resultsLoaded) {
 
   async function loadResults() {
       try {
-          const resultsUrl = `https://raw.githubusercontent.com/ReichFamily/reichtf/main/votes/${ELECTION_ID}/${CANDIDATE_ID}/results.json?t=${Date.now()}`;
+     const resultsUrl = `https://reich.tf/votes/${ELECTION_ID}/${CANDIDATE_ID}/results.json?t=${Date.now()}`;
           const response = await fetch(resultsUrl);
           
           if (!response.ok) {
