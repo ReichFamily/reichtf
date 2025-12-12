@@ -252,8 +252,13 @@ async function submitVote() {
     document.getElementById('submitBtn').disabled = true;
     document.getElementById('submitBtn').textContent = 'Processing...';
     
-    // Send to Cloudflare Worker
-    const submitted = await submitToGitHub(voteData);
+    // Send to Cloudflare Worker - TRY DIFFERENT URLS HERE
+    // CURRENT URL: (May be wrong)
+    const WORKER_URL = 'https://reich.tf/votes/api/'; // TEST THIS ONE
+    // ALTERNATIVE 1: 'https://reich.tf/votes/api'
+    // ALTERNATIVE 2: 'https://reich.tf/votes/api/submit'
+    
+    const submitted = await submitToGitHub(voteData, WORKER_URL);
     
     if (submitted) {
         localStorage.setItem(voteKey, 'true');
@@ -273,7 +278,6 @@ async function submitVote() {
 }
 
 function saveVoteLocally(voteData) {
-    // Save to browser storage
     const pendingVotes = JSON.parse(localStorage.getItem('pendingVotes') || '[]');
     pendingVotes.push(voteData);
     localStorage.setItem('pendingVotes', JSON.stringify(pendingVotes));
@@ -281,41 +285,43 @@ function saveVoteLocally(voteData) {
     console.log('Vote saved locally:', voteData);
 }
 
-async function submitToGitHub(voteData) {
-    // The URL is your Cloudflare Worker route
-    const WORKER_URL = 'https://reich.tf/votes/api/submit-vote';
-
+// UPDATED FUNCTION: Accepts the URL as a parameter
+async function submitToGitHub(voteData, workerUrl) {
     try {
-        const response = await fetch(WORKER_URL, {
+        const response = await fetch(workerUrl, {
             method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(voteData)
         });
 
         console.log('Worker response status:', response.status);
-        
-        if (response.ok) {
-            console.log('✅ Vote sent to Worker successfully.');
-            return true;
-        } else {
-            const errorText = await response.text();
-            console.error('❌ Worker responded with error:', response.status, errorText);
+        const responseText = await response.text();
+        console.log('Worker response body:', responseText);
+
+        if (!response.ok) {
+            console.error('❌ Worker HTTP error:', response.status);
             return false;
         }
+
+        // Check for HTML error page (like 405)
+        if (responseText.includes('<title>405 Not Allowed</title>')) {
+            console.error('❌ Worker returned 405 page.');
+            return false;
+        }
+
+        console.log('✅ Request to Worker successful.');
+        return true;
+
     } catch (error) {
-        console.error('❌ Network error contacting Worker:', error);
+        console.error('❌ Network error:', error);
         return false;
     }
 }
 
 async function getIPHash() {
     try {
-        // Get public IP (anonymized)
         const response = await fetch('https://api.ipify.org?format=json');
         const data = await response.json();
-        // Simple hash for anonymity
         return btoa(data.ip).replace(/[^a-zA-Z0-9]/g, '').substring(0, 10);
     } catch {
         return 'unknown_' + Math.random().toString(36).substr(2, 8);
@@ -337,7 +343,6 @@ function showMessage(text, type) {
     }, 5000);
 }
 
-// Initialize
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Voting page loaded for', CANDIDATE_NAME);
 });
