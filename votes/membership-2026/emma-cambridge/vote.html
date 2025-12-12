@@ -331,22 +331,14 @@ function validateEmail(email) {
         return false;
     }
     
-    // 2. 🛡️ SIMPLE GIBBERISH BLOCKER (NEW - one line check)
+    // 2. 🛡️ SIMPLE GIBBERISH BLOCKER
     const username = email.split('@')[0];
     if (/^[a-z]{6,}$/.test(username.toLowerCase())) {
         showMessage('Please use a standard email address.', 'error');
         return false;
     }
     
-    // 3. Allowed TLDs (your existing check)
-    const domain = email.split('@')[1];
-    const extension = domain.split('.').pop().toLowerCase();
-    const allowedExtensions = ['tf', 'com', 'org', 'edu', 'net', 'gov', 'io'];
-    
-    return allowedExtensions.includes(extension);
-}
-    
-    // 2. Allowed domain extensions
+    // 3. Allowed TLDs
     const domain = email.split('@')[1];
     const extension = domain.split('.').pop().toLowerCase();
     const allowedExtensions = ['tf', 'com', 'org', 'edu', 'net', 'gov', 'io'];
