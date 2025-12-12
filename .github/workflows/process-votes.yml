@@ -50,7 +50,38 @@ jobs:
             echo "No existing results"
           fi
           
-          # Count new votes
+          # First pass: collect comments BEFORE deleting files
+          yes_comments=()
+          no_comments=()
+          
+          for vote_file in "$DIR"/vote_*.json; do
+            if [ -f "$vote_file" ]; then
+              vote=$(jq -r '.vote' "$vote_file" 2>/dev/null || echo "")
+              notes=$(jq -r '.notes // ""' "$vote_file" 2>/dev/null || echo "")
+              email=$(jq -r '.email // ""' "$vote_file" 2>/dev/null || echo "")
+              timestamp=$(jq -r '.timestamp // ""' "$vote_file" 2>/dev/null || echo "")
+              
+              if [ -n "$notes" ] && [ "$notes" != "null" ] && [ "$notes" != "" ]; then
+                comment_obj=$(jq -n \
+                  --arg notes "$notes" \
+                  --arg email "$email" \
+                  --arg timestamp "$timestamp" \
+                  '{notes: $notes, email: $email, timestamp: $timestamp}')
+                
+                if [ "$vote" = "yes" ]; then
+                  yes_comments+=("$comment_obj")
+                elif [ "$vote" = "no" ]; then
+                  no_comments+=("$comment_obj")
+                fi
+              fi
+            fi
+          done
+          
+          # Convert arrays to JSON
+          yes_comments_json=$(printf '%s\n' "${yes_comments[@]}" | jq -s '.')
+          no_comments_json=$(printf '%s\n' "${no_comments[@]}" | jq -s '.')
+          
+          # Second pass: count votes and delete files
           new_yes=0
           new_no=0
           for vote_file in "$DIR"/vote_*.json; do
@@ -85,7 +116,7 @@ jobs:
             no_percent=0
           fi
           
-          # Write results
+          # Write results with comments
           jq -n \
             --arg candidate "emma-cambridge" \
             --arg election "membership-2026" \
@@ -94,6 +125,8 @@ jobs:
             --argjson total "$total_votes" \
             --arg yesPercent "$yes_percent" \
             --arg noPercent "$no_percent" \
+            --argjson yesComments "$yes_comments_json" \
+            --argjson noComments "$no_comments_json" \
             --arg lastUpdated "$(date -Iseconds)Z" \
             '{
               candidate: $candidate,
@@ -103,6 +136,8 @@ jobs:
               total: $total,
               yesPercent: ($yesPercent | tonumber),
               noPercent: ($noPercent | tonumber),
+              yesComments: $yesComments,
+              noComments: $noComments,
               lastUpdated: $lastUpdated
             }' > "$results_file"
           
