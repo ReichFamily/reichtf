@@ -20,6 +20,114 @@ jobs:
         run: |
           echo "🔍 Looking for vote files..."
           
+          # Loop through all election folders
+          for election_dir in votes/*/; do
+            election=$(basename "$election_dir" 2>/dev/null)
+            if [ -z "$election" ]; then continue; fi
+            
+            # Loop through all candidate folders in this election
+            for candidate_dir in "$election_dir"*/; do
+              candidate=$(basename "$candidate_dir" 2>/dev/null)
+              if [ -z "$candidate" ]; then continue; fi
+              
+              echo "📊 Processing: $election/$candidate"
+              
+              results_file="$candidate_dir/results.json"
+              if [ -f "$results_file" ]; then
+                yes_votes=$(jq -r '.yes // 0' "$results_file")
+                no_votes=$(jq -r '.no // 0' "$results_file")
+                echo "   Existing: $yes_votes YES, $no_votes NO"
+              else
+                yes_votes=0
+                no_votes=0
+                echo "   No existing results"
+              fi
+              
+              # Process vote files
+              vote_files=$(find "$candidate_dir" -maxdepth 1 -name "vote_*.json")
+              if [ -n "$vote_files" ]; then
+                new_yes=0
+                new_no=0
+                while IFS= read -r vote_file; do
+                  vote=$(jq -r '.vote' "$vote_file" 2>/dev/null || echo "")
+                  
+                  if [ "$vote" = "yes" ]; then
+                    new_yes=$((new_yes + 1))
+                    yes_votes=$((yes_votes + 1))
+                  elif [ "$vote" = "no" ]; then
+                    new_no=$((new_no + 1))
+                    no_votes=$((no_votes + 1))
+                  fi
+                  
+                  rm "$vote_file"
+                done <<< "$vote_files"
+                echo "   Processed: $new_yes new YES, $new_no new NO"
+              fi
+              
+              # Calculate and save results
+              total_votes=$((yes_votes + no_votes))
+              if [ $total_votes -gt 0 ]; then
+                yes_percent=$(echo "scale=1; $yes_votes * 100 / $total_votes" | bc)
+                no_percent=$(echo "scale=1; $no_votes * 100 / $total_votes" | bc)
+              else
+                yes_percent=0
+                no_percent=0
+              fi
+              
+              jq -n \
+                --arg candidate "$candidate" \
+                --arg election "$election" \
+                --argjson yes "$yes_votes" \
+                --argjson no "$no_votes" \
+                --argjson total "$total_votes" \
+                --arg yesPercent "$yes_percent" \
+                --arg noPercent "$no_percent" \
+                --arg lastUpdated "$(date -Iseconds)Z" \
+                '{
+                  candidate: $candidate,
+                  election: $election,
+                  yes: $yes,
+                  no: $no,
+                  total: $total,
+                  yesPercent: ($yesPercent | tonumber),
+                  noPercent: ($noPercent | tonumber),
+                  lastUpdated: $lastUpdated
+                }' > "$results_file"
+              
+              echo "   ✅ Final: $yes_votes YES, $no_votes NO"
+              echo ""
+            done
+          done
+          
+          echo "🎉 Vote processing complete"
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./votes
+          keep_files: falsename: Process Votes
+on:
+  schedule:
+    - cron: '*/1 * * * *'
+  workflow_dispatch:
+
+jobs:
+  process-votes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Count votes and update results
+        run: |
+          echo "🔍 Looking for vote files..."
+          
           # Find ALL directories under votes/
           find votes -type d | while read folder; do
             # Skip root votes folder
