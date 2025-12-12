@@ -1,12 +1,18 @@
 {
   "candidate": "emma-cambridge",
   "election": "membership-2026",
-  "yes": 13,
+  "yes": 14,
   "no": 3,
-  "total": 16,
-  "yesPercent": 81.2,
-  "noPercent": 18.7,
-  "yesComments": [],
+  "total": 17,
+  "yesPercent": 82.3,
+  "noPercent": 17.6,
+  "yesComments": [
+    {
+      "notes": "Emma is a wonderful mother of two little girls. I think she will be a wonderful addition to the Family.",
+      "email": "sdfd@sdfh.com",
+      "timestamp": "2025-12-12T11:38:06.650Z"
+    }
+  ],
   "noComments": [],
-  "lastUpdated": "2025-12-12T11:34:05+00:00Z"
+  "lastUpdated": "2025-12-12T11:47:10+00:00Z"
 }
