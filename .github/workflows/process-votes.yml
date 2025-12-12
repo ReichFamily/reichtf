@@ -1,3 +1,5 @@
+# UPDATED: Added comment collection - 2025-12-12
+
 name: Process Votes
 on:
   schedule:
