@@ -2,10 +2,17 @@
   "candidate": "emma-cambridge",
   "election": "membership-2026",
   "yes": 0,
-  "no": 0,
-  "total": 0,
-  "yesPercent": 0,
-  "noPercent": 0,
-  "notes": [],
-  "lastUpdated": "2025-12-12T02:36:33.737352Z"
+  "no": 1,
+  "total": 1,
+  "yesPercent": 0.0,
+  "noPercent": 100.0,
+  "notes": [
+    {
+      "vote": "no",
+      "text": "sdvdvdd",
+      "email": "ksd***@khsdfkd.com",
+      "time": "2025-12-12T02:55:40.789Z"
+    }
+  ],
+  "lastUpdated": "2025-12-12T02:55:37.950314Z"
 }
