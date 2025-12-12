@@ -59,12 +59,12 @@ jobs:
               echo "Processing: $(basename "$vote_file") - Vote: $vote"
               
               if [ "$vote" = "yes" ]; then
-                ((new_yes++))
-                ((yes_votes++))
+                new_yes=$((new_yes + 1))
+                yes_votes=$((yes_votes + 1))
                 echo "  ✓ Counting as YES"
               elif [ "$vote" = "no" ]; then
-                ((new_no++))
-                ((no_votes++))
+                new_no=$((new_no + 1))
+                no_votes=$((no_votes + 1))
                 echo "  ✓ Counting as NO"
               else
                 echo "  ✗ Invalid vote format"
