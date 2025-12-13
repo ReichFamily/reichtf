@@ -55,9 +55,9 @@ jobs:
                 NO=$((NO + 1))
               fi
               
-              # Archive immediately
-              mkdir -p "$DIR/archive"
-              mv "$VOTE_FILE" "$DIR/archive/"
+              # DELETE immediately (no archive)
+              rm -f "$VOTE_FILE"
+              echo "Deleted: $(basename "$VOTE_FILE")"
             done
             
             # Now process comments from archive (to avoid double processing)
