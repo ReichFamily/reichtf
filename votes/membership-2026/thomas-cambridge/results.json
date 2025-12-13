@@ -12,10 +12,6 @@
       "timestamp": "2025-12-13T12:31:30.775Z"
     },
     {
-      "notes": "This is YES vote number 1.",
-      "timestamp": "2025-12-13T12:31:30.775Z"
-    },
-    {
       "notes": "This is YES vote number 2.",
       "timestamp": "2025-12-13T12:45:57.492Z"
     },
@@ -23,10 +19,6 @@
       "notes": "YES vote number 3",
       "timestamp": "2025-12-13T13:24:13.838Z"
     },
-    {
-      "notes": "YES vote number 3",
-      "timestamp": "2025-12-13T13:24:13.838Z"
-    }
   ],
   "noComments": [
     {
@@ -36,14 +28,6 @@
     {
       "notes": "This is NO vote number 2.",
       "timestamp": "2025-12-13T12:58:36.608Z"
-    },
-    {
-      "notes": "This is NO vote number 3.",
-      "timestamp": "2025-12-13T13:07:07.768Z"
-    },
-    {
-      "notes": "This is NO vote number 3.",
-      "timestamp": "2025-12-13T13:07:07.768Z"
     },
     {
       "notes": "This is NO vote number 3.",
