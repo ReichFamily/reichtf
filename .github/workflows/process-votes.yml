@@ -22,9 +22,10 @@ jobs:
           # Function to process one directory
           process_dir() {
             DIR="$1"
+            echo "📁 Processing: $DIR"
             RESULTS_FILE="$DIR/results.json"
             
-            # Load existing
+            # Load existing results
             if [ -f "$RESULTS_FILE" ]; then
               YES=$(jq -r '.yes // 0' "$RESULTS_FILE")
               NO=$(jq -r '.no // 0' "$RESULTS_FILE")
@@ -37,36 +38,52 @@ jobs:
               NO_COMMENTS='[]'
             fi
             
-            # Process files
+            # TEMP: Count files before processing
+            FILE_COUNT=$(find "$DIR" -maxdepth 1 -name "vote_*.json" 2>/dev/null | wc -l)
+            echo "  Found $FILE_COUNT vote file(s)"
+            
+            # Process ONLY files in main directory (not archive)
             for VOTE_FILE in "$DIR"/vote_*.json; do
               [ -f "$VOTE_FILE" ] || continue
               
               VOTE=$(jq -r '.vote' "$VOTE_FILE")
-              NOTES=$(jq -r '.notes // ""' "$VOTE_FILE")
-              
-              if [[ "$NOTES" == "Please provide any comments about your vote. These will be visible with the results." ]]; then
-                NOTES=""
-              fi
+              echo "    Vote: $VOTE from $(basename "$VOTE_FILE")"
               
               if [[ "$VOTE" == "yes" ]]; then
                 YES=$((YES + 1))
-                if [ -n "$NOTES" ] && [ "$NOTES" != "null" ] && [ "$NOTES" != "" ]; then
-                  COMMENT=$(jq -n --arg n "$NOTES" --arg t "$(jq -r '.timestamp' "$VOTE_FILE")" '{notes: $n, timestamp: $t}')
-                  YES_COMMENTS=$(echo "$YES_COMMENTS" | jq --argjson c "$COMMENT" '. + [$c]')
-                fi
               elif [[ "$VOTE" == "no" ]]; then
                 NO=$((NO + 1))
-                if [ -n "$NOTES" ] && [ "$NOTES" != "null" ] && [ "$NOTES" != "" ]; then
-                  COMMENT=$(jq -n --arg n "$NOTES" --arg t "$(jq -r '.timestamp' "$VOTE_FILE")" '{notes: $n, timestamp: $t}')
-                  NO_COMMENTS=$(echo "$NO_COMMENTS" | jq --argjson c "$COMMENT" '. + [$c]')
-                fi
               fi
               
+              # Archive immediately
               mkdir -p "$DIR/archive"
               mv "$VOTE_FILE" "$DIR/archive/"
             done
             
-            # Save
+            # Now process comments from archive (to avoid double processing)
+            for ARCHIVE_FILE in "$DIR"/archive/vote_*.json; do
+              [ -f "$ARCHIVE_FILE" ] || continue
+              
+              VOTE=$(jq -r '.vote' "$ARCHIVE_FILE")
+              NOTES=$(jq -r '.notes // ""' "$ARCHIVE_FILE")
+              
+              # Skip placeholder
+              if [[ "$NOTES" == "Please provide any comments about your vote. These will be visible with the results." ]] || \
+                 [ -z "$NOTES" ] || [ "$NOTES" == "null" ]; then
+                continue
+              fi
+              
+              echo "    Comment found for $VOTE vote"
+              COMMENT=$(jq -n --arg n "$NOTES" --arg t "$(jq -r '.timestamp' "$ARCHIVE_FILE")" '{notes: $n, timestamp: $t}')
+              
+              if [[ "$VOTE" == "yes" ]]; then
+                YES_COMMENTS=$(echo "$YES_COMMENTS" | jq --argjson c "$COMMENT" '. + [$c]')
+              elif [[ "$VOTE" == "no" ]]; then
+                NO_COMMENTS=$(echo "$NO_COMMENTS" | jq --argjson c "$COMMENT" '. + [$c]')
+              fi
+            done
+            
+            # Save results
             TOTAL=$((YES + NO))
             if [ $TOTAL -gt 0 ]; then
               YES_PCT=$(echo "scale=1; $YES * 100 / $TOTAL" | bc)
@@ -100,14 +117,22 @@ jobs:
                 lastUpdated: $lu
               }' > "$RESULTS_FILE"
             
-            echo "✅ $DIR: $YES YES, $NO NO"
+            echo "  ✅ $DIR: $YES YES, $NO NO (Comments: $(echo "$YES_COMMENTS" | jq length)Y/$(echo "$NO_COMMENTS" | jq length)N)"
           }
           
-          # Export function
-          export -f process_dir
+          # Array to track processed directories
+          processed_dirs=()
           
-          # Find and process directories
-          find votes -type f -name "vote_*.json" ! -path "*/archive/*" 2>/dev/null | xargs -I {} dirname {} | sort -u | while read DIR; do
+          # Process each directory only once
+          find votes -type f -name "vote_*.json" ! -path "*/archive/*" 2>/dev/null | while read VOTE_FILE; do
+            DIR=$(dirname "$VOTE_FILE")
+            
+            # Skip if already processed
+            if printf '%s\n' "${processed_dirs[@]}" | grep -q "^$DIR$"; then
+              continue
+            fi
+            
+            processed_dirs+=("$DIR")
             process_dir "$DIR"
           done
           
