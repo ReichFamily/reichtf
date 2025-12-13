@@ -1,4 +1,97 @@
-name: Process All Votes
+      - name: Process ALL vote directories
+        run: |
+          echo "=== Universal Vote Processor ==="
+          
+          # Get UNIQUE directories only
+          find votes -type f -name "vote_*.json" 2>/dev/null | xargs -I {} dirname {} | sort -u | while read DIR; do
+            echo "📁 Processing: $DIR"
+            
+            # Load existing results ONCE per directory
+            RESULTS_FILE="$DIR/results.json"
+            if [ -f "$RESULTS_FILE" ]; then
+              YES=$(jq -r '.yes // 0' "$RESULTS_FILE")
+              NO=$(jq -r '.no // 0' "$RESULTS_FILE")
+              YES_COMMENTS=$(jq -c '.yesComments // []' "$RESULTS_FILE")
+              NO_COMMENTS=$(jq -c '.noComments // []' "$RESULTS_FILE")
+            else
+              YES=0
+              NO=0
+              YES_COMMENTS="[]"
+              NO_COMMENTS="[]"
+            fi
+            
+            # Process ALL vote files in this directory at once
+            for VOTE_FILE in "$DIR"/vote_*.json; do
+              [ -f "$VOTE_FILE" ] || continue
+              
+              VOTE=$(jq -r '.vote' "$VOTE_FILE")
+              NOTES=$(jq -r '.notes // ""' "$VOTE_FILE")
+              
+              # Skip placeholder
+              if [[ "$NOTES" == "Please provide any comments about your vote. These will be visible with the results." ]]; then
+                NOTES=""
+              fi
+              
+              if [[ "$VOTE" == "yes" ]]; then
+                YES=$((YES + 1))
+                if [ -n "$NOTES" ] && [ "$NOTES" != "null" ] && [ "$NOTES" != "" ]; then
+                  COMMENT=$(jq -n --arg n "$NOTES" --arg t "$(jq -r '.timestamp' "$VOTE_FILE")" '{notes: $n, timestamp: $t}')
+                  YES_COMMENTS=$(echo "$YES_COMMENTS" | jq --argjson c "$COMMENT" '. + [$c]')
+                fi
+              elif [[ "$VOTE" == "no" ]]; then
+                NO=$((NO + 1))
+                if [ -n "$NOTES" ] && [ "$NOTES" != "null" ] && [ "$NOTES" != "" ]; then
+                  COMMENT=$(jq -n --arg n "$NOTES" --arg t "$(jq -r '.timestamp' "$VOTE_FILE")" '{notes: $n, timestamp: $t}')
+                  NO_COMMENTS=$(echo "$NO_COMMENTS" | jq --argjson c "$COMMENT" '. + [$c]')
+                fi
+              fi
+              
+              # Archive immediately
+              mkdir -p "$DIR/archive"
+              mv "$VOTE_FILE" "$DIR/archive/"
+            done
+            
+            # Save FINAL results for this directory
+            TOTAL=$((YES + NO))
+            if [ $TOTAL -gt 0 ]; then
+              YES_PCT=$(echo "scale=1; $YES * 100 / $TOTAL" | bc)
+              NO_PCT=$(echo "scale=1; $NO * 100 / $TOTAL" | bc)
+            else
+              YES_PCT=0
+              NO_PCT=0
+            fi
+            
+            ELECTION=$(basename $(dirname "$DIR"))
+            CANDIDATE=$(basename "$DIR")
+            
+            jq -n \
+              --arg e "$ELECTION" \
+              --arg c "$CANDIDATE" \
+              --argjson y "$YES" \
+              --argjson n "$NO" \
+              --argjson t "$TOTAL" \
+              --arg yp "$YES_PCT" \
+              --arg np "$NO_PCT" \
+              --argjson yc "$YES_COMMENTS" \
+              --argjson nc "$NO_COMMENTS" \
+              --arg lu "$(date -Iseconds)Z" \
+              '{
+                electionId: $e,
+                candidateId: $c,
+                yes: $y,
+                no: $n,
+                total: $t,
+                yesPercent: ($yp | tonumber),
+                noPercent: ($np | tonumber),
+                yesComments: $yc,
+                noComments: $nc,
+                lastUpdated: $lu
+              }' > "$RESULTS_FILE"
+            
+            echo "  ✅ $DIR: $YES YES, $NO NO"
+          done
+          
+          echo "✅ All directories processed"name: Process All Votes
 on:
   push:
     paths:
