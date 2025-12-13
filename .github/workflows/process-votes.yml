@@ -137,15 +137,4 @@ jobs:
           done
           
           echo "=== Done ==="
-      
-      - name: Commit results
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add votes/
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Update vote results [skip ci]"
-            git push
-          fi
+    
