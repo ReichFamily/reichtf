@@ -1,4 +1,134 @@
-name: Process All Votes
+name: Process Votes
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/2 * * * *'
+
+jobs:
+  process-votes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Process votes
+        run: |
+          echo "=== Processing Votes ==="
+          
+          # Find all vote files
+          find votes -name "vote_*.json" -type f | while read VOTE_FILE; do
+            DIR=$(dirname "$VOTE_FILE")
+            
+            # Skip if this is an archive directory
+            if [[ "$DIR" == *"/archive"* ]]; then
+              echo "Skipping archive: $DIR"
+              continue
+            fi
+            
+            echo "Processing: $DIR"
+            
+            # Load or create results
+            RESULTS_FILE="$DIR/results.json"
+            if [ -f "$RESULTS_FILE" ]; then
+              YES=$(jq -r '.yes // 0' "$RESULTS_FILE")
+              NO=$(jq -r '.no // 0' "$RESULTS_FILE")
+              YES_COMMENTS=$(jq -c '.yesComments // []' "$RESULTS_FILE")
+              NO_COMMENTS=$(jq -c '.noComments // []' "$RESULTS_FILE")
+            else
+              YES=0
+              NO=0
+              YES_COMMENTS='[]'
+              NO_COMMENTS='[]'
+            fi
+            
+            # Process this vote file
+            VOTE=$(jq -r '.vote' "$VOTE_FILE")
+            NOTES=$(jq -r '.notes // ""' "$VOTE_FILE")
+            
+            # Count vote
+            if [[ "$VOTE" == "yes" ]]; then
+              YES=$((YES + 1))
+            elif [[ "$VOTE" == "no" ]]; then
+              NO=$((NO + 1))
+            fi
+            
+            # Add comment if valid
+            if [[ "$NOTES" != "Please provide any comments about your vote. These will be visible with the results." ]] && \
+               [ -n "$NOTES" ] && [ "$NOTES" != "null" ] && [ "$NOTES" != "" ]; then
+              COMMENT=$(jq -n \
+                --arg notes "$NOTES" \
+                --arg timestamp "$(jq -r '.timestamp' "$VOTE_FILE")" \
+                '{notes: $notes, timestamp: $timestamp}')
+              
+              if [[ "$VOTE" == "yes" ]]; then
+                YES_COMMENTS=$(echo "$YES_COMMENTS" | jq --argjson c "$COMMENT" '. + [$c]')
+              elif [[ "$VOTE" == "no" ]]; then
+                NO_COMMENTS=$(echo "$NO_COMMENTS" | jq --argjson c "$COMMENT" '. + [$c]')
+              fi
+            fi
+            
+            # Delete the vote file (no archive)
+            rm -f "$VOTE_FILE"
+            
+            # Save updated results
+            TOTAL=$((YES + NO))
+            if [ $TOTAL -gt 0 ]; then
+              YES_PCT=$(echo "scale=1; $YES * 100 / $TOTAL" | bc)
+              NO_PCT=$(echo "scale=1; $NO * 100 / $TOTAL" | bc)
+            else
+              YES_PCT=0
+              NO_PCT=0
+            fi
+            
+            # Remove duplicate comments
+            YES_COMMENTS=$(echo "$YES_COMMENTS" | jq 'unique_by(.notes + .timestamp)')
+            NO_COMMENTS=$(echo "$NO_COMMENTS" | jq 'unique_by(.notes + .timestamp)')
+            
+            ELECTION=$(basename $(dirname "$DIR"))
+            CANDIDATE=$(basename "$DIR")
+            
+            jq -n \
+              --arg e "$ELECTION" \
+              --arg c "$CANDIDATE" \
+              --argjson y "$YES" \
+              --argjson n "$NO" \
+              --argjson t "$TOTAL" \
+              --arg yp "$YES_PCT" \
+              --arg np "$NO_PCT" \
+              --argjson yc "$YES_COMMENTS" \
+              --argjson nc "$NO_COMMENTS" \
+              --arg lu "$(date -Iseconds)Z" \
+              '{
+                electionId: $e,
+                candidateId: $c,
+                yes: $y,
+                no: $n,
+                total: $t,
+                yesPercent: ($yp | tonumber),
+                noPercent: ($np | tonumber),
+                yesComments: $yc,
+                noComments: $nc,
+                lastUpdated: $lu
+              }' > "$RESULTS_FILE"
+            
+            echo "✅ $YES YES, $NO NO"
+          done
+          
+          echo "=== Done ==="
+      
+      - name: Commit results
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add votes/
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Update vote results"
+            git push
+          finame: Process All Votes
 on:
   push:
     paths:
