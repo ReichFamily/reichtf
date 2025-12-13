@@ -38,49 +38,42 @@ jobs:
               NO_COMMENTS='[]'
             fi
             
-            # TEMP: Count files before processing
+            # Count files before processing
             FILE_COUNT=$(find "$DIR" -maxdepth 1 -name "vote_*.json" 2>/dev/null | wc -l)
             echo "  Found $FILE_COUNT vote file(s)"
             
-            # Process ONLY files in main directory (not archive)
+            # Process files and DELETE them (no archive)
             for VOTE_FILE in "$DIR"/vote_*.json; do
               [ -f "$VOTE_FILE" ] || continue
               
               VOTE=$(jq -r '.vote' "$VOTE_FILE")
+              NOTES=$(jq -r '.notes // ""' "$VOTE_FILE")
+              
               echo "    Vote: $VOTE from $(basename "$VOTE_FILE")"
               
+              # Count vote
               if [[ "$VOTE" == "yes" ]]; then
                 YES=$((YES + 1))
               elif [[ "$VOTE" == "no" ]]; then
                 NO=$((NO + 1))
               fi
               
-              # Archive immediately
-              mkdir -p "$DIR/archive"
-              mv "$VOTE_FILE" "$DIR/archive/"
-            done
-            
-            # Now process comments from archive (to avoid double processing)
-            for ARCHIVE_FILE in "$DIR"/archive/vote_*.json; do
-              [ -f "$ARCHIVE_FILE" ] || continue
-              
-              VOTE=$(jq -r '.vote' "$ARCHIVE_FILE")
-              NOTES=$(jq -r '.notes // ""' "$ARCHIVE_FILE")
-              
-              # Skip placeholder
-              if [[ "$NOTES" == "Please provide any comments about your vote. These will be visible with the results." ]] || \
-                 [ -z "$NOTES" ] || [ "$NOTES" == "null" ]; then
-                continue
+              # Process comment if valid
+              if [[ "$NOTES" != "Please provide any comments about your vote. These will be visible with the results." ]] && \
+                 [ -n "$NOTES" ] && [ "$NOTES" != "null" ] && [ "$NOTES" != "" ]; then
+                COMMENT=$(jq -n --arg n "$NOTES" --arg t "$(jq -r '.timestamp' "$VOTE_FILE")" '{notes: $n, timestamp: $t}')
+                
+                if [[ "$VOTE" == "yes" ]]; then
+                  YES_COMMENTS=$(echo "$YES_COMMENTS" | jq --argjson c "$COMMENT" '. + [$c]')
+                  echo "      Added YES comment"
+                elif [[ "$VOTE" == "no" ]]; then
+                  NO_COMMENTS=$(echo "$NO_COMMENTS" | jq --argjson c "$COMMENT" '. + [$c]')
+                  echo "      Added NO comment"
+                fi
               fi
               
-              echo "    Comment found for $VOTE vote"
-              COMMENT=$(jq -n --arg n "$NOTES" --arg t "$(jq -r '.timestamp' "$ARCHIVE_FILE")" '{notes: $n, timestamp: $t}')
-              
-              if [[ "$VOTE" == "yes" ]]; then
-                YES_COMMENTS=$(echo "$YES_COMMENTS" | jq --argjson c "$COMMENT" '. + [$c]')
-              elif [[ "$VOTE" == "no" ]]; then
-                NO_COMMENTS=$(echo "$NO_COMMENTS" | jq --argjson c "$COMMENT" '. + [$c]')
-              fi
+              # DELETE the file (no archive)
+              rm "$VOTE_FILE"
             done
             
             # Save results
@@ -117,14 +110,14 @@ jobs:
                 lastUpdated: $lu
               }' > "$RESULTS_FILE"
             
-            echo "  ✅ $DIR: $YES YES, $NO NO (Comments: $(echo "$YES_COMMENTS" | jq length)Y/$(echo "$NO_COMMENTS" | jq length)N)"
+            echo "  ✅ $DIR: $YES YES, $NO NO"
           }
           
           # Array to track processed directories
           processed_dirs=()
           
           # Process each directory only once
-          find votes -type f -name "vote_*.json" ! -path "*/archive/*" 2>/dev/null | while read VOTE_FILE; do
+          find votes -type f -name "vote_*.json" 2>/dev/null | while read VOTE_FILE; do
             DIR=$(dirname "$VOTE_FILE")
             
             # Skip if already processed
@@ -137,4 +130,15 @@ jobs:
           done
           
           echo "=== Done ==="
-    
+      
+      - name: Commit results
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add votes/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update vote results"
+            git push
+          fi
