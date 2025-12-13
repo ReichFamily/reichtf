@@ -1,11 +1,11 @@
 {
-  "candidate": "emma-cambridge",
-  "election": "membership-2026",
+  "electionId": "membership-2026",
+  "candidateId": "emma-cambridge",
   "yes": 14,
-  "no": 5,
-  "total": 19,
-  "yesPercent": 73.6,
-  "noPercent": 26.3,
+  "no": 7,
+  "total": 21,
+  "yesPercent": 66.6,
+  "noPercent": 33.3,
   "yesComments": [
     {
       "notes": "Emma is a wonderful mother of two little girls. I think she will be a wonderful addition to the Family.",
@@ -18,7 +18,15 @@
       "notes": "I don't think Emma would be happy in this Family.",
       "email": "sdfsd@hfe.com",
       "timestamp": "2025-12-12T11:50:49.365Z"
+    },
+    {
+      "notes": "I don't think she is right for us or that we are right for her.",
+      "timestamp": "2025-12-13T11:35:45.358Z"
+    },
+    {
+      "notes": "I have to say NO.",
+      "timestamp": "2025-12-13T11:44:25.752Z"
     }
   ],
-  "lastUpdated": "2025-12-13T11:29:54+00:00Z"
+  "lastUpdated": "2025-12-13T11:44:16+00:00Z"
 }
