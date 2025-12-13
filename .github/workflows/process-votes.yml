@@ -145,11 +145,3 @@ jobs:
           git add votes/
           git diff --cached --quiet || (git commit -m "Update vote results" && git push)
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        if: success()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./votes
-          force_orphan: false
-          keep_files: true
