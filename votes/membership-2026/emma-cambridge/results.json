@@ -2,10 +2,10 @@
   "electionId": "membership-2026",
   "candidateId": "emma-cambridge",
   "yes": 14,
-  "no": 7,
-  "total": 21,
-  "yesPercent": 66.6,
-  "noPercent": 33.3,
+  "no": 9,
+  "total": 23,
+  "yesPercent": 60.8,
+  "noPercent": 39.1,
   "yesComments": [
     {
       "notes": "Emma is a wonderful mother of two little girls. I think she will be a wonderful addition to the Family.",
@@ -26,7 +26,15 @@
     {
       "notes": "I have to say NO.",
       "timestamp": "2025-12-13T11:44:25.752Z"
+    },
+    {
+      "notes": "This thing made my votes replicate.",
+      "timestamp": "2025-12-13T11:55:19.165Z"
+    },
+    {
+      "notes": "I will be the 8th person to just say no.",
+      "timestamp": "2025-12-13T12:06:13.995Z"
     }
   ],
-  "lastUpdated": "2025-12-13T11:44:16+00:00Z"
+  "lastUpdated": "2025-12-13T12:06:06+00:00Z"
 }
