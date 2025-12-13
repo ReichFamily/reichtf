@@ -42,14 +42,14 @@ jobs:
             FILE_COUNT=$(find "$DIR" -maxdepth 1 -name "vote_*.json" 2>/dev/null | wc -l)
             echo "  Found $FILE_COUNT vote file(s)"
             
-            # Process files and DELETE them (no archive)
+            # Process files and DELETE them (NO ARCHIVE)
             for VOTE_FILE in "$DIR"/vote_*.json; do
               [ -f "$VOTE_FILE" ] || continue
               
               VOTE=$(jq -r '.vote' "$VOTE_FILE")
               NOTES=$(jq -r '.notes // ""' "$VOTE_FILE")
               
-              echo "    Vote: $VOTE from $(basename "$VOTE_FILE")"
+              echo "    Vote: $VOTE"
               
               # Count vote
               if [[ "$VOTE" == "yes" ]]; then
@@ -65,15 +65,16 @@ jobs:
                 
                 if [[ "$VOTE" == "yes" ]]; then
                   YES_COMMENTS=$(echo "$YES_COMMENTS" | jq --argjson c "$COMMENT" '. + [$c]')
-                  echo "      Added YES comment"
+                  echo "      ✅ YES comment added"
                 elif [[ "$VOTE" == "no" ]]; then
                   NO_COMMENTS=$(echo "$NO_COMMENTS" | jq --argjson c "$COMMENT" '. + [$c]')
-                  echo "      Added NO comment"
+                  echo "      ✅ NO comment added"
                 fi
               fi
               
-              # DELETE the file (no archive)
+              # DELETE file (NO ARCHIVE CREATED)
               rm "$VOTE_FILE"
+              echo "      🗑️ File deleted"
             done
             
             # Save results
