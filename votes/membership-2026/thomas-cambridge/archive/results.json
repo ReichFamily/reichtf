@@ -1,0 +1,22 @@
+{
+  "electionId": "thomas-cambridge",
+  "candidateId": "archive",
+  "yes": 1,
+  "no": 1,
+  "total": 2,
+  "yesPercent": 50.0,
+  "noPercent": 50.0,
+  "yesComments": [
+    {
+      "notes": "This is YES vote number 1.",
+      "timestamp": "2025-12-13T12:31:30.775Z"
+    }
+  ],
+  "noComments": [
+    {
+      "notes": "This is NO vote number 1.",
+      "timestamp": "2025-12-13T12:39:40.785Z"
+    }
+  ],
+  "lastUpdated": "2025-12-13T12:58:28+00:00Z"
+}
