@@ -1,11 +1,11 @@
 {
-  "candidate": "thomas-cambridge",
   "election": "membership-2026",
+  "candidate": "thomas-cambridge",
   "yes": 9,
-  "no": 13,
-  "total": 22,
-  "yesPercent": 40.9,
-  "noPercent": 59.0,
+  "no": 14,
+  "total": 23,
+  "yesPercent": 39.1,
+  "noPercent": 60.8,
   "yesComments": [
     {
       "notes": "This is YES vote 6.",
@@ -103,7 +103,12 @@
       "notes": "NO vote 12",
       "email": "jue@eu.com",
       "timestamp": "2025-12-14T04:02:01.908Z"
+    },
+    {
+      "notes": "No vote 14",
+      "email": "dsff@joih.com",
+      "timestamp": "2025-12-14T04:15:22.174Z"
     }
   ],
-  "lastUpdated": "2025-12-14T04:01:54+00:00Z"
+  "lastUpdated": "2025-12-14T04:15:13+00:00Z"
 }
