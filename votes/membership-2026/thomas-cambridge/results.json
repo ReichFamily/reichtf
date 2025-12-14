@@ -1,11 +1,11 @@
 {
   "election": "membership-2026",
   "candidate": "thomas-cambridge",
-  "yes": 9,
+  "yes": 10,
   "no": 14,
-  "total": 23,
-  "yesPercent": 39.1,
-  "noPercent": 60.8,
+  "total": 24,
+  "yesPercent": 41.6,
+  "noPercent": 58.3,
   "yesComments": [
     {
       "notes": "This is YES vote 6.",
@@ -43,6 +43,11 @@
       "notes": "Yes vote 9",
       "email": "kill@loi.com",
       "timestamp": "2025-12-14T03:30:05.203Z"
+    },
+    {
+      "notes": "Yes Vote 10",
+      "email": "gerf@dsfsdf.com",
+      "timestamp": "2025-12-14T12:54:11.097Z"
     }
   ],
   "noComments": [
@@ -110,5 +115,5 @@
       "timestamp": "2025-12-14T04:15:22.174Z"
     }
   ],
-  "lastUpdated": "2025-12-14T04:15:13+00:00Z"
+  "lastUpdated": "2025-12-14T12:54:02+00:00Z"
 }
