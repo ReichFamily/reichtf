@@ -2,10 +2,10 @@
   "electionId": "membership-2026",
   "candidateId": "thomas-cambridge",
   "yes": 8,
-  "no": 10,
-  "total": 18,
-  "yesPercent": 44.4,
-  "noPercent": 55.5,
+  "no": 11,
+  "total": 19,
+  "yesPercent": 42.1,
+  "noPercent": 57.8,
   "yesComments": [
     {
       "notes": "This is YES vote 6.",
@@ -80,7 +80,15 @@
     {
       "notes": "No vote 10",
       "timestamp": "2025-12-14T03:13:23.483Z"
+    },
+    {
+      "notes": "No vote 10",
+      "timestamp": "2025-12-14T03:13:23.483Z"
+    },
+    {
+      "notes": "No vote 11",
+      "timestamp": "2025-12-14T03:19:56.658Z"
     }
   ],
-  "lastUpdated": "2025-12-14T03:13:13+00:00Z"
+  "lastUpdated": "2025-12-14T03:19:49+00:00Z"
 }
