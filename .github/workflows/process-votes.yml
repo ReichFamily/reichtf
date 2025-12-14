@@ -13,7 +13,7 @@ jobs:
   process-votes:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write  # ONLY this permission needed
     
     steps:
       - name: Checkout repository
@@ -93,6 +93,7 @@ jobs:
             fi
             
             # Extract election and candidate from path
+            # votes/election/candidate
             ELECTION=$(echo "$DIR" | cut -d'/' -f2)
             CANDIDATE=$(echo "$DIR" | cut -d'/' -f3)
             
