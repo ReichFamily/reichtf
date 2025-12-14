@@ -121,25 +121,23 @@ jobs:
           
           echo "=== Done ==="
       
-      - name: Commit results
+      - name: Commit results to main branch
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add votes/
           if git diff --cached --quiet; then
-            echo "No changes"
+            echo "No changes to commit"
           else
-            git commit -m "Update vote results [skip ci]"
-            git push
+            git commit -m "Update vote results"
+            git pull origin main --rebase --autostash
+            git push origin main
           fi
-                # ... your existing "Commit results" step ...
-
-      - name: Deploy results to GitHub Pages
-        if: success()
-        uses: peaceiris/actions-gh-pages@v4
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./votes
           force_orphan: true
           keep_files: false
-          # The action automatically deploys to the 'gh-pages' branch
