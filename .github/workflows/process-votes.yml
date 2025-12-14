@@ -1,9 +1,9 @@
 name: Process Votes
 on:
   push:
-    branches: [main]
+    branches: [data]  # ← CRITICAL: Trigger on DATA branch, not main
     paths:
-      - 'votes/**/vote_*.json'  # ONLY trigger on vote files, not results
+      - 'votes/**/*.json'
   workflow_dispatch:
 
 jobs:
@@ -13,14 +13,14 @@ jobs:
       contents: write
     
     steps:
-      - name: Wait for Pages build to start
-        run: sleep 15  # Let GitHub Pages build start first
-        
-      - name: Checkout repository
+      # 1. Checkout the DATA branch (where votes go)
+      - name: Checkout data branch
         uses: actions/checkout@v4
         with:
+          ref: data  # ← CHECKOUT data branch
           fetch-depth: 0
 
+      # 2. Process votes (your existing script)
       - name: Process votes from all directories
         run: |
           echo "=== STARTING VOTE PROCESSING ==="
@@ -93,7 +93,6 @@ jobs:
             fi
             
             # Extract election and candidate from path
-            # votes/election/candidate
             ELECTION=$(echo "$DIR" | cut -d'/' -f2)
             CANDIDATE=$(echo "$DIR" | cut -d'/' -f3)
             
@@ -127,7 +126,8 @@ jobs:
           
           echo "=== PROCESSING COMPLETE ==="
 
-      - name: Commit and push results
+      # 3. Commit processed results back to DATA branch
+      - name: Commit and push results to data branch
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
@@ -136,6 +136,18 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "Update vote results - $(date +'%Y-%m-%d %H:%M:%S')"
-            git pull --rebase origin main
-            git push origin main
+            git pull --rebase origin data
+            git push origin data
           fi
+      
+      # 4. OPTIONAL: Copy results to main branch (if you want Pages to update)
+      - name: Sync results to main branch
+        if: success()
+        run: |
+          git checkout main
+          git pull origin main
+          # Copy results.json files to main
+          find votes -name "results.json" -exec cp --parents {} . \;
+          git add votes/
+          git commit -m "Sync voting results to main" || echo "No changes to sync"
+          git push origin main
