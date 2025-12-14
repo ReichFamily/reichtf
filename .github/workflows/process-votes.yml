@@ -15,6 +15,7 @@ jobs:
       pages: write      # <- REQUIRED for deployment
       id-token: write   # <- REQUIRED for deployment
     steps:
+      - uses: actions/checkout@v4
       
       - name: Process votes
         run: |
@@ -132,7 +133,6 @@ jobs:
             git commit -m "Update vote results"
             git push
           fi
-                # ... your existing "Commit results" step ...
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
