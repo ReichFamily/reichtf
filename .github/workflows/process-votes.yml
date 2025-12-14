@@ -4,6 +4,12 @@ on:
   push:
     paths:
       - 'votes/**/*.json'
+    branches: [main, master]
+
+# CRITICAL: Prevent concurrent runs of this workflow
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   process-and-deploy:
@@ -12,35 +18,38 @@ jobs:
       contents: write
       pages: write
       id-token: write
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Fetch all history for proper git diff
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
-      - name: Setup Node.js (for jq alternative if needed)
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install jq
+      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y jq bc
 
       - name: Process votes
-        id: process
+        id: process-votes
         run: |
           echo "=== Processing Votes ==="
           
-          # Track if any changes were made
-          CHANGES_MADE=false
-          
           # Find all vote files
-          while IFS= read -r VOTE_FILE; do
+          VOTE_FILES=$(find votes -name "vote_*.json" -type f 2>/dev/null || true)
+          
+          if [ -z "$VOTE_FILES" ]; then
+            echo "No vote files to process"
+            echo "changes_made=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          echo "Found vote files to process"
+          echo "$VOTE_FILES" | while read VOTE_FILE; do
             DIR=$(dirname "$VOTE_FILE")
             
-            # Skip if this is an archive directory
+            # Skip archive directories
             if [[ "$DIR" == *"/archive"* ]]; then
               echo "Skipping archive: $DIR"
               continue
@@ -90,7 +99,6 @@ jobs:
             
             # Delete the vote file
             rm -f "$VOTE_FILE"
-            CHANGES_MADE=true
             
             # Save updated results
             TOTAL=$((YES + NO))
@@ -134,13 +142,13 @@ jobs:
               }' > "$RESULTS_FILE"
             
             echo "✅ $YES YES, $NO NO"
-          done < <(find votes -name "vote_*.json" -type f)
+          done
           
           echo "=== Done ==="
-          echo "changes_made=$CHANGES_MADE" >> $GITHUB_OUTPUT
+          echo "changes_made=true" >> $GITHUB_OUTPUT
 
       - name: Commit results
-        if: steps.process.outputs.changes_made == 'true'
+        if: steps.process-votes.outputs.changes_made == 'true'
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
@@ -148,17 +156,11 @@ jobs:
           git commit -m "Update vote results [skip ci]"
           git push
 
-      - name: Setup Pages
-        if: steps.process.outputs.changes_made == 'true'
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        if: steps.process.outputs.changes_made == 'true'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './votes'
-
       - name: Deploy to GitHub Pages
-        if: steps.process.outputs.changes_made == 'true'
-        id: deployment
-        uses: actions/deploy-pages@v4
+        if: steps.process-votes.outputs.changes_made == 'true'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./votes
+          force_orphan: true
+          keep_files: false
