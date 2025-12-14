@@ -1,6 +1,8 @@
 name: Process Votes
 on:
   push:
+    branches:
+      - votes
     paths:
       - 'votes/**/*.json'
   workflow_dispatch:
@@ -138,8 +140,8 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "Update vote results - $(date +'%Y-%m-%d %H:%M:%S')"
-            git pull --rebase origin main
-            git push origin main
+            git pull --rebase origin votes
+            git push origin votes
           fi
       
       - name: Deploy to GitHub Pages
