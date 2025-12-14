@@ -1,11 +1,11 @@
 {
   "election": "membership-2026",
   "candidate": "emma-cambridge",
-  "yes": 18,
+  "yes": 19,
   "no": 10,
-  "total": 28,
-  "yesPercent": 64.2,
-  "noPercent": 35.7,
+  "total": 29,
+  "yesPercent": 65.5,
+  "noPercent": 34.4,
   "yesComments": [
     {
       "notes": "Emma is a wonderful mother of two little girls. I think she will be a wonderful addition to the Family.",
@@ -31,6 +31,11 @@
       "notes": "Yes vote 18",
       "email": "dfsdf@kei.com",
       "timestamp": "2025-12-14T05:01:43.680Z"
+    },
+    {
+      "notes": "YES 19",
+      "email": "kjg@hih.com",
+      "timestamp": "2025-12-14T05:58:34.915Z"
     }
   ],
   "noComments": [
@@ -68,5 +73,5 @@
       "timestamp": "2025-12-13T12:17:59.776Z"
     }
   ],
-  "lastUpdated": "2025-12-14T05:02:00+00:00Z"
+  "lastUpdated": "2025-12-14T05:58:31+00:00Z"
 }
