@@ -4,10 +4,8 @@ on:
     paths:
       - 'votes/**/*.json'
   workflow_dispatch:
-
-concurrency:
-  group: process-votes
-  cancel-in-progress: false
+  schedule:
+    - cron: '*/5 * * * *'
 
 jobs:
   process-votes:
@@ -23,113 +21,139 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Process votes from all directories
+      - name: Count votes and update results WITH COMMENTS
         run: |
-          echo "=== STARTING VOTE PROCESSING ==="
+          echo "=== STARTING VOTE PROCESSING WITH COMMENTS ==="
           
-          # Find ALL vote files and process each directory
-          find votes -type f -name "vote_*.json" | while read VOTE_FILE; do
-            DIR=$(dirname "$VOTE_FILE")
-            RESULTS_FILE="$DIR/results.json"
-            
-            echo "Processing: $DIR"
-            
-            # Load existing results or start fresh
-            if [ -f "$RESULTS_FILE" ]; then
-              yes_votes=$(jq -r '.yes // 0' "$RESULTS_FILE")
-              no_votes=$(jq -r '.no // 0' "$RESULTS_FILE")
-              yes_comments=$(jq -c '.yesComments // []' "$RESULTS_FILE")
-              no_comments=$(jq -c '.noComments // []' "$RESULTS_FILE")
-            else
-              yes_votes=0
-              no_votes=0
-              yes_comments="[]"
-              no_comments="[]"
-            fi
-            
-            # Process ALL vote files in this directory
-            for vote_file in "$DIR"/vote_*.json; do
-              if [ -f "$vote_file" ]; then
-                echo "  Found vote: $(basename "$vote_file")"
-                
-                # Get vote data
-                vote=$(jq -r '.vote // ""' "$vote_file")
-                notes=$(jq -r '.notes // ""' "$vote_file")
-                email=$(jq -r '.email // ""' "$vote_file")
-                timestamp=$(jq -r '.timestamp // ""' "$vote_file")
-                
-                # Count vote
-                if [ "$vote" = "yes" ]; then
-                  yes_votes=$((yes_votes + 1))
-                elif [ "$vote" = "no" ]; then
-                  no_votes=$((no_votes + 1))
-                fi
-                
-                # Add comment if present (not placeholder)
-                if [ -n "$notes" ] && [ "$notes" != "null" ] && [ "$notes" != "" ]; then
-                  if [ "$notes" != "Please provide any comments about your vote. These will be visible with the results." ]; then
-                    comment=$(jq -n --arg n "$notes" --arg e "$email" --arg t "$timestamp" \
-                      '{notes: $n, email: $e, timestamp: $t}')
-                    
-                    if [ "$vote" = "yes" ]; then
-                      yes_comments=$(echo "$yes_comments" | jq --argjson c "$comment" '. + [$c]')
-                    elif [ "$vote" = "no" ]; then
-                      no_comments=$(echo "$no_comments" | jq --argjson c "$comment" '. + [$c]')
-                    fi
+          DIR="votes/membership-2026/emma-cambridge"
+          echo "Processing: $DIR"
+          
+          if [ ! -d "$DIR" ]; then
+            echo "ERROR: Directory not found"
+            exit 1
+          fi
+          
+          results_file="$DIR/results.json"
+          
+          # LOAD EXISTING RESULTS AND COMMENTS (PERMANENT)
+          if [ -f "$results_file" ]; then
+            yes_votes=$(jq -r '.yes // 0' "$results_file")
+            no_votes=$(jq -r '.no // 0' "$results_file")
+            yes_comments_existing=$(jq -c '.yesComments // []' "$results_file")
+            no_comments_existing=$(jq -c '.noComments // []' "$results_file")
+            echo "Existing: $yes_votes YES, $no_votes NO"
+            echo "Existing comments loaded"
+          else
+            yes_votes=0
+            no_votes=0
+            yes_comments_existing="[]"
+            no_comments_existing="[]"
+          fi
+          
+          # Arrays for NEW comments
+          yes_comments_new=()
+          no_comments_new=()
+          new_yes=0
+          new_no=0
+          
+          echo "=== PROCESSING VOTE FILES ==="
+          for vote_file in "$DIR"/vote_*.json; do
+            if [ -f "$vote_file" ]; then
+              echo "Processing: $(basename "$vote_file")"
+              
+              # Extract data
+              vote=$(jq -r '.vote' "$vote_file" 2>/dev/null || echo "")
+              notes=$(jq -r '.notes // ""' "$vote_file" 2>/dev/null || echo "")
+              email=$(jq -r '.email // ""' "$vote_file" 2>/dev/null || echo "")
+              timestamp=$(jq -r '.timestamp // ""' "$vote_file" 2>/dev/null || echo "")
+              
+              # Count vote
+              if [ "$vote" = "yes" ]; then
+                new_yes=$((new_yes + 1))
+                yes_votes=$((yes_votes + 1))
+                echo "  ✓ YES vote"
+              elif [ "$vote" = "no" ]; then
+                new_no=$((new_no + 1))
+                no_votes=$((no_votes + 1))
+                echo "  ✓ NO vote"
+              fi
+              
+              # Collect NEW comment (filter out placeholder)
+              if [ -n "$notes" ] && [ "$notes" != "null" ] && [ "$notes" != "" ]; then
+                DEFAULT_PLACEHOLDER="Please provide any comments about your vote. These will be visible with the results."
+                if [ "$notes" != "$DEFAULT_PLACEHOLDER" ]; then
+                  comment_obj=$(jq -n \
+                    --arg notes "$notes" \
+                    --arg email "$email" \
+                    --arg timestamp "$timestamp" \
+                    '{notes: $notes, email: $email, timestamp: $timestamp}')
+                  
+                  if [ "$vote" = "yes" ]; then
+                    yes_comments_new+=("$comment_obj")
+                    echo "  💬 New YES comment"
+                  elif [ "$vote" = "no" ]; then
+                    no_comments_new+=("$comment_obj")
+                    echo "  💬 New NO comment"
                   fi
                 fi
-                
-                # Remove processed file
-                rm "$vote_file"
               fi
-            done
-            
-            # Calculate totals
-            total=$((yes_votes + no_votes))
-            if [ $total -gt 0 ]; then
-              yes_percent=$(echo "scale=1; $yes_votes * 100 / $total" | bc)
-              no_percent=$(echo "scale=1; $no_votes * 100 / $total" | bc)
-            else
-              yes_percent=0
-              no_percent=0
+              
+              rm "$vote_file"
             fi
-            
-            # Extract election and candidate from path
-            # votes/election/candidate
-            ELECTION=$(echo "$DIR" | cut -d'/' -f2)
-            CANDIDATE=$(echo "$DIR" | cut -d'/' -f3)
-            
-            # Write results
-            jq -n \
-              --arg e "$ELECTION" \
-              --arg c "$CANDIDATE" \
-              --argjson y "$yes_votes" \
-              --argjson n "$no_votes" \
-              --argjson t "$total" \
-              --arg yp "$yes_percent" \
-              --arg np "$no_percent" \
-              --argjson yc "$yes_comments" \
-              --argjson nc "$no_comments" \
-              --arg lu "$(date -Iseconds)Z" \
-              '{
-                election: $e,
-                candidate: $c,
-                yes: $y,
-                no: $n,
-                total: $t,
-                yesPercent: ($yp | tonumber),
-                noPercent: ($np | tonumber),
-                yesComments: $yc,
-                noComments: $nc,
-                lastUpdated: $lu
-              }' > "$RESULTS_FILE"
-            
-            echo "  Updated: $yes_votes YES, $no_votes NO"
           done
           
+          echo "New votes: $new_yes YES, $new_no NO"
+          
+          # Calculate
+          total_votes=$((yes_votes + no_votes))
+          if [ $total_votes -gt 0 ]; then
+            yes_percent=$(echo "scale=1; $yes_votes * 100 / $total_votes" | bc)
+            no_percent=$(echo "scale=1; $no_votes * 100 / $total_votes" | bc)
+          else
+            yes_percent=0
+            no_percent=0
+          fi
+          
+          # MERGE OLD + NEW COMMENTS
+          echo "=== COMBINING COMMENTS ==="
+          yes_comments_new_json=$(printf '%s\n' "${yes_comments_new[@]}" | jq -s '.')
+          no_comments_new_json=$(printf '%s\n' "${no_comments_new[@]}" | jq -s '.')
+          
+          yes_comments_final=$(jq -c --argjson old "$yes_comments_existing" --argjson new "$yes_comments_new_json" '$old + $new' <<< '[]')
+          no_comments_final=$(jq -c --argjson old "$no_comments_existing" --argjson new "$no_comments_new_json" '$old + $new' <<< '[]')
+          
+          echo "Total comments: YES=$(echo "$yes_comments_final" | jq length), NO=$(echo "$no_comments_final" | jq length)"
+          
+          # WRITE FINAL RESULTS WITH ALL COMMENTS
+          echo "=== WRITING RESULTS.JSON ==="
+          jq -n \
+            --arg candidate "emma-cambridge" \
+            --arg election "membership-2026" \
+            --argjson yes "$yes_votes" \
+            --argjson no "$no_votes" \
+            --argjson total "$total_votes" \
+            --arg yesPercent "$yes_percent" \
+            --arg noPercent "$no_percent" \
+            --argjson yesComments "$yes_comments_final" \
+            --argjson noComments "$no_comments_final" \
+            --arg lastUpdated "$(date -Iseconds)Z" \
+            '{
+              candidate: $candidate,
+              election: $election,
+              yes: $yes,
+              no: $no,
+              total: $total,
+              yesPercent: ($yesPercent | tonumber),
+              noPercent: ($noPercent | tonumber),
+              yesComments: $yesComments,
+              noComments: $noComments,
+              lastUpdated: $lastUpdated
+            }' > "$results_file"
+          
+          echo "Final: $yes_votes YES, $no_votes NO"
           echo "=== PROCESSING COMPLETE ==="
 
-      - name: Commit and push results
+      - name: Commit results to main branch
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
@@ -137,8 +161,8 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Update vote results - $(date +'%Y-%m-%d %H:%M:%S')"
-            git pull --rebase origin main
+            git commit -m "Update vote results"
+            git pull origin main --rebase --autostash
             git push origin main
           fi
       
