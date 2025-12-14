@@ -1,0 +1,58 @@
+name: Cleanup Data Branch
+on:
+  workflow_dispatch:  # Manual trigger only
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout data branch
+        uses: actions/checkout@v4
+        with:
+          ref: data
+          fetch-depth: 0
+      
+      - name: Remove everything except votes folder
+        run: |
+          # List what we're keeping
+          echo "Keeping: votes/, .github/workflows/process-votesUNIVERSAL.yml"
+          
+          # Remove all top-level files/folders except votes and .github
+          for item in *; do
+            if [ "$item" != "votes" ] && [ "$item" != ".github" ]; then
+              echo "Removing: $item"
+              rm -rf "$item"
+            fi
+          done
+          
+          # Remove dot files except .git
+          for item in .*; do
+            if [ "$item" != ".git" ] && [ "$item" != "." ] && [ "$item" != ".." ]; then
+              echo "Removing: $item"
+              rm -rf "$item"
+            fi
+          done
+          
+          # Clean .github folder (keep only process-votes workflow)
+          if [ -d ".github/workflows" ]; then
+            cd .github/workflows
+            for workflow in *; do
+              if [ "$workflow" != "process-votesUNIVERSAL.yml" ]; then
+                echo "Removing workflow: $workflow"
+                rm -f "$workflow"
+              fi
+            done
+            cd ../..
+          fi
+      
+      - name: Commit cleanup
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add -A
+          git status
+          git commit -m "Clean data branch: keep only votes folder" || echo "No changes"
+          git push origin data
