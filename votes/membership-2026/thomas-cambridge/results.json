@@ -1,11 +1,11 @@
 {
-  "electionId": "membership-2026",
-  "candidateId": "thomas-cambridge",
-  "yes": 8,
-  "no": 11,
-  "total": 19,
-  "yesPercent": 42.1,
-  "noPercent": 57.8,
+  "candidate": "thomas-cambridge",
+  "election": "membership-2026",
+  "yes": 9,
+  "no": 13,
+  "total": 22,
+  "yesPercent": 40.9,
+  "noPercent": 59.0,
   "yesComments": [
     {
       "notes": "This is YES vote 6.",
@@ -38,6 +38,11 @@
     {
       "notes": "YES vote number 3",
       "timestamp": "2025-12-13T13:24:13.838Z"
+    },
+    {
+      "notes": "Yes vote 9",
+      "email": "kill@loi.com",
+      "timestamp": "2025-12-14T03:30:05.203Z"
     }
   ],
   "noComments": [
@@ -88,7 +93,17 @@
     {
       "notes": "No vote 11",
       "timestamp": "2025-12-14T03:19:56.658Z"
+    },
+    {
+      "notes": "NO vote 12",
+      "email": "kie@iue.com",
+      "timestamp": "2025-12-14T03:51:02.278Z"
+    },
+    {
+      "notes": "NO vote 12",
+      "email": "jue@eu.com",
+      "timestamp": "2025-12-14T04:02:01.908Z"
     }
   ],
-  "lastUpdated": "2025-12-14T03:19:49+00:00Z"
+  "lastUpdated": "2025-12-14T04:01:54+00:00Z"
 }
