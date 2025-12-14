@@ -3,19 +3,20 @@ on:
   push:
     paths:
       - 'votes/**/*.json'
+    paths-ignore:
+      - '**/results.json'  # CRITICAL: Don't trigger when results change
   workflow_dispatch:
-
-concurrency:
-  group: process-votes
-  cancel-in-progress: false
 
 jobs:
   process-votes:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # ONLY this permission needed
+      contents: write
     
     steps:
+      - name: Wait for Pages build to start
+        run: sleep 15  # Let GitHub Pages build start first
+        
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
