@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    
+      pages: write      # <- REQUIRED for deployment
+      id-token: write   # <- REQUIRED for deployment
     steps:
-      - uses: actions/checkout@v4
       
       - name: Process votes
         run: |
@@ -121,23 +121,22 @@ jobs:
           
           echo "=== Done ==="
       
-      - name: Commit results to main branch
+      - name: Commit results
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add votes/
           if git diff --cached --quiet; then
-            echo "No changes to commit"
+            echo "No changes"
           else
             git commit -m "Update vote results"
-            git pull origin main --rebase --autostash
-            git push origin main
+            git push
           fi
-      
+                # ... your existing "Commit results" step ...
+
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./votes
           force_orphan: true
-          keep_files: false
