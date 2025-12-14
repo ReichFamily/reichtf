@@ -256,7 +256,7 @@ async function submitVote() {
     document.getElementById('submitBtn').disabled = true;
     document.getElementById('submitBtn').textContent = 'Processing...';
     
-    // Send to Cloudflare Worker
+    // ✅ Send to Cloudflare Worker (THIS IS THE ONLY LINE THAT MATTERS)
     const WORKER_URL = 'https://lingering-thunder-658e.reich-family.workers.dev/';
     const submitted = await submitToGitHub(voteData, WORKER_URL);
     
@@ -385,5 +385,6 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Voting page loaded for', CANDIDATE_NAME);
 });
 </script>
+
 </body>
 </html>
