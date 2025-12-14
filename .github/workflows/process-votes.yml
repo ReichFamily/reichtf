@@ -1,10 +1,9 @@
 name: Process Votes
 on:
   push:
+    branches: [main]
     paths:
-      - 'votes/**/*.json'
-    paths-ignore:
-      - '**/results.json'  # CRITICAL: Don't trigger when results change
+      - 'votes/**/vote_*.json'  # ONLY trigger on vote files, not results
   workflow_dispatch:
 
 jobs:
