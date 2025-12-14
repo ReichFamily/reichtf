@@ -1,10 +1,6 @@
 name: Process Votes
 on:
-  # From the FIRST workflow
-  workflow_dispatch:
-  schedule:
-    - cron: '*/2 * * * *'
-  
+
   # From the SECOND workflow
   push:
     paths:
@@ -133,6 +129,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes"
           else
-            git commit -m "Update vote results"
+            git commit -m "Update vote results [skip ci]"
             git push
           fi
