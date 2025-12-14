@@ -1,14 +1,13 @@
-name: Process Votes
+name: Build Page and Process Votes
 on:
   push:
-    paths:
-      - 'votes/**/*.json'
+    branches: [main]
   workflow_dispatch:
   schedule:
     - cron: '*/5 * * * *'
 
 jobs:
-  process-votes:
+  build-and-process:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -16,44 +15,91 @@ jobs:
       id-token: write
     
     steps:
+      # STEP 1: Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Count votes and update results WITH COMMENTS
+          
+      # STEP 2: Build your website/page (ADD YOUR BUILD COMMANDS HERE)
+      - name: Build Page
         run: |
-          echo "=== STARTING VOTE PROCESSING WITH COMMENTS ==="
+          echo "=== BUILDING WEBSITE/PAGE ==="
+          echo "Current directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
+          
+          # ============================================
+          # ADD YOUR BUILD COMMANDS HERE
+          # For example:
+          # - npm install
+          # - npm run build
+          # - Copy HTML/CSS/JS files to the right location
+          # ============================================
+          
+          # Example: Create a simple index.html if none exists
+          if [ ! -f "index.html" ]; then
+            echo "Creating simple index.html..."
+            cat > index.html << EOF
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voting System</title>
+</head>
+<body>
+    <h1>Voting System</h1>
+    <p>Vote results are processed automatically.</p>
+</body>
+</html>
+EOF
+          fi
+          
+          echo "Build completed at: $(date)"
+          
+      # STEP 3: Process votes (with dynamic directory detection)
+      - name: Process Votes
+        run: |
+          echo "=== STARTING VOTE PROCESSING ==="
+          echo "Starting at: $(date)"
           
           # Find all vote files and group them by directory
-          echo "Looking for vote files..."
+          echo "Looking for vote files in votes/**/vote_*.json..."
           declare -A vote_dirs
           
-          # First, collect all vote files and group by directory
+          # Collect all vote files and group by directory
           for vote_file in votes/**/vote_*.json; do
             if [ -f "$vote_file" ]; then
               dir=$(dirname "$vote_file")
               vote_dirs["$dir"]=1
+              echo "Found vote file: $vote_file (dir: $dir)"
             fi
           done
           
-          # If no vote files found, check if we have any JSON files at all
+          # If no vote files found with pattern, use find command
           if [ ${#vote_dirs[@]} -eq 0 ]; then
-            echo "No vote files found in votes/**/vote_*.json pattern"
-            echo "Checking for any vote files..."
-            find votes/ -name "vote_*.json" -type f | while read vote_file; do
+            echo "No vote files found with pattern, searching with find..."
+            while IFS= read -r vote_file; do
               if [ -f "$vote_file" ]; then
                 dir=$(dirname "$vote_file")
                 vote_dirs["$dir"]=1
+                echo "Found vote file: $vote_file (dir: $dir)"
               fi
-            done
+            done < <(find votes/ -name "vote_*.json" -type f 2>/dev/null || true)
           fi
+          
+          if [ ${#vote_dirs[@]} -eq 0 ]; then
+            echo "No vote files to process."
+            echo "=== VOTE PROCESSING COMPLETE (nothing to do) ==="
+            exit 0
+          fi
+          
+          echo "Found ${#vote_dirs[@]} directory(ies) with vote files."
           
           # Process each directory that has vote files
           for DIR in "${!vote_dirs[@]}"; do
             echo ""
             echo "=========================================="
-            echo "Processing directory: $DIR"
+            echo "PROCESSING DIRECTORY: $DIR"
             echo "=========================================="
             
             if [ ! -d "$DIR" ]; then
@@ -62,19 +108,20 @@ jobs:
             fi
             
             results_file="$DIR/results.json"
+            echo "Results file: $results_file"
             
-            # LOAD EXISTING RESULTS AND COMMENTS (PERMANENT)
+            # LOAD EXISTING RESULTS AND COMMENTS
             if [ -f "$results_file" ]; then
-              yes_votes=$(jq -r '.yes // 0' "$results_file")
-              no_votes=$(jq -r '.no // 0' "$results_file")
-              yes_comments_existing=$(jq -c '.yesComments // []' "$results_file")
-              no_comments_existing=$(jq -c '.noComments // []' "$results_file")
-              # Extract candidate and election from existing results if available
-              existing_candidate=$(jq -r '.candidate // ""' "$results_file")
-              existing_election=$(jq -r '.election // ""' "$results_file")
-              echo "Existing: $yes_votes YES, $no_votes NO"
-              echo "Existing comments loaded"
+              echo "Loading existing results..."
+              yes_votes=$(jq -r '.yes // 0' "$results_file" 2>/dev/null || echo "0")
+              no_votes=$(jq -r '.no // 0' "$results_file" 2>/dev/null || echo "0")
+              yes_comments_existing=$(jq -c '.yesComments // []' "$results_file" 2>/dev/null || echo "[]")
+              no_comments_existing=$(jq -c '.noComments // []' "$results_file" 2>/dev/null || echo "[]")
+              existing_candidate=$(jq -r '.candidate // ""' "$results_file" 2>/dev/null || echo "")
+              existing_election=$(jq -r '.election // ""' "$results_file" 2>/dev/null || echo "")
+              echo "Existing results: $yes_votes YES, $no_votes NO"
             else
+              echo "No existing results file, starting fresh."
               yes_votes=0
               no_votes=0
               yes_comments_existing="[]"
@@ -88,15 +135,15 @@ jobs:
             no_comments_new=()
             new_yes=0
             new_no=0
+            processed_count=0
             
-            echo "=== PROCESSING VOTE FILES IN $DIR ==="
+            echo "Processing vote files in $DIR..."
             
-            # Process all vote files in this directory
-            processed_any=0
+            # Process all vote_*.json files in this directory
             for vote_file in "$DIR"/vote_*.json; do
               if [ -f "$vote_file" ]; then
-                processed_any=1
-                echo "Processing: $(basename "$vote_file")"
+                processed_count=$((processed_count + 1))
+                echo "  Processing vote file #$processed_count: $(basename "$vote_file")"
                 
                 # Extract data from vote file
                 vote=$(jq -r '.vote // ""' "$vote_file" 2>/dev/null || echo "")
@@ -109,14 +156,14 @@ jobs:
                   vote_election=$(jq -r '.election // ""' "$vote_file" 2>/dev/null || echo "")
                   vote_candidate=$(jq -r '.candidate // ""' "$vote_file" 2>/dev/null || echo "")
                   
-                  if [ -n "$vote_election" ] && [ -z "$existing_election" ]; then
+                  if [ -n "$vote_election" ] && [ "$vote_election" != "null" ] && [ -z "$existing_election" ]; then
                     existing_election="$vote_election"
-                    echo "  Found election in vote file: $existing_election"
+                    echo "    Found election in vote file: $existing_election"
                   fi
                   
-                  if [ -n "$vote_candidate" ] && [ -z "$existing_candidate" ]; then
+                  if [ -n "$vote_candidate" ] && [ "$vote_candidate" != "null" ] && [ -z "$existing_candidate" ]; then
                     existing_candidate="$vote_candidate"
-                    echo "  Found candidate in vote file: $existing_candidate"
+                    echo "    Found candidate in vote file: $existing_candidate"
                   fi
                 fi
                 
@@ -124,13 +171,13 @@ jobs:
                 if [ "$vote" = "yes" ]; then
                   new_yes=$((new_yes + 1))
                   yes_votes=$((yes_votes + 1))
-                  echo "  ✓ YES vote"
+                  echo "    ✓ YES vote"
                 elif [ "$vote" = "no" ]; then
                   new_no=$((new_no + 1))
                   no_votes=$((no_votes + 1))
-                  echo "  ✓ NO vote"
+                  echo "    ✓ NO vote"
                 else
-                  echo "  ⚠️  Invalid or missing vote value: '$vote'"
+                  echo "    ⚠️  Invalid or missing vote value: '$vote'"
                 fi
                 
                 # Collect NEW comment (filter out placeholder)
@@ -145,26 +192,27 @@ jobs:
                     
                     if [ "$vote" = "yes" ]; then
                       yes_comments_new+=("$comment_obj")
-                      echo "  💬 New YES comment"
+                      echo "    💬 New YES comment"
                     elif [ "$vote" = "no" ]; then
                       no_comments_new+=("$comment_obj")
-                      echo "  💬 New NO comment"
+                      echo "    💬 New NO comment"
                     fi
                   fi
                 fi
                 
                 # Remove processed vote file
                 rm "$vote_file"
-                echo "  🗑️  Removed processed vote file"
+                echo "    🗑️  Removed processed vote file"
               fi
             done
             
-            if [ $processed_any -eq 0 ]; then
+            if [ $processed_count -eq 0 ]; then
               echo "No vote files found in $DIR"
               continue
             fi
             
             echo "New votes in $DIR: $new_yes YES, $new_no NO"
+            echo "Total votes: $yes_votes YES, $no_votes NO"
             
             # Calculate percentages
             total_votes=$((yes_votes + no_votes))
@@ -176,28 +224,43 @@ jobs:
               no_percent=0
             fi
             
+            echo "Percentages: YES $yes_percent%, NO $no_percent%"
+            
             # MERGE OLD + NEW COMMENTS
-            echo "=== COMBINING COMMENTS ==="
-            yes_comments_new_json=$(printf '%s\n' "${yes_comments_new[@]}" | jq -s '.')
-            no_comments_new_json=$(printf '%s\n' "${no_comments_new[@]}" | jq -s '.')
+            echo "Combining comments..."
+            if [ ${#yes_comments_new[@]} -gt 0 ]; then
+              yes_comments_new_json=$(printf '%s\n' "${yes_comments_new[@]}" | jq -s '.')
+              yes_comments_final=$(jq -c --argjson old "$yes_comments_existing" --argjson new "$yes_comments_new_json" '$old + $new' <<< '[]')
+            else
+              yes_comments_final="$yes_comments_existing"
+            fi
             
-            yes_comments_final=$(jq -c --argjson old "$yes_comments_existing" --argjson new "$yes_comments_new_json" '$old + $new' <<< '[]')
-            no_comments_final=$(jq -c --argjson old "$no_comments_existing" --argjson new "$no_comments_new_json" '$old + $new' <<< '[]')
+            if [ ${#no_comments_new[@]} -gt 0 ]; then
+              no_comments_new_json=$(printf '%s\n' "${no_comments_new[@]}" | jq -s '.')
+              no_comments_final=$(jq -c --argjson old "$no_comments_existing" --argjson new "$no_comments_new_json" '$old + $new' <<< '[]')
+            else
+              no_comments_final="$no_comments_existing"
+            fi
             
-            echo "Total comments: YES=$(echo "$yes_comments_final" | jq length), NO=$(echo "$no_comments_final" | jq length)"
+            echo "Total comments: YES=$(echo "$yes_comments_final" | jq 'length' 2>/dev/null || echo "0"), NO=$(echo "$no_comments_final" | jq 'length' 2>/dev/null || echo "0")"
             
             # If election and candidate weren't found, extract from directory path
             if [ -z "$existing_election" ] || [ -z "$existing_candidate" ]; then
-              # Extract from directory path (votes/election/candidate)
-              path_parts=(${DIR//\// })
-              if [ ${#path_parts[@]} -ge 3 ]; then
-                if [ -z "$existing_election" ]; then
-                  existing_election="${path_parts[1]}"
-                  echo "Extracted election from path: $existing_election"
-                fi
-                if [ -z "$existing_candidate" ]; then
-                  existing_candidate="${path_parts[2]}"
-                  echo "Extracted candidate from path: $existing_candidate"
+              echo "Extracting election/candidate from directory path..."
+              # Remove 'votes/' prefix if present
+              relative_dir="${DIR#votes/}"
+              if [ "$relative_dir" != "$DIR" ]; then
+                # Split by '/'
+                IFS='/' read -ra parts <<< "$relative_dir"
+                if [ ${#parts[@]} -ge 2 ]; then
+                  if [ -z "$existing_election" ]; then
+                    existing_election="${parts[0]}"
+                    echo "  Extracted election from path: $existing_election"
+                  fi
+                  if [ -z "$existing_candidate" ]; then
+                    existing_candidate="${parts[1]}"
+                    echo "  Extracted candidate from path: $existing_candidate"
+                  fi
                 fi
               fi
             fi
@@ -211,7 +274,7 @@ jobs:
             fi
             
             # WRITE FINAL RESULTS WITH ALL COMMENTS
-            echo "=== WRITING RESULTS.JSON ==="
+            echo "Writing results to $results_file..."
             jq -n \
               --arg candidate "$existing_candidate" \
               --arg election "$existing_election" \
@@ -236,31 +299,67 @@ jobs:
                 lastUpdated: $lastUpdated
               }' > "$results_file"
             
-            echo "Final for $existing_candidate: $yes_votes YES, $no_votes NO"
-            echo "Results written to: $results_file"
+            if [ $? -eq 0 ]; then
+              echo "✅ Successfully wrote results for $existing_candidate"
+              echo "   Final: $yes_votes YES, $no_votes NO"
+            else
+              echo "❌ Failed to write results file"
+            fi
+            
+            echo "Completed processing $DIR"
           done
           
           echo ""
-          echo "=== PROCESSING COMPLETE ==="
+          echo "=== VOTE PROCESSING COMPLETE ==="
           echo "Processed ${#vote_dirs[@]} directory(ies)"
-
-      - name: Commit results to main branch
+          echo "Finished at: $(date)"
+          
+      # STEP 4: Commit and push all changes
+      - name: Commit and push changes
         run: |
+          echo "=== COMMITTING CHANGES ==="
+          echo "Current time: $(date)"
+          
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add votes/
+          
+          # Check what changes exist
+          echo "Checking for changes..."
+          git status
+          
+          # Add all changes
+          git add -A
+          
+          # Check if there are any changes to commit
           if git diff --cached --quiet; then
-            echo "No changes to commit"
+            echo "No changes to commit."
           else
-            git commit -m "Update vote results"
+            echo "Changes detected, committing..."
+            git commit -m "Build page and update vote results - $(date '+%Y-%m-%d %H:%M:%S')"
+            
+            # Pull latest changes and push
+            echo "Pulling latest changes..."
             git pull origin main --rebase --autostash
+            
+            echo "Pushing changes..."
             git push origin main
+            
+            echo "✅ Changes committed and pushed successfully."
           fi
-      
+          
+      # STEP 5: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
+        run: |
+          echo "=== DEPLOYING TO GITHUB PAGES ==="
+          echo "Deployment started at: $(date)"
+          
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./votes
+          publish_dir: ./  # CHANGE THIS to your actual build directory if different
+          # If your built files go to a 'dist' folder, use: publish_dir: ./dist
+          # If your built files go to a 'build' folder, use: publish_dir: ./build
+          # If your site is just in the root, use: publish_dir: ./
           force_orphan: true
           keep_files: false
