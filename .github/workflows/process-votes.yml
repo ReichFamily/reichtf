@@ -132,3 +132,14 @@ jobs:
             git commit -m "Update vote results [skip ci]"
             git push
           fi
+                # ... your existing "Commit results" step ...
+
+      - name: Deploy results to GitHub Pages
+        if: success()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./votes
+          force_orphan: true
+          keep_files: false
+          # The action automatically deploys to the 'gh-pages' branch
