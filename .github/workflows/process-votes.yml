@@ -1,27 +1,43 @@
-name: Process Votes
-on:
+name: Process Votes and Deploy
 
-  # From the SECOND workflow
+on:
   push:
     paths:
       - 'votes/**/*.json'
 
 jobs:
-  process-votes:
+  process-and-deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pages: write      # <- REQUIRED for deployment
-      id-token: write   # <- REQUIRED for deployment
+      pages: write
+      id-token: write
     steps:
-      - uses: actions/checkout@v4
-      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for proper git diff
+
+      - name: Setup Node.js (for jq alternative if needed)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install jq
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq bc
+
       - name: Process votes
+        id: process
         run: |
           echo "=== Processing Votes ==="
           
+          # Track if any changes were made
+          CHANGES_MADE=false
+          
           # Find all vote files
-          find votes -name "vote_*.json" -type f | while read VOTE_FILE; do
+          while IFS= read -r VOTE_FILE; do
             DIR=$(dirname "$VOTE_FILE")
             
             # Skip if this is an archive directory
@@ -30,7 +46,7 @@ jobs:
               continue
             fi
             
-            echo "Processing: $DIR"
+            echo "Processing: $VOTE_FILE"
             
             # Load or create results
             RESULTS_FILE="$DIR/results.json"
@@ -72,8 +88,9 @@ jobs:
               fi
             fi
             
-            # Delete the vote file (no archive)
+            # Delete the vote file
             rm -f "$VOTE_FILE"
+            CHANGES_MADE=true
             
             # Save updated results
             TOTAL=$((YES + NO))
@@ -102,7 +119,7 @@ jobs:
               --arg np "$NO_PCT" \
               --argjson yc "$YES_COMMENTS" \
               --argjson nc "$NO_COMMENTS" \
-              --arg lu "$(date -Iseconds)Z" \
+              --arg lu "$(date -Iseconds)" \
               '{
                 electionId: $e,
                 candidateId: $c,
@@ -117,25 +134,31 @@ jobs:
               }' > "$RESULTS_FILE"
             
             echo "✅ $YES YES, $NO NO"
-          done
+          done < <(find votes -name "vote_*.json" -type f)
           
           echo "=== Done ==="
-      
+          echo "changes_made=$CHANGES_MADE" >> $GITHUB_OUTPUT
+
       - name: Commit results
+        if: steps.process.outputs.changes_made == 'true'
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add votes/
-          if git diff --cached --quiet; then
-            echo "No changes"
-          else
-            git commit -m "Update vote results"
-            git push
-          fi
+          git commit -m "Update vote results [skip ci]"
+          git push
+
+      - name: Setup Pages
+        if: steps.process.outputs.changes_made == 'true'
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        if: steps.process.outputs.changes_made == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './votes'
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./votes
-          force_orphan: true
+        if: steps.process.outputs.changes_made == 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4
