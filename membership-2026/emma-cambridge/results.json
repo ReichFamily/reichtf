@@ -1,0 +1,107 @@
+{
+  "election": "membership-2026",
+  "candidate": "emma-cambridge",
+  "yes": 24,
+  "no": 12,
+  "total": 36,
+  "yesPercent": 66.6,
+  "noPercent": 33.3,
+  "yesComments": [
+    {
+      "notes": "Emma is a wonderful mother of two little girls. I think she will be a wonderful addition to the Family.",
+      "email": "sdfd@sdfh.com",
+      "timestamp": "2025-12-12T11:38:06.650Z"
+    },
+    {
+      "notes": "YES vote 15",
+      "email": "jie@iee.com",
+      "timestamp": "2025-12-14T04:25:07.553Z"
+    },
+    {
+      "notes": "Yes vote 16",
+      "email": "jue@kie.com",
+      "timestamp": "2025-12-14T04:36:51.133Z"
+    },
+    {
+      "notes": "yes 17",
+      "email": "jhg@jjy.com",
+      "timestamp": "2025-12-14T04:43:13.191Z"
+    },
+    {
+      "notes": "Yes vote 18",
+      "email": "dfsdf@kei.com",
+      "timestamp": "2025-12-14T05:01:43.680Z"
+    },
+    {
+      "notes": "Yes vote 19",
+      "email": "ihh@ihhr.com",
+      "timestamp": "2025-12-14T05:39:17.608Z"
+    },
+    {
+      "notes": "YES 19",
+      "email": "jfg@jhr.com",
+      "timestamp": "2025-12-14T05:45:18.649Z"
+    },
+    {
+      "notes": "yes vote 19",
+      "email": "eer@kie.com",
+      "timestamp": "2025-12-14T09:03:09.586Z"
+    },
+    {
+      "notes": "Yes vote 19",
+      "email": "jege@jiiuge.com",
+      "timestamp": "2025-12-14T09:38:54.579Z"
+    },
+    {
+      "notes": "YES VOTE 24 WITH NEW VOTES BRANCH FIXED",
+      "email": "df@fsf.com",
+      "timestamp": "2025-12-14T09:44:06.185Z"
+    }
+  ],
+  "noComments": [
+    {
+      "notes": "I don't think Emma would be happy in this Family.",
+      "email": "sdfsd@hfe.com",
+      "timestamp": "2025-12-12T11:50:49.365Z"
+    },
+    {
+      "notes": "I don't think she is right for us or that we are right for her.",
+      "timestamp": "2025-12-13T11:35:45.358Z"
+    },
+    {
+      "notes": "I have to say NO.",
+      "timestamp": "2025-12-13T11:44:25.752Z"
+    },
+    {
+      "notes": "This thing made my votes replicate.",
+      "timestamp": "2025-12-13T11:55:19.165Z"
+    },
+    {
+      "notes": "I will be the 8th person to just say no.",
+      "timestamp": "2025-12-13T12:06:13.995Z"
+    },
+    {
+      "notes": "This thing made my votes replicate.",
+      "timestamp": "2025-12-13T11:55:19.165Z"
+    },
+    {
+      "notes": "I will be the 8th person to just say no.",
+      "timestamp": "2025-12-13T12:06:13.995Z"
+    },
+    {
+      "notes": "This should be No vote 10",
+      "timestamp": "2025-12-13T12:17:59.776Z"
+    },
+    {
+      "notes": "NO votes 11",
+      "email": "deg@kiey.com",
+      "timestamp": "2025-12-15T13:21:26.258Z"
+    },
+    {
+      "notes": "No vote 11",
+      "email": "hey@kur.com",
+      "timestamp": "2025-12-15T13:34:45.790Z"
+    }
+  ],
+  "lastUpdated": "2025-12-15T13:34:40+00:00Z"
+}

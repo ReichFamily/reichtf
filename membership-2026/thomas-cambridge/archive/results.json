@@ -1,0 +1,23 @@
+{
+  "candidate": "thomas-cambridge",
+  "election": "membership-2026",
+  "yes": 0,
+  "no": 2,
+  "total": 2,
+  "yesPercent": 0,
+  "noPercent": 100.0,
+  "yesComments": [],
+  "noComments": [
+    {
+      "notes": "No vote 10",
+      "email": "bob@ieu.com",
+      "timestamp": "2025-12-14T03:13:23.483Z"
+    },
+    {
+      "notes": "No vote 11",
+      "email": "mke@ie.com",
+      "timestamp": "2025-12-14T03:19:56.658Z"
+    }
+  ],
+  "lastUpdated": "2025-12-14T04:01:54+00:00Z"
+}

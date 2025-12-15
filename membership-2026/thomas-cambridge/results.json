@@ -1,0 +1,119 @@
+{
+  "election": "membership-2026",
+  "candidate": "thomas-cambridge",
+  "yes": 10,
+  "no": 14,
+  "total": 24,
+  "yesPercent": 41.6,
+  "noPercent": 58.3,
+  "yesComments": [
+    {
+      "notes": "This is YES vote 6.",
+      "timestamp": "2025-12-14T02:01:27.147Z"
+    },
+    {
+      "notes": "This is YES vote number 1.",
+      "timestamp": "2025-12-13T12:31:30.775Z"
+    },
+    {
+      "notes": "This is YES vote number 2.",
+      "timestamp": "2025-12-13T12:45:57.492Z"
+    },
+    {
+      "notes": "This is YES vote number 4.",
+      "timestamp": "2025-12-14T01:25:11.653Z"
+    },
+    {
+      "notes": "This is YES vote number 5",
+      "timestamp": "2025-12-14T01:46:54.196Z"
+    },
+    {
+      "notes": "YES vote 7",
+      "timestamp": "2025-12-14T02:24:53.892Z"
+    },
+    {
+      "notes": "YES vote 7",
+      "timestamp": "2025-12-14T02:29:35.231Z"
+    },
+    {
+      "notes": "YES vote number 3",
+      "timestamp": "2025-12-13T13:24:13.838Z"
+    },
+    {
+      "notes": "Yes vote 9",
+      "email": "kill@loi.com",
+      "timestamp": "2025-12-14T03:30:05.203Z"
+    },
+    {
+      "notes": "Yes Vote 10",
+      "email": "gerf@dsfsdf.com",
+      "timestamp": "2025-12-14T12:54:11.097Z"
+    }
+  ],
+  "noComments": [
+    {
+      "notes": "NO vote 6",
+      "timestamp": "2025-12-14T02:07:51.305Z"
+    },
+    {
+      "notes": "NO vote 6",
+      "timestamp": "2025-12-14T02:46:27.568Z"
+    },
+    {
+      "notes": "No Vote 8",
+      "timestamp": "2025-12-14T02:54:08.910Z"
+    },
+    {
+      "notes": "No vote 9",
+      "timestamp": "2025-12-14T03:00:55.102Z"
+    },
+    {
+      "notes": "This is NO vote number 1.",
+      "timestamp": "2025-12-13T12:39:40.785Z"
+    },
+    {
+      "notes": "This is NO vote number 2.",
+      "timestamp": "2025-12-13T12:58:36.608Z"
+    },
+    {
+      "notes": "This is NO vote number 3.",
+      "timestamp": "2025-12-13T13:07:07.768Z"
+    },
+    {
+      "notes": "This is NO vote number 4.",
+      "timestamp": "2025-12-13T13:45:44.064Z"
+    },
+    {
+      "notes": "This is NO vote number 5.",
+      "timestamp": "2025-12-13T14:24:28.861Z"
+    },
+    {
+      "notes": "No vote 10",
+      "timestamp": "2025-12-14T03:13:23.483Z"
+    },
+    {
+      "notes": "No vote 10",
+      "timestamp": "2025-12-14T03:13:23.483Z"
+    },
+    {
+      "notes": "No vote 11",
+      "timestamp": "2025-12-14T03:19:56.658Z"
+    },
+    {
+      "notes": "NO vote 12",
+      "email": "kie@iue.com",
+      "timestamp": "2025-12-14T03:51:02.278Z"
+    },
+    {
+      "notes": "NO vote 12",
+      "email": "jue@eu.com",
+      "timestamp": "2025-12-14T04:02:01.908Z"
+    },
+    {
+      "notes": "No vote 14",
+      "email": "dsff@joih.com",
+      "timestamp": "2025-12-14T04:15:22.174Z"
+    }
+  ],
+  "lastUpdated": "2025-12-14T12:54:02+00:00Z"
+}
