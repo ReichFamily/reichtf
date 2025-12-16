@@ -243,81 +243,67 @@ const CANDIDATE_ID = "thomas-cambridge";
 
 async function loadResults() {
     try {
-const resultsUrl = `https://raw.githubusercontent.com/ReichFamily/reichtf/votes/votes/${ELECTION_ID}/${CANDIDATE_ID}/results.json?t=${Date.now()}`;
+        const resultsUrl = `https://gentle-glitter-0f48.reich-family.workers.dev/results/${ELECTION_ID}/${CANDIDATE_ID}?t=${Date.now()}`;
         console.log("Fetching:", resultsUrl);
         const response = await fetch(resultsUrl);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
-        
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
         const results = await response.json();
         console.log("Results:", results);
-        
-        // Update vote counts
+
+        // Counts
         document.getElementById('yesCount').textContent = results.yes || 0;
         document.getElementById('noCount').textContent = results.no || 0;
         document.getElementById('totalVotes').textContent = results.total || 0;
-        
+
+        // Percentages
         const yesPct = results.yesPercent || 0;
         const noPct = results.noPercent || 0;
-        
         document.getElementById('yesPercent').textContent = yesPct.toFixed(1) + '%';
         document.getElementById('noPercent').textContent = noPct.toFixed(1) + '%';
         document.getElementById('yesBar').style.width = yesPct + '%';
         document.getElementById('noBar').style.width = noPct + '%';
-        document.getElementById('lastUpdated').textContent = 
+
+        // Last updated
+        document.getElementById('lastUpdated').textContent =
             'Last updated: ' + new Date(results.lastUpdated).toLocaleString();
-        
-        // === DISPLAY COMMENTS ===
-        const yesNotesDiv = document.getElementById('yesNotes');
-        const noNotesDiv = document.getElementById('noNotes');
-        
+
         // YES comments
-        if (results.yesComments && results.yesComments.length > 0) {
-            let html = '';
-            results.yesComments.forEach(comment => {
-                html += `<div class="note">
-                          <p>${comment.notes || ''}</p>
-                          <div class="note-meta">
-                            <span>${new Date(comment.timestamp).toLocaleString()}</span>
-                          </div>
-                        </div>`;
-            });
-            yesNotesDiv.innerHTML = html;
-        } else {
-            yesNotesDiv.innerHTML = '<p class="no-notes-message">No comments from YES votes</p>';
-        }
-        
+        const yesNotesDiv = document.getElementById('yesNotes');
+        yesNotesDiv.innerHTML = (results.yesComments || []).length
+          ? results.yesComments.map(c => `
+              <div class="note">
+                <p>${c.notes || ''}</p>
+                <div class="note-meta">
+                  <span>${new Date(c.timestamp).toLocaleString()}</span>
+                </div>
+              </div>`).join('')
+          : '<p class="no-notes-message">No comments from YES votes</p>';
+
         // NO comments
-        if (results.noComments && results.noComments.length > 0) {
-            let html = '';
-            results.noComments.forEach(comment => {
-                html += `<div class="note">
-                          <p>${comment.notes || ''}</p>
-                          <div class="note-meta">
-                            <span>${new Date(comment.timestamp).toLocaleString()}</span>
-                          </div>
-                        </div>`;
-            });
-            noNotesDiv.innerHTML = html;
-        } else {
-            noNotesDiv.innerHTML = '<p class="no-notes-message">No comments from NO votes</p>';
-        }
-        
+        const noNotesDiv = document.getElementById('noNotes');
+        noNotesDiv.innerHTML = (results.noComments || []).length
+          ? results.noComments.map(c => `
+              <div class="note">
+                <p>${c.notes || ''}</p>
+                <div class="note-meta">
+                  <span>${new Date(c.timestamp).toLocaleString()}</span>
+                </div>
+              </div>`).join('')
+          : '<p class="no-notes-message">No comments from NO votes</p>';
+
     } catch (error) {
         console.error("Error:", error);
         document.getElementById('lastUpdated').textContent = 'Error loading results';
     }
 }
 
-// Load on page load and every 30 seconds
 document.addEventListener('DOMContentLoaded', () => {
     loadResults();
     setInterval(loadResults, 30000);
 });
 
-// Make function available for refresh button
 window.loadResults = loadResults;
 </script>
     
