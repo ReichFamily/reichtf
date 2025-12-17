@@ -49,7 +49,7 @@
 
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
+  "@context": "schema.org",
   "@type": "ItemList",
   "name": "Table of Contents",
   "itemListElement": [
@@ -98,60 +98,66 @@
     {
       "@type": "ListItem",
       "position": 8,
+      "name": "Reich Family Voting System",
+      "url": "https://reich.tf/#votingsystem"
+    },
+    {
+      "@type": "ListItem",
+      "position": 9,
       "name": "Political Beliefs of the Family",
       "url": "https://reich.tf/#political"
     },
     {
       "@type": "ListItem",
-      "position": 9,
+      "position": 10,
       "name": "Raising Our Children",
       "url": "https://reich.tf/#raisingchildren"
     },
     {
       "@type": "ListItem",
-      "position": 10,
+      "position": 11,
       "name": "Celebration of The Coming of Age",
       "url": "https://reich.tf/#comingofage"
     },
     {
       "@type": "ListItem",
-      "position": 11,
+      "position": 12,
       "name": "Human Sexuality Education",
       "url": "https://reich.tf/#humansexuality"
     },
     {
       "@type": "ListItem",
-      "position": 12,
+      "position": 13,
       "name": "Youth Leave Home to Discover the World",
       "url": "https://reich.tf/#teensleavehome"
     },
     {
       "@type": "ListItem",
-      "position": 13,
+      "position": 14,
       "name": "The Human Body is a Temple",
       "url": "https://reich.tf/#temple"
     },
     {
       "@type": "ListItem",
-      "position": 14,
+      "position": 15,
       "name": "Our Opposition to Psychiatry",
       "url": "https://reich.tf/#psychiatry"
     },
     {
       "@type": "ListItem",
-      "position": 15,
+      "position": 16,
       "name": "The Reich Family Is Not a Cult",
       "url": "https://reich.tf/#notacult"
     },
     {
       "@type": "ListItem",
-      "position": 16,
+      "position": 17,
       "name": "Genealogical Research Project",
       "url": "https://reich.tf/#genealogy"
     },
     {
       "@type": "ListItem",
-      "position": 17,
+      "position": 18,
       "name": "Summary of Our Religion and Way of Life",
       "url": "https://reich.tf/#summary"
     }
@@ -603,7 +609,25 @@ style="-webkit-filter: drop-shadow(-5px 5px 5px #000);filter: drop-shadow(-5px 5
 
 <p>The Family governing structure is hierarchical with the administrative branch consisting of His Eminence serving as the Supreme Head of the Family and his Disciples serving as his consultants on the day to day best interests of the Family. The Disciples of His Eminence are twelve in number and are chosen by Reich; however, they are ultimately voted into their positions by the Family. The administrative branch is there to offer guidance and support if needed during decision making processes without forcing any influence or control over the Family. The administrative branch views the Family as the Supreme Governing Body with the ultimate power of their votes. Individual chapters are self-governing on issues that apply solely to their immediate local situations with the final approval granted by His Eminence after consulting with his Disciples. The Family as a whole is made aware of the issues of local chapters and offers advice and assistance if requested.</p>
 
-<p>The decision making process in the Family progresses as follows. An issue is first presented to the Family as a whole or a local chapter. Afterward, we enter the discussion phase. This phase might last for several days depending on the issue. During the discussion phase, His Eminence might offer his opinion, concerns, and guidance on a limited basis. Once all voices are heard in the discussion phase, a vote is cast on the issue. There are three types of votes: a vote in favour, a vote against, or a vote in favour with reservation. The reservation is attached in writing to the vote for the Family to read. The Family's vote is then passed to His Eminence for his final approval. His Eminence consults with his Disciples during this final phase. His Eminence has the ultimate power to reject a Family vote or to ask that the vote return to the discussion phase though both cases are extremely rare due to his respect for the will of the Family. <i>(Explore the <a href="javascript:void(0)" onclick="toggleMenu()">Table of Contents</a> or return to the <a href="#top">Beginning</a>.)</i></p>
+<p>The decision making process in the Family progresses as follows. An issue is first presented to the Family as a whole or a local chapter. Afterward, we enter the discussion phase. This phase might last for several days depending on the issue. During the discussion phase, His Eminence might offer his opinion, concerns, and guidance on a limited basis. Once all voices are heard in the discussion phase, a vote is cast on the issue. There are three types of votes: a vote in favour, a vote against, or a vote in favour with reservation. The reservation is attached in writing to the vote for the Family to read. The Family's vote is then passed to His Eminence for his final approval. His Eminence consults with his Disciples during this final phase. His Eminence has the ultimate power to reject a Family vote or to ask that the vote return to the discussion phase though both cases are extremely rare due to his respect for the will of the Family. To uphold these principles of democracy and shared responsibility, the Reich Family has established a modern voting system that ensures every member’s voice is heard with clarity, fairness, and security. <i>(Explore the <a href="javascript:void(0)" onclick="toggleMenu()">Table of Contents</a> or return to the <a href="#top">Beginning</a>.)</i></p>
+
+<div style="display:flex;">
+<div id="votingsystem" style="margin:auto;">
+<div class="sectionheadings titlelinesheadings">Reich Family Voting System</div>
+</div>
+</div>
+
+<p>The Family’s voting system is an innovative platform, architected and built entirely by advanced AI to our exact specifications and under our direct supervision. It was built exclusively for us to embody clarity, fairness, and accessibility, while introducing modern features that make participation seamless for every member. The voting system is designed to ensure privacy, integrity, and transparency in every election. From casting a ballot to viewing results, every step has been designed to be simple, secure, and transparent.</p>
+
+<p>Members begin by casting their vote through a secure online ballot. Voting is convenient and accessible, enabling members to cast their ballots securely from a phone or any device, no matter where they are. The voting page presents a simple choice — YES or NO — along with the option to provide comments. Each vote requires a verified email address from approved domains, and safeguards are in place to prevent duplicate or invalid submissions. Once submitted, the ballot is packaged with metadata such as timestamp and user agent, then sent securely to the backend for processing.</p>
+
+<p>Votes are processed by a Cloudflare Worker that validates the ballot and records it in a GitHub private repository. This Worker updates the election’s results file by incrementing totals, recalculating percentages, and appending the vote to the immutable history log. If comments are included, they are stored anonymously under YES or NO categories. To protect security, the Worker uses an encrypted GitHub access token stored in its environment, ensuring that repository credentials are never exposed.</p>
+
+<p>Results are then made available through a second Cloudflare Worker, which acts as a proxy. This Worker accepts only requests from the Reich Family’s domain and fetches the updated results file from the private repository. It too relies on an encrypted GitHub token for secure access. The proxy returns the results as JSON data, which can only be consumed through the Family’s official website.</p>
+
+<p>Finally, the results page provides a clear, real‑time view of the election. YES and NO votes are shown side by side with percentages and animated bars, while comments are grouped anonymously beneath each category. A timestamp indicates when the results were last updated, and the page refreshes automatically every thirty seconds to keep members informed. This ensures members can trust both the process and the outcome.</p>
+
+<p>Together, these components form a system that is private, secure, and transparent. By combining Cloudflare Workers, a GitHub private repository, and encrypted tokens, the Reich Family ensures that every vote is protected end‑to‑end while remaining accessible to members in a clear and trustworthy format. This system reflects the Reich Family’s commitment to fairness, security, and accessibility — ensuring every voice is heard and every vote counts. <i>(Explore the <a href="javascript:void(0)" onclick="toggleMenu()">Table of Contents</a> or return to the <a href="#top">Beginning</a>.)</i></p>
 
 <div style="display:flex;">
 <div id="political" style="margin:auto;">
@@ -932,7 +956,7 @@ style="-webkit-filter: drop-shadow(5px 5px 5px #000);filter: drop-shadow(5px 5px
 
 <p>We are the Family of Reich, our anointed earthly Father, whom we dearly love and deeply respect as the Supreme Head of the Reich Family. We rely upon the guidance and teachings of His Eminence. We are immersed in the body of our family, allowing us to express our eternal love and loyalty, one to another. We pray that His Eminence, Blessed and Powerful, will intercede on our behalf to Almighty God, His Son Jesus Christ, and the Holy Spirit, that the Holy Trinity might grant us a good and pure life of happiness; to forgive us of our sins; and to grant us eternal life. Through the Infinite Wisdom of His Eminence Reich, the way is paved.</p>
 
-<p style="text-align:center;"><a href="javascript:void(0)" onclick="toggleMenu()">Explore the Table of Contents</a> or <a href="#top">Return to the Beginning</a></p>
+<p style="text-align:center;"><i>Explore the <a href="javascript:void(0)" onclick="toggleMenu()">Table of Contents</a> or return to the <a href="#top">Beginning</i></a></p>
 
 </div>
 
@@ -948,6 +972,7 @@ style="-webkit-filter: drop-shadow(5px 5px 5px #000);filter: drop-shadow(5px 5px
     <li><a href="#enemies" onclick="closeMenu()">Protection From Our Enemies</a></li>
     <li><a href="#tithing" onclick="closeMenu()">The Concept of Tithing</a></li>
     <li><a href="#government" onclick="closeMenu()">Government of the Family</a></li>
+    <li><a href="#votingsystem" onclick="closeMenu()">Reich Family Voting System</a></li>
     <li><a href="#political" onclick="closeMenu()">Political Beliefs of the Family</a></li>
     <li><a href="#raisingchildren" onclick="closeMenu()">Raising Our Children</a></li>
     <li><a href="#comingofage" onclick="closeMenu()">Celebration of The Coming of Age</a></li>
@@ -1025,7 +1050,6 @@ document.querySelectorAll('.sidebar a').forEach(link => {
     document.querySelector('.overlay').classList.remove('active');
   });
 });
-
 
 </script>
 
