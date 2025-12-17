@@ -729,6 +729,11 @@ margin-left:auto;
 margin-right:auto;
 margin-left:auto;
 }
+.votefamily {
+position: relative;
+margin-right:auto;
+margin-left:auto;
+}
 .motherson {
 margin-left: auto;
 margin-right: auto;
@@ -834,6 +839,9 @@ scroll-margin-top:15px;
 scroll-margin-top:15px;
 }
 #notacult {
+scroll-margin-top:15px;
+}
+#votingsystem {
 scroll-margin-top:15px;
 }
 /* Tablet Layout Ipad Mini down to 480px
@@ -974,12 +982,12 @@ border-radius:12px;
 }
 .articlehr {
 display:block;
-margin:0px auto 15px;
+margin:0px auto 20px;
 border:1px solid #555;
 border-width:0px 0px 1px 0px;
 }
 .articlehralways {
-margin:15px auto 15px;
+margin:15px auto 20px;
 border:1px solid #555;
 border-width:0px 0px 1px 0px;
 }
@@ -1384,6 +1392,11 @@ margin-left:auto;
 margin-right:auto;
 margin-left:auto;
 }
+.votefamily {
+position: relative;
+margin-right:auto;
+margin-left:auto;
+}
 .motherson {
 margin-right:auto;
 margin-left:auto;
@@ -1494,6 +1507,9 @@ scroll-margin-top:15px;
 #notacult {
 scroll-margin-top:15px;
 }
+#votingsystem {
+scroll-margin-top:15px;
+}
 }
 
 /* 12.9 inch Ipad ONLY 1024x1366 This is just for 12-inch Ipad layouts holding
@@ -1544,12 +1560,15 @@ max-width:1000px;
 }
 .articlehr {
 display:block;
-margin:0px auto 15px;
+margin:0px auto 20px;
 border:1px solid #555;
 border-width:0px 0px 1px 0px;
 }
 .articlehralways {
 display:block;
+margin:15px auto 20px;
+border:1px solid #555;
+border-width:0px 0px 1px 0px;
 }
 .footerhr {
 border:1px solid #555;
@@ -1607,6 +1626,12 @@ float:left;
 margin-right:15px;
 }
 .motherdaughtergarden {
+max-width:750px;
+float:right;
+margin-left:15px;
+}
+.votefamily {
+position: relative;
 max-width:750px;
 float:right;
 margin-left:15px;
@@ -1875,7 +1900,7 @@ margin:15px auto 15px;
 border:1px solid #555;
 border-width:1px 1px 1px 1px;
 border-radius:12px;
-max-width:600px;
+max-width:1000px;
 }
 .borderresearch {
 min-height: 100vh;
@@ -1889,13 +1914,13 @@ max-width:1000px;
 }
 .articlehr {
 display:block;
-margin:0px auto 15px;
+margin:0px auto 20px;
 border:1px solid #555;
 border-width:0px 0px 1px 0px;
 }
 .articlehralways {
 display:block;
-margin:0px auto 15px;
+margin:0px auto 20px;
 border:1px solid #555;
 border-width:0px 0px 1px 0px;
 }
@@ -2288,6 +2313,12 @@ max-width:700px;
 float:right;
 margin-left:15px;
 }
+.votefamily {
+position: relative;
+max-width:500px;
+float:right;
+margin-left:15px;
+}
 .motherson {
 max-width:700px;
 float:right;
@@ -2406,6 +2437,9 @@ scroll-margin-top:15px;
 #notacult {
 scroll-margin-top:15px;
 }
+#votingsystem {
+scroll-margin-top:15px;
+}
 }
 
 /* Desktop Layout: 1367px and above. This is here to place the white outline around the content with 15px margin top and bottom for screens above 1366px. Inherits styles from: Mobile Layout and Tablet Layout. */
@@ -2438,7 +2472,7 @@ margin:15px auto 15px;
 border:1px solid #555;
 border-width:1px 1px 1px 1px;
 border-radius:12px;
-max-width:600px;
+max-width:1000px;
 }
 .borderresearch {
 min-height: 100vh;
