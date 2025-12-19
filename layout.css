@@ -854,6 +854,11 @@ position: relative;
 margin-left:auto;
 margin-right:auto;
 }
+.votefamily {
+position: relative;
+margin-left:auto;
+margin-right:auto;
+}
 .motherson {
 margin-left: auto;
 margin-right: auto;
@@ -1085,11 +1090,10 @@ border-radius:12px;
 min-height: 100vh;
 display:flex;
 flex-direction:column;
-margin:15px auto 15px;
+margin:0px 0px 0px;
 border:1px solid #555;
-border-width:1px 1px 1px 1px;
+border-width:0px 0px 0px 0px;
 border-radius:12px;
-max-width:600px;
 }
 .borderresearch {
 min-height: 100vh;
@@ -1531,6 +1535,12 @@ width:320px;
 float:right;
 margin-left:10px;
 }
+.votefamily {
+position: relative;
+width:520px;
+float:right;
+margin-left:10px;
+}
 .motherson {
 margin-right:auto;
 margin-left:auto;
@@ -1676,11 +1686,10 @@ border-radius:12px;
 min-height: 100vh;
 display:flex;
 flex-direction:column;
-margin:15px auto 15px;
+margin:0px 0px 0px;
 border:1px solid #555;
-border-width:1px 1px 1px 1px;
+border-width:0px 0px 0px 0px;
 border-radius:12px;
-max-width:600px;
 }
 .borderresearch {
 min-height: 100vh;
@@ -1780,6 +1789,12 @@ line-height:1.4;
 .votefamilysample {
 position: relative;
 width:350px;
+float:right;
+margin-left:10px;
+}
+.votefamily {
+position: relative;
+width:580px;
 float:right;
 margin-left:10px;
 }
@@ -2476,6 +2491,12 @@ line-height:1.4;
 .votefamilysample {
 position: relative;
 width:350px;
+float:right;
+margin-left:10px;
+}
+.votefamily {
+position: relative;
+width:580px;
 float:right;
 margin-left:10px;
 }
