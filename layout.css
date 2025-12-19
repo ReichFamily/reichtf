@@ -840,14 +840,19 @@ margin-left:auto;
 margin-left: auto;
 margin-right: auto;
 margin-bottom:26px;
-font-size:0.62rem;
+font-size:0.80rem;
 margin-bottom:26px;
+}
+.sectionheadingsvote {
+font-family:TrajanPro3-Regular;
+font-size:0.65rem;
+text-align:center;
+line-height:1.4;
 }
 .votefamily {
 position: relative;
-width:215px;
-float:right;
-margin-left:10px;
+margin-left:auto;
+margin-right:auto;
 }
 .motherson {
 margin-left: auto;
@@ -1511,8 +1516,14 @@ margin-left:auto;
 width: 500px;
 float: right; 
 margin-left: 15px;
-font-size:0.70rem;
+font-size:0.68rem;
 margin-bottom:0px;
+}
+.sectionheadingsvote {
+font-family:TrajanPro3-Regular;
+font-size:0.55rem;
+text-align:center;
+line-height:1.4;
 }
 .votefamily {
 position: relative;
@@ -1757,8 +1768,14 @@ margin-left:15px;
 width: 500px;
 float: right; 
 margin-left: 15px;
-font-size:0.70rem;
+font-size:0.68rem;
 margin-bottom:0px;
+}
+.sectionheadingsvote {
+font-family:TrajanPro3-Regular;
+font-size:0.55rem;
+text-align:center;
+line-height:1.4;
 }
 .votefamily {
 position: relative;
@@ -2447,8 +2464,14 @@ margin-left:15px;
 width: 500px;
 float: right; 
 margin-left: 15px;
-font-size:0.70rem;
+font-size:0.68rem;
 margin-bottom:0px;
+}
+.sectionheadingsvote {
+font-family:TrajanPro3-Regular;
+font-size:0.55rem;
+text-align:center;
+line-height:1.4;
 }
 .votefamily {
 position: relative;
