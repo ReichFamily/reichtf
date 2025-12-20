@@ -159,6 +159,7 @@ font-family: inherit;
 
 textarea, input,[type="email"] {
 box-sizing: border-box;
+background-color:#ffedd0;
 max-width: 100%;
 }
 
@@ -190,7 +191,7 @@ background: #27ae60;
 }
 
 button:disabled {
-background: #006600;
+background: #95a5a6;  /* GRAY when disabled */
 cursor: not-allowed;
 }
 
