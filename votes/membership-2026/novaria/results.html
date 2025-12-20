@@ -297,6 +297,12 @@ async function loadResults() {
     }
 }
 
+// Load on page load and every 30 seconds
+document.addEventListener('DOMContentLoaded', () => {
+    loadResults();
+    setInterval(loadResults, 30000);
+});
+    
 // Manual refresh
 window.loadResults = loadResults;
 </script>
