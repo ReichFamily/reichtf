@@ -1,0 +1,139 @@
+<!doctype html>
+<html class=""><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Footer</title> 
+
+<!--CSS Referrals-->
+<link href="layout.css" rel="stylesheet" type="text/css">
+<link href="boilerplate.css" rel="stylesheet" type="text/css">
+<link rel="shortcut icon" href="favicon.ico">
+
+<!--Prevent All Search Engines From Indexing-->
+<meta name="robots" content="noindex, noimageindex, nofollow, noarchive">
+
+<!--Fonts-->
+<link rel="preload" href="fonts/OpenSans-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/Montserrat-ThinItalic.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/ITCEDSCR.TTF" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/Montserrat-ExtraLightItalic.ttf" as="font" type="font/ttf" crossorigin>
+<style>
+
+@media print {
+  body {
+    display: none;
+  }
+}
+
+@font-face {
+  font-family:ITCEDSCR;
+  src: url(fonts/ITCEDSCR.TTF);
+  font-display: block;
+}
+@font-face {
+  font-family:VIVALDII;
+  src: url(fonts/VIVALDII.TTF);
+  font-display: block;
+}
+@font-face {
+  font-family:TrajanPro3-Regular;
+  src: url(fonts/TrajanPro3-Regular.otf);
+  font-display: block;
+}
+@font-face {
+  font-family:Cinzel-Regular;
+  src: url(fonts/Cinzel-Regular.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:OpenSans-Light;
+  src: url(fonts/OpenSans-Light.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:OpenSans-Regular;
+  src: url(fonts/OpenSans-Regular.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:Montserrat-Light;
+  src: url(fonts/Montserrat-Light.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:Montserrat-Thin;
+  src: url(fonts/Montserrat-Thin.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:Montserrat-ThinItalic;
+  src: url(fonts/Montserrat-ThinItalic.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:Montserrat-ExtraLight;
+  src: url(fonts/Montserrat-ExtraLight.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:Montserrat-ExtraLightItalic;
+  src: url(fonts/Montserrat-ExtraLightItalic.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:Montserrat-LightItalic;
+  src: url(fonts/Montserrat-LightItalic.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:PinyonScript-Regular;
+  src: url(fonts/PinyonScript-Regular.ttf);
+  font-display: block;
+}
+
+</style>
+
+<script src="respond.min.js"></script>
+
+<script>
+    function killCopy(e){
+        return false;
+    }
+    function reEnable(){
+        return true;
+    }
+    document.onselectstart=new Function ("return false");
+    if (window.sidebar){
+        document.onmousedown=killCopy;
+        document.onclick=reEnable;
+    }
+</script>
+
+</head>
+
+<body oncontextmenu="return false;">
+
+<script>
+document.addEventListener('keyup', (e) => {
+    if (e.key == 'PrintScreen') {
+        navigator.clipboard.writeText('');
+        alert('Screenshots disabled!');
+    }
+});
+</script>
+
+<footer>
+<img class="footerimage" src="images/holytrinitytriangle.png" alt="trinityseal"/>
+<p class="footertitle">Reich Family</p>
+<p class="footeremail"><a style="color:#7D0510;" href="mailto:family@reich.tf">family@reich.tf</a></p>
+<p class="footercopyright">Copyright 2025 All Rights Reserved</p>
+</footer>
+
+</div>
+
+<script src="iframe-resizer.child.js"></script>
+
+<script>iframeResize({ license: "GPLv3" });</script>
+
+</body>
+</html>
