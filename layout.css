@@ -119,8 +119,6 @@ margin:auto -15px 40px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Remove these entire sections: */
-
 /* Force side-by-side on all screens */
 @media (max-width: 700px) {
   .vote-options {
@@ -157,9 +155,8 @@ min-height: 120px;
 font-family: inherit;
 }
 
-textarea, input,[type="email"] {
+textarea, input, [type="email"] {
 box-sizing: border-box;
-background-color:#ffedd0;
 max-width: 100%;
 }
 
@@ -167,7 +164,7 @@ input[type="email"] {
 width: 100%;
 padding: 1rem;
 border: 1px solid #000;
-background-color:#ffedd0;
+background-color:#ffedd0 !important;
 border-radius: 6px;
 font-size: 1rem;
 margin: 1rem 0;
