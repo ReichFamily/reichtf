@@ -171,7 +171,7 @@ margin: 0rem 0;
 }
 
 button {
-background: #006600;
+background: #2ecc71;
 color: white;
 border: none;
 padding: 1rem 2rem;
@@ -188,7 +188,7 @@ background: #27ae60;
 }
 
 button:disabled {
-background: #95a5a6;  /* GRAY when disabled */
+background: #95a5a6;
 cursor: not-allowed;
 }
 
