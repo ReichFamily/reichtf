@@ -1185,12 +1185,12 @@ border-radius:12px;
 }
 .articlehr {
 display:block;
-margin:0px auto 20px;
+margin:0px auto 15px;
 border:1px solid #555;
 border-width:0px 0px 1px 0px;
 }
 .articlehralways {
-margin:15px auto 20px;
+margin:15px auto 15px;
 border:1px solid #555;
 border-width:0px 0px 1px 0px;
 }
@@ -1782,13 +1782,13 @@ max-width:1000px;
 }
 .articlehr {
 display:block;
-margin:0px auto 20px;
+margin:0px auto 15px;
 border:1px solid #555;
 border-width:0px 0px 1px 0px;
 }
 .articlehralways {
 display:block;
-margin:15px auto 20px;
+margin:15px auto 15px;
 border:1px solid #555;
 border-width:0px 0px 1px 0px;
 }
@@ -2155,13 +2155,13 @@ max-width:1000px;
 }
 .articlehr {
 display:block;
-margin:0px auto 20px;
+margin:0px auto 15px;
 border:1px solid #555;
 border-width:0px 0px 1px 0px;
 }
 .articlehralways {
 display:block;
-margin:0px auto 20px;
+margin:0px auto 15px;
 border:1px solid #555;
 border-width:0px 0px 1px 0px;
 }
