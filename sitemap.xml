@@ -16,11 +16,6 @@
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://reich.tf/disciples</loc>
-    <lastmod>2025-11-23T11:30:01+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-  <url>
     <loc>https://reich.tf/research/pollyklaas</loc>
     <lastmod>2025-11-23T11:30:01+00:00</lastmod>
     <priority>0.80</priority>
@@ -46,3 +41,4 @@
     <priority>0.60</priority>
   </url>
 </urlset>
+
