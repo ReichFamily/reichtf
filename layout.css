@@ -439,6 +439,21 @@ font-size:0.85rem;
 text-align:center;
 line-height:1;
 }
+.anticultheadings {
+font-family:TrajanPro3-Regular;
+font-size:0.85rem;
+font-weight:bold;
+text-align:center;
+line-height:1;
+margin-top:20px;
+}
+.anticultsubheadings {
+font-family:Montserrat-LightItalic;
+font-size: 0.9rem;
+margin:10px auto 20px;
+line-height:1.8;
+text-align:justify;
+}
 .articleheadings {
 font-size:0.9rem;
 text-align:center;
@@ -1114,6 +1129,22 @@ font-family:TrajanPro3-Regular;
 font-size:0.9rem;
 text-align:center;
 line-height:1;
+}
+.anticultheadings {
+font-family:TrajanPro3-Regular;
+font-size:0.9rem;
+font-weight:bold;
+text-align:center;
+line-height:1;
+margin-top:30px;
+}
+.anticultsubheadings {
+font-family:Montserrat-LightItalic;
+font-size: 1.0rem;
+margin:-8px auto 30px;
+text-align:center;
+max-width:600px;
+line-height:1.4;
 }
 .articleheadings {
 font-size:1.0rem;
@@ -2091,6 +2122,22 @@ font-family:TrajanPro3-Regular;
 font-size:0.9rem;
 text-align:center;
 line-height:1;
+}
+.anticultheadings {
+font-family:TrajanPro3-Regular;
+font-size:0.9rem;
+font-weight:bold;
+text-align:center;
+line-height:1;
+margin-top:30px;
+}
+.anticultsubheadings {
+font-family:Montserrat-LightItalic;
+font-size: 1.0rem;
+margin:-8px auto 30px;
+text-align:center;
+max-width:600px;
+line-height:1.4;
 }
 .articleheadings {
 font-size:1.0rem;
