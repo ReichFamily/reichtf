@@ -2076,6 +2076,9 @@ max-width:700px;
 float:left;
 margin-right:15px;
 }
+.anticultheadings {
+clear:both;
+}
 }
 
 /* Desktop Layout: 1280px to a max of 1366px - Everything above Ipad Pro 11-inch. Inherits styles from: Mobile Layout and Tablet Layout. */
@@ -2132,6 +2135,7 @@ line-height:1;
 margin-top:30px;
 }
 .anticultsubheadings {
+display:flex;
 font-family:Montserrat-LightItalic;
 font-size: 1.0rem;
 margin:-8px auto 30px;
