@@ -1095,6 +1095,16 @@ button.close-btn:hover {
 
 </div>
 
+<!-- Add this before your iframe -->
+<script>
+if (navigator.userAgent.includes('Opera') || 
+    navigator.userAgent.includes('OPR')) {
+  // Opera gets a simplified static footer
+  document.write('<footer>Simple static footer</footer>');
+  throw new Error('Opera footer loaded'); // Stops iframe from loading
+}
+</script>
+
 <iframe id="myIframe" src="footer.html" width="100%" height="100vh" frameborder="no"></iframe>
 
 <script src="iframe-resizer.parent.js"></script>
@@ -1164,4 +1174,3 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 
 </body>
 </html>
-
