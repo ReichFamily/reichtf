@@ -1099,7 +1099,16 @@ button.close-btn:hover {
 
 <script src="iframe-resizer.parent.js"></script>
 
-<script>if(!/Opera|OPR/.test(navigator.userAgent)){iframeResize({license:"GPLv3"});}</script>
+<script>
+if (!/Opera|OPR/.test(navigator.userAgent)) {
+  iframeResize({ license: "GPLv3" });
+} else {
+  // Opera-only fix: adjust iframe height after load
+  document.getElementById('myIframe').onload = function() {
+    this.style.height = this.contentWindow.document.body.scrollHeight + 'px';
+  };
+}
+</script>
 
 </div>
 
@@ -1164,4 +1173,3 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 
 </body>
 </html>
-
