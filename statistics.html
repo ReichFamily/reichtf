@@ -451,7 +451,10 @@ document.getElementById('clearFiltersBtn').addEventListener('click', () => {
     
     loadData(true);
 });
-        
+        // DEBUG: Watch for checkbox changes
+document.getElementById('excludeBots').addEventListener('change', function(e) {
+    console.log('excludeBots changed to:', this.checked, 'by:', e.target);
+});     
         setInterval(() => loadData(false), REFRESH_INTERVAL);
         document.getElementById('exportBtn').addEventListener('click', exportToCSV);
         
