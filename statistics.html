@@ -626,6 +626,8 @@ document.getElementById('excludeBots').addEventListener('change', function(e) {
         }
     }
 function renderTable() {
+    console.log('renderTable called with', visitorData.length, 'rows');
+console.log('First row:', visitorData[0]);
     const tbody = document.getElementById('tableBody');
     
     if (visitorData.length === 0) {
