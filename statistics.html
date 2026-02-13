@@ -599,73 +599,73 @@ document.getElementById('excludeBots').addEventListener('change', function(e) {
             select.value = currentValue;
         }
     }
-
-    function renderTable() {
-        const tbody = document.getElementById('tableBody');
-        
-        if (visitorData.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="9" class="loading">📭 No visitor data found</td></tr>';
-            return;
-        }
-        
-        let html = '';
-        visitorData.forEach(row => {
-            const date = new Date(row.ts);
-            const timeStr = date.toLocaleString('en-US', {
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            
-            const deviceIcons = {
-                'desktop': '💻',
-                'mobile': '📱',
-                'tablet': '📟',
-                'unknown': '❓'
-            };
-            const deviceIcon = deviceIcons[row.device?.toLowerCase()] || '💻';
-            
-            const isBot = row.bot === 1 || row.bot === true;
-            const botBadge = isBot 
-                ? '<span class="badge badge-bot">🤖 BOT</span>' 
-                : '<span class="badge badge-real">👤 Real</span>';
-            
-            const url = row.url || '/';
-            const displayUrl = url.length > 40 ? url.substring(0, 40) + '…' : url;
-            
-            const referrer = row.referrer || '—';
-            const displayReferrer = referrer.length > 30 ? referrer.substring(0, 30) + '…' : referrer;
-            
-            const location = row.country 
-                ? `${row.country}${row.city ? `, ${row.city}` : ''}`
-                : '—';
-            
-            const sessionId = row.session_id 
-                ? row.session_id.substring(0, 8) + '…' 
-                : '—';
-            
-            html += `<tr>
-                <td style="white-space: nowrap;">${timeStr}</td>
-                <td>${row.ip || '—'}</td>
-                <td>
-                    <span class="badge badge-country">${row.country || '🌐'}</span>
-                    ${row.city ? `<span style="color: #6b7280; font-size: 11px;">${row.city}</span>` : ''}
-                </td>
-                <td>
-                    <span class="badge badge-device">${deviceIcon} ${row.device || 'unknown'}</span>
-                </td>
-                <td><a href="${url}" target="_blank" title="${url}">${displayUrl}</a></td>
-                <td>${referrer !== '—' ? `<a href="${referrer}" target="_blank" title="${row.referrer}">${displayReferrer}</a>` : '—'}</td>
-                <td><div class="truncate" title="${row.ua || ''}">${row.ua ? row.ua.substring(0, 50) + '…' : '—'}</div></td>
-                <td><span title="${row.session_id || ''}">${sessionId}</span></td>
-                <td>${botBadge}</td>
-            </tr>`;
+function renderTable() {
+    const tbody = document.getElementById('tableBody');
+    
+    if (visitorData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="loading">📭 No visitor data found</td></tr>';
+        return;
+    }
+    
+    let html = '';
+    visitorData.forEach(row => {
+        const date = new Date(row.ts);
+        const timeStr = date.toLocaleString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
         });
         
-        tbody.innerHTML = html;
-    }
+        const deviceIcons = {
+            'desktop': '💻',
+            'mobile': '📱',
+            'tablet': '📟',
+            'unknown': '❓'
+        };
+        const deviceIcon = deviceIcons[row.device?.toLowerCase()] || '💻';
+        
+        const isBot = row.bot === 1 || row.bot === true;
+        const botBadge = isBot 
+            ? '<span class="badge badge-bot">🤖 BOT</span>' 
+            : '<span class="badge badge-real">👤 Real</span>';
+        
+        const pagePath = row.url || '/';
+        const fullPageUrl = pagePath.startsWith('http') ? pagePath : `https://reich.tf${pagePath}`;
+        const displayPageUrl = fullPageUrl.length > 50 ? fullPageUrl.substring(0, 50) + '…' : fullPageUrl;
+        
+        const referrer = row.referrer || row.Referer || row.referer || '';
+        const displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer || '—';
+        
+        const location = row.country 
+            ? `${row.country}${row.city ? `, ${row.city}` : ''}`
+            : '—';
+        
+        const sessionId = row.session_id 
+            ? row.session_id.substring(0, 8) + '…' 
+            : '—';
+        
+        html += `<tr>
+            <td style="white-space: nowrap;">${timeStr}</td>
+            <td>${row.ip || '—'}</td>
+            <td>
+                <span class="badge badge-country">${row.country || '🌐'}</span>
+                ${row.city ? `<span style="color: #6b7280; font-size: 11px;">${row.city}</span>` : ''}
+            </td>
+            <td>
+                <span class="badge badge-device">${deviceIcon} ${row.device || 'unknown'}</span>
+            </td>
+            <td>${referrer !== '—' ? `<a href="${referrer}" target="_blank" title="${referrer}">${displayReferrer}</a>` : '—'}</td>
+            <td><a href="${fullPageUrl}" target="_blank" title="${fullPageUrl}">${displayPageUrl}</a></td>
+            <td><div class="truncate" title="${row.ua || ''}">${row.ua ? row.ua.substring(0, 50) + '…' : '—'}</div></td>
+            <td><span title="${row.session_id || ''}">${sessionId}</span></td>
+            <td>${botBadge}</td>
+        </tr>`;
+    });
+    
+    tbody.innerHTML = html;
+}
 
     function updateLastUpdated() {
         const now = new Date();
