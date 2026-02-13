@@ -644,17 +644,17 @@ function renderTable() {
             second: '2-digit'
         });
         
-        // Browser display (with version)
+        // Browser display
         const browserDisplay = row.browser && row.browser_version 
             ? `${row.browser} ${row.browser_version}` 
             : row.browser || '—';
         
-        // OS display (with version)
+        // OS display
         const osDisplay = row.os && row.os_version 
             ? `${row.os} ${row.os_version}` 
             : row.os || '—';
         
-        // Screen size display - FIXED
+        // Screen size display
         const screenDisplay = row.screen_width && row.screen_height 
             ? `${row.screen_width}x${row.screen_height}` 
             : '—';
@@ -672,8 +672,8 @@ function renderTable() {
             ? '<span class="badge badge-bot">🤖 BOT</span>' 
             : '<span class="badge badge-real">👤 Real</span>';
         
-        const fullPageUrl = row.url?.startsWith('http') ? row.url : `https://reich.tf${row.url || '/'}`;
-        const displayPageUrl = fullPageUrl.length > 50 ? fullPageUrl.substring(0, 50) + '…' : fullPageUrl;
+        const url = row.url || '/';
+        const displayUrl = url.length > 40 ? url.substring(0, 40) + '…' : url;
         
         const referrer = row.referrer || '';
         const displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer || '—';
@@ -696,8 +696,8 @@ function renderTable() {
             <td>
                 <span class="badge badge-device">${deviceIcon} ${row.device || 'unknown'}</span>
             </td>
-            <td>${referrer !== '—' ? `<a href="${referrer}" target="_blank" title="${referrer}">${displayReferrer}</a>` : '—'}</td>
-            <td><a href="${fullPageUrl}" target="_blank" title="${fullPageUrl}">${displayPageUrl}</a></td>
+            <td>${referrer !== '—' ? `<a href="${referrer}" target="_blank" title="${row.referrer}">${displayReferrer}</a>` : '—'}</td>
+            <td><a href="${url}" target="_blank" title="${url}">${displayUrl}</a></td>
             <td>${browserDisplay}</td>
             <td>${osDisplay}</td>
             <td>${screenDisplay}</td>
