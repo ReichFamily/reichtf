@@ -626,8 +626,6 @@ document.getElementById('excludeBots').addEventListener('change', function(e) {
         }
     }
 function renderTable() {
-    console.log('renderTable called with', visitorData.length, 'rows');
-console.log('First row:', visitorData[0]);
     const tbody = document.getElementById('tableBody');
     
     if (visitorData.length === 0) {
@@ -674,9 +672,12 @@ console.log('First row:', visitorData[0]);
             ? '<span class="badge badge-bot">🤖 BOT</span>' 
             : '<span class="badge badge-real">👤 Real</span>';
         
-        const url = row.url || '/';
-        const displayUrl = url.length > 40 ? url.substring(0, 40) + '…' : url;
+        // Full URL for page
+        const pagePath = row.url || '/';
+        const fullPageUrl = pagePath.startsWith('http') ? pagePath : `https://reich.tf${pagePath}`;
+        const displayPageUrl = fullPageUrl.length > 50 ? fullPageUrl.substring(0, 50) + '…' : fullPageUrl;
         
+        // Referrer
         const referrer = row.referrer || '';
         const displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer || '—';
         
@@ -698,8 +699,8 @@ console.log('First row:', visitorData[0]);
             <td>
                 <span class="badge badge-device">${deviceIcon} ${row.device || 'unknown'}</span>
             </td>
-            <td>${referrer !== '—' ? `<a href="${referrer}" target="_blank" title="${row.referrer}">${displayReferrer}</a>` : '—'}</td>
-            <td><a href="https://reich.tf${url}" target="_blank" title="https://reich.tf${url}">https://reich.tf${displayUrl}</a></td>
+            <td>${referrer !== '—' ? `<a href="${referrer}" target="_blank" title="${referrer}">${displayReferrer}</a>` : '—'}</td>
+            <td><a href="${fullPageUrl}" target="_blank" title="${fullPageUrl}">${displayPageUrl}</a></td>
             <td>${browserDisplay}</td>
             <td>${osDisplay}</td>
             <td>${screenDisplay}</td>
