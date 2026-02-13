@@ -1229,7 +1229,6 @@ hs.src = ('//s10.histats.com/js15_as.js');
 <!-- Histats.com  END  -->
 
 <script>
-  // Analytics Tracking - PASTE THIS ON YOUR SITE
   (function() {
     const collector = 'https://crimson-hill-ea2e.reich-family.workers.dev';
     const url = location.pathname + location.search;
@@ -1239,12 +1238,28 @@ hs.src = ('//s10.histats.com/js15_as.js');
       localStorage.setItem('sid', sid);
     }
     
-    // Send beacon
-    navigator.sendBeacon?.(collector, JSON.stringify({ u: url, sid }));
+    // Send beacon with referrer
+    navigator.sendBeacon?.(collector, JSON.stringify({ 
+      u: url, 
+      sid,
+      r: document.referrer  // ← EXPLICITLY SEND REFERRER
+    }));
     
-    // Pixel fallback
+    // Fetch fallback with referrer policy
+    fetch(collector, {
+      method: 'POST',
+      body: JSON.stringify({ u: url, sid, r: document.referrer }),
+      headers: { 'Content-Type': 'application/json' },
+      referrerPolicy: 'unsafe-url',
+      keepalive: true
+    }).catch(() => {});
+    
+    // Pixel fallback with referrer policy
     const img = new Image(1, 1);
-    img.src = collector + '?u=' + encodeURIComponent(url) + '&sid=' + encodeURIComponent(sid) + '&r=' + encodeURIComponent(document.referrer);
+    img.referrerPolicy = 'unsafe-url';
+    img.src = collector + '?u=' + encodeURIComponent(url) + 
+              '&sid=' + encodeURIComponent(sid) + 
+              '&r=' + encodeURIComponent(document.referrer);
     img.alt = '';
     img.style.display = 'none';
     document.body.appendChild(img);
