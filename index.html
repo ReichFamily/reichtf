@@ -1228,5 +1228,28 @@ hs.src = ('//s10.histats.com/js15_as.js');
 <noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?5008388&101" alt="free webpage hit counter" border="0"></a></noscript>
 <!-- Histats.com  END  -->
 
+<script>
+  // Analytics Tracking - PASTE THIS ON YOUR SITE
+  (function() {
+    const collector = 'https://crimson-hill-ea2e.reich-family.workers.dev';
+    const url = location.pathname + location.search;
+    let sid = localStorage.getItem('sid');
+    if (!sid) {
+      sid = 's_' + Math.random().toString(36).slice(2, 12);
+      localStorage.setItem('sid', sid);
+    }
+    
+    // Send beacon
+    navigator.sendBeacon?.(collector, JSON.stringify({ u: url, sid }));
+    
+    // Pixel fallback
+    const img = new Image(1, 1);
+    img.src = collector + '?u=' + encodeURIComponent(url) + '&sid=' + encodeURIComponent(sid) + '&r=' + encodeURIComponent(document.referrer);
+    img.alt = '';
+    img.style.display = 'none';
+    document.body.appendChild(img);
+  })();
+</script>
+
 </body>
 </html>
