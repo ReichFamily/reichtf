@@ -650,25 +650,21 @@ function renderTable() {
             second: '2-digit'
         });
         
-        // FIXED: Browser display - use the browser field directly
-        // The data has "Firefox 140" in the browser field, not separate fields
+        // BROWSER - just use whatever is there
         const browserDisplay = row.browser || '—';
         
-        // FIXED: OS display - use the os field directly  
-        // The data has "Windows 11" in the os field, not separate fields
+        // OS - just use whatever is there  
         const osDisplay = row.os || '—';
         
-        // FIXED: Screen size display
-        const screenDisplay = row.screen_width && row.screen_height 
-            ? `${row.screen_width}x${row.screen_height}` 
-            : (row.screen_width ? `${row.screen_width}` : '—');
+        // SCREEN - width only if height missing
+        const screenDisplay = row.screen_width 
+            ? (row.screen_height ? `${row.screen_width}x${row.screen_height}` : String(row.screen_width))
+            : '—';
         
-        // Location display - combine country and city into one string
         const locationDisplay = row.country 
             ? `${row.country}${row.city ? `, ${row.city}` : ''}`
             : '—';
         
-        // Device display - just the device name
         const deviceDisplay = row.device || '—';
         
         const isBot = row.bot === 1 || row.bot === true;
@@ -676,12 +672,10 @@ function renderTable() {
             ? '<span class="badge badge-bot">🤖 BOT</span>' 
             : '<span class="badge badge-real">👤 Real</span>';
         
-        // Full URL for page
         const pagePath = row.url || '/';
         const fullPageUrl = pagePath.startsWith('http') ? pagePath : `https://reich.tf${pagePath}`;
         const displayPageUrl = fullPageUrl.length > 50 ? fullPageUrl.substring(0, 50) + '…' : fullPageUrl;
         
-        // Referrer
         const referrer = row.referrer || '';
         const displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer || '—';
         
