@@ -609,6 +609,7 @@ function renderTable() {
     
     let html = '';
     visitorData.forEach(row => {
+        console.log('Referrer:', row.referrer, 'Page:', row.url);
         const date = new Date(row.ts);
         const timeStr = date.toLocaleString('en-US', {
             month: 'short',
