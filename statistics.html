@@ -644,25 +644,21 @@ function renderTable() {
             second: '2-digit'
         });
         
-        // Parse User Agent for browser and OS
-        const ua = row.ua || '';
-        let browser = 'Unknown';
-        let os = 'Unknown';
+        // Browser display
+        const browserDisplay = row.browser && row.browser_version 
+            ? `${row.browser} ${row.browser_version}` 
+            : row.browser || '—';
         
-        if (ua.includes('Firefox/')) browser = 'Firefox';
-        else if (ua.includes('Chrome/') && !ua.includes('Edg/')) browser = 'Chrome';
-        else if (ua.includes('Safari/') && !ua.includes('Chrome/')) browser = 'Safari';
-        else if (ua.includes('Edg/')) browser = 'Edge';
-        else if (ua.includes('OPR/')) browser = 'Opera';
+        // OS display
+        const osDisplay = row.os && row.os_version 
+            ? `${row.os} ${row.os_version}` 
+            : row.os || '—';
         
-        if (ua.includes('Windows NT 10.0')) os = 'Windows 11';
-        else if (ua.includes('Windows NT 6.1')) os = 'Windows 7';
-        else if (ua.includes('Mac OS X')) os = 'macOS';
-        else if (ua.includes('Android')) os = 'Android';
-        else if (ua.includes('iPhone') || ua.includes('iPad')) os = 'iOS';
-        else if (ua.includes('Linux')) os = 'Linux';
+        // Screen size display
+        const screenDisplay = row.screen_width && row.screen_height 
+            ? `${row.screen_width}x${row.screen_height}` 
+            : '—';
         
-        // Device type
         const deviceIcons = {
             'desktop': '💻',
             'mobile': '📱',
@@ -671,16 +667,13 @@ function renderTable() {
         };
         const deviceIcon = deviceIcons[row.device?.toLowerCase()] || '💻';
         
-        // Screen size (you'll need to add this to your collector first)
-        const screenSize = row.screen || '—';
-        
         const isBot = row.bot === 1 || row.bot === true;
         const botBadge = isBot 
             ? '<span class="badge badge-bot">🤖 BOT</span>' 
             : '<span class="badge badge-real">👤 Real</span>';
         
-        const fullPageUrl = row.url?.startsWith('http') ? row.url : `https://reich.tf${row.url || '/'}`;
-        const displayPageUrl = fullPageUrl.length > 50 ? fullPageUrl.substring(0, 50) + '…' : fullPageUrl;
+        const url = row.url || '/';
+        const displayUrl = url.length > 40 ? url.substring(0, 40) + '…' : url;
         
         const referrer = row.referrer || '';
         const displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer || '—';
@@ -703,12 +696,12 @@ function renderTable() {
             <td>
                 <span class="badge badge-device">${deviceIcon} ${row.device || 'unknown'}</span>
             </td>
-            <td>${referrer !== '—' ? `<a href="${referrer}" target="_blank" title="${referrer}">${displayReferrer}</a>` : '—'}</td>
-            <td><a href="${fullPageUrl}" target="_blank" title="${fullPageUrl}">${displayPageUrl}</a></td>
-            <td>${browser}</td>      <!-- NEW: Browser column -->
-            <td>${os}</td>            <!-- NEW: OS column -->
-            <td>${screenSize}</td>    <!-- NEW: Screen size column -->
-            <td><div class="truncate" title="${ua}">${ua.substring(0, 30)}…</div></td>
+            <td>${referrer !== '—' ? `<a href="${referrer}" target="_blank" title="${row.referrer}">${displayReferrer}</a>` : '—'}</td>
+            <td><a href="${url}" target="_blank" title="${url}">${displayUrl}</a></td>
+            <td>${browserDisplay}</td>
+            <td>${osDisplay}</td>
+            <td>${screenDisplay}</td>
+            <td><div class="truncate" title="${row.ua || ''}">${row.ua ? row.ua.substring(0, 30) + '…' : '—'}</div></td>
             <td><span title="${row.session_id || ''}">${sessionId}</span></td>
             <td>${botBadge}</td>
         </tr>`;
