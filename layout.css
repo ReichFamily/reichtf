@@ -235,49 +235,41 @@ z-index: 1000;
 font-size: 13px;
 box-shadow: -6px 0 12px rgba(0,0,0,0.08);
 }
-
 .sidebar.open {
 right: 0;                 /* slide in */
 }
-
 .sidebar h3 {
 margin: 0 0 10px;
 font-size: 18px;
 }
-
 .sidebar ul {
 list-style: none;
 margin: 0;
 padding: 0;
 }
-
 .sidebar li {
 margin: 8px 0;
 }
-
 .sidebar a {
 color: #333;
 text-decoration: none;
 }
-
 .sidebar a:hover {
 text-decoration: underline;
 }
-
 .close-btn {
 background: none;
 border: none;
 font-size: 18px;
 cursor: pointer;
-
 position: absolute;
-top: 12px;
+top: 16px;
 right: 12px;   /* inside the sidebar’s padding */
 }
 /* ADD THIS RULE TO OVERRIDE THE GREEN HOVER */
 #sidebar .close-btn:hover {
-    color: inherit !important;
-    background-color: transparent !important;
+color: inherit !important;
+background-color: transparent !important;
 }
 /* Section-end links */
 .section-links {
@@ -289,7 +281,7 @@ margin-left: 12px;
 font-weight: bold;
 }
 
-/* Responsive: ≤600px */
+/*Mobile and Nexus 7*/
 @media (max-width: 600px) {
 .sidebar {
 width: 280px;           /* narrower on mobile */
@@ -301,12 +293,13 @@ font-size: 11px;
 }
 .close-btn {
 font-size: 16px;
+top: 10px; 
+right: 0px;   
 }
 .sidebar li {
 margin: 6px 0;
 }
 }
-
 .overlay {
 position: fixed;
 inset: 0;
@@ -320,7 +313,6 @@ z-index: 999;
 opacity: 1;
 visibility: visible;
 }
-
 .sidebar {
 position: fixed;
 z-index: 1000; /* keep sidebar above overlay */
@@ -1050,7 +1042,7 @@ scroll-margin-top:15px;
 #humansexuality {
 scroll-margin-top:15px;
 }
-#teensleavehome {
+#timeofreflection {
 scroll-margin-top:15px;
 }
 #temple {
@@ -1754,7 +1746,7 @@ scroll-margin-top:15px;
 #humansexuality {
 scroll-margin-top:15px;
 }
-#teensleavehome {
+#timeofreflection {
 scroll-margin-top:15px;
 }
 #temple {
@@ -2744,7 +2736,7 @@ scroll-margin-top:15px;
 #humansexuality {
 scroll-margin-top:15px;
 }
-#teensleavehome {
+#timeofreflection {
 scroll-margin-top:15px;
 }
 #temple {
