@@ -388,19 +388,22 @@
             
             <div class="table-wrapper">
                 <table id="visitorTable">
-                    <thead>
-                        <tr>
-                            <th>Time</th>
-                            <th>IP</th>
-                            <th>Location</th>
-                            <th>Device</th>
-                            <th>Referrer</th>
-                            <th>Page</th>
-                            <th>User Agent</th>
-                            <th>Session</th>
-                            <th>Bot</th>
-                        </tr>
-                    </thead>
+<thead>
+    <tr>
+        <th>Time</th>
+        <th>IP</th>
+        <th>Location</th>
+        <th>Device</th>
+        <th>Referrer</th>
+        <th>Page</th>
+        <th>Browser</th>    <!-- NEW -->
+        <th>OS</th>         <!-- NEW -->
+        <th>Screen</th>     <!-- NEW -->
+        <th>User Agent</th>
+        <th>Session</th>
+        <th>Bot</th>
+    </tr>
+</thead>
                     <tbody id="tableBody">
                         <tr>
                             <td colspan="9" class="loading">Loading visitor data...</td>
@@ -626,13 +629,12 @@ function renderTable() {
     const tbody = document.getElementById('tableBody');
     
     if (visitorData.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="9" class="loading">📭 No visitor data found</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="12" class="loading">📭 No visitor data found</td></tr>';
         return;
     }
     
     let html = '';
     visitorData.forEach(row => {
-        console.log('Referrer:', row.referrer, 'Page:', row.url);
         const date = new Date(row.ts);
         const timeStr = date.toLocaleString('en-US', {
             month: 'short',
@@ -642,6 +644,25 @@ function renderTable() {
             second: '2-digit'
         });
         
+        // Parse User Agent for browser and OS
+        const ua = row.ua || '';
+        let browser = 'Unknown';
+        let os = 'Unknown';
+        
+        if (ua.includes('Firefox/')) browser = 'Firefox';
+        else if (ua.includes('Chrome/') && !ua.includes('Edg/')) browser = 'Chrome';
+        else if (ua.includes('Safari/') && !ua.includes('Chrome/')) browser = 'Safari';
+        else if (ua.includes('Edg/')) browser = 'Edge';
+        else if (ua.includes('OPR/')) browser = 'Opera';
+        
+        if (ua.includes('Windows NT 10.0')) os = 'Windows 11';
+        else if (ua.includes('Windows NT 6.1')) os = 'Windows 7';
+        else if (ua.includes('Mac OS X')) os = 'macOS';
+        else if (ua.includes('Android')) os = 'Android';
+        else if (ua.includes('iPhone') || ua.includes('iPad')) os = 'iOS';
+        else if (ua.includes('Linux')) os = 'Linux';
+        
+        // Device type
         const deviceIcons = {
             'desktop': '💻',
             'mobile': '📱',
@@ -650,16 +671,18 @@ function renderTable() {
         };
         const deviceIcon = deviceIcons[row.device?.toLowerCase()] || '💻';
         
+        // Screen size (you'll need to add this to your collector first)
+        const screenSize = row.screen || '—';
+        
         const isBot = row.bot === 1 || row.bot === true;
         const botBadge = isBot 
             ? '<span class="badge badge-bot">🤖 BOT</span>' 
             : '<span class="badge badge-real">👤 Real</span>';
         
-        const pagePath = row.url || '/';
-        const fullPageUrl = pagePath.startsWith('http') ? pagePath : `https://reich.tf${pagePath}`;
+        const fullPageUrl = row.url?.startsWith('http') ? row.url : `https://reich.tf${row.url || '/'}`;
         const displayPageUrl = fullPageUrl.length > 50 ? fullPageUrl.substring(0, 50) + '…' : fullPageUrl;
         
-        const referrer = row.referrer || row.Referer || row.referer || '';
+        const referrer = row.referrer || '';
         const displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer || '—';
         
         const location = row.country 
@@ -682,7 +705,10 @@ function renderTable() {
             </td>
             <td>${referrer !== '—' ? `<a href="${referrer}" target="_blank" title="${referrer}">${displayReferrer}</a>` : '—'}</td>
             <td><a href="${fullPageUrl}" target="_blank" title="${fullPageUrl}">${displayPageUrl}</a></td>
-            <td><div class="truncate" title="${row.ua || ''}">${row.ua ? row.ua.substring(0, 50) + '…' : '—'}</div></td>
+            <td>${browser}</td>      <!-- NEW: Browser column -->
+            <td>${os}</td>            <!-- NEW: OS column -->
+            <td>${screenSize}</td>    <!-- NEW: Screen size column -->
+            <td><div class="truncate" title="${ua}">${ua.substring(0, 30)}…</div></td>
             <td><span title="${row.session_id || ''}">${sessionId}</span></td>
             <td>${botBadge}</td>
         </tr>`;
