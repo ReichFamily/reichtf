@@ -760,11 +760,12 @@
                         <div>${osDisplay}</div>
                         <div style="color: #6f8fae; font-size: 11px;">${screenDisplay}</div>
                     </td>
-                    <td><span class="flag-icon"></span></td>
-                    <td class="location-cell">
-                        <div>${locationDisplay}</div>
-                        <div class="location-city">${row.language || ''}</div>
-                    </td>
+<td>
+    <img src="https://flagcdn.com/24x18/${row.country.toLowerCase()}.png" 
+         onerror="this.style.display='none'"
+         style="width: 18px; height: 12px; object-fit: cover; border: 1px solid #d1d9e6; border-radius: 2px; vertical-align: middle;"
+         alt="${row.country} flag">
+</td>
                     <td>
                         <div><span class="hostname">${hostname}</span></div>
                         <div><a href="${fullPageUrl}" target="_blank" class="page-url" title="${fullPageUrl}">${displayUrl}</a></div>
