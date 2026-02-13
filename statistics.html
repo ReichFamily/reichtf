@@ -388,374 +388,371 @@
             
             <div class="table-wrapper">
                 <table id="visitorTable">
-<thead>
-    <tr>
-        <th>Time</th>
-        <th>IP</th>
-        <th>Location</th>
-        <th>Device</th>
-        <th>Referrer</th>
-        <th>Page</th>
-        <th>Browser</th>    <!-- NEW -->
-        <th>OS</th>         <!-- NEW -->
-        <th>Screen</th>     <!-- NEW -->
-        <th>User Agent</th>
-        <th>Session</th>
-        <th>Bot</th>
-    </tr>
-</thead>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>IP</th>
+                            <th>Location</th>
+                            <th>Device</th>
+                            <th>Referrer</th>
+                            <th>Page</th>
+                            <th>Browser</th>
+                            <th>OS</th>
+                            <th>Screen</th>
+                            <th>User Agent</th>
+                            <th>Session</th>
+                            <th>Bot</th>
+                        </tr>
+                    </thead>
                     <tbody id="tableBody">
                         <tr>
-                            <td colspan="9" class="loading">Loading visitor data...</td>
+                            <td colspan="12" class="loading">Loading visitor data...</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             
-<div class="pagination">
-    <div id="showingInfo">Showing 0 of 0 visitors</div>
-    <div style="display: flex; gap: 12px;">
-        <button id="exportBtn" class="btn btn-outline" style="font-size: 12px;">📥 Export CSV</button>
-        <button id="deleteAllBtn" class="btn btn-outline" style="font-size: 12px; color: #ef4444; border-color: #ef4444;">🗑️ Delete All Data</button>
+            <div class="pagination">
+                <div id="showingInfo">Showing 0 of 0 visitors</div>
+                <div style="display: flex; gap: 12px;">
+                    <button id="exportBtn" class="btn btn-outline" style="font-size: 12px;">📥 Export CSV</button>
+                    <button id="deleteAllBtn" class="btn btn-outline" style="font-size: 12px; color: #ef4444; border-color: #ef4444;">🗑️ Delete All Data</button>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<script>
-    // CONFIGURATION
-    const API_URL = 'https://weathered-voice-debf.reich-family.workers.dev';
-    const REFRESH_INTERVAL = 30000;
+    <script>
+        // CONFIGURATION
+        const API_URL = 'https://weathered-voice-debf.reich-family.workers.dev';
+        const REFRESH_INTERVAL = 30000;
 
-    let visitorData = [];
-    let isLoading = false;
-    let uniqueCountries = new Set();
+        let visitorData = [];
+        let isLoading = false;
+        let uniqueCountries = new Set();
 
-    document.addEventListener('DOMContentLoaded', () => {
-        loadData();
-        
-        document.getElementById('refreshBtn').addEventListener('click', () => loadData(true));
-        
-document.getElementById('clearFiltersBtn').addEventListener('click', () => {
-    // Force reset all filters
-    const excludeBox = document.getElementById('excludeBots');
-    const showBox = document.getElementById('showOnlyBots');
-    
-    excludeBox.checked = true;
-    showBox.checked = false;
-    document.getElementById('countryFilter').value = '';
-    document.getElementById('deviceFilter').value = '';
-    document.getElementById('limitSelect').value = '100';
-    
-    // Override whatever is resetting them
-    setTimeout(() => {
-        excludeBox.checked = true;
-        showBox.checked = false;
-    }, 50);
-    
-    loadData(true);
-});
-        // DEBUG: Watch for checkbox changes
-document.getElementById('excludeBots').addEventListener('change', function(e) {
-    console.log('excludeBots changed to:', this.checked, 'by:', e.target);
-});     
-        setInterval(() => loadData(false), REFRESH_INTERVAL);
-        document.getElementById('exportBtn').addEventListener('click', exportToCSV);
-        
-        ['excludeBots', 'showOnlyBots', 'countryFilter', 'deviceFilter', 'limitSelect'].forEach(id => {
-            document.getElementById(id).addEventListener('change', () => loadData(true));
-        });
-        
-        document.getElementById('showOnlyBots').addEventListener('change', function() {
-            if (this.checked) {
-                document.getElementById('excludeBots').checked = false;
-            }
-        });
-        document.getElementById('deleteAllBtn').addEventListener('click', async () => {
-    if (!confirm('⚠️ Delete ALL visitor data? This cannot be undone.')) return;
-    
-    try {
-        const response = await fetch('https://weathered-voice-debf.reich-family.workers.dev', {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' }
-        });
-        
-        if (response.ok) {
-            // Clear local data and refresh dashboard
-            visitorData = [];
-            uniqueCountries.clear();
-            updateDashboard();
-            updateLastUpdated();
-            alert('All data deleted successfully');
-        } else {
-            alert('Delete failed: ' + response.status);
-        }
-    } catch (e) {
-        console.error('Delete failed:', e);
-        alert('Delete failed: ' + e.message);
-    }
-});
-        
-        document.getElementById('excludeBots').addEventListener('change', function() {
-            if (this.checked) {
-                document.getElementById('showOnlyBots').checked = false;
-            }
-        });
-    });
-
-    async function loadData(showLoader = true) {
-        if (isLoading) return;
-        
-        try {
-            isLoading = true;
-            if (showLoader) {
-                document.getElementById('tableBody').innerHTML = '<tr><td colspan="9" class="loading">📡 Fetching analytics data...</td></tr>';
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
             
-            const params = new URLSearchParams();
+            document.getElementById('refreshBtn').addEventListener('click', () => loadData(true));
             
-            if (document.getElementById('excludeBots').checked) {
-                params.append('exclude_bots', '1');
-            }
-            
-            const country = document.getElementById('countryFilter').value;
-            if (country) {
-                params.append('country', country);
-            }
-            
-            const limit = document.getElementById('limitSelect').value;
-            params.append('limit', limit);
-            
-            const url = `${API_URL}?${params.toString()}`;
-            console.log('Fetching:', url);
-            
-            const response = await fetch(url, {
-                cache: 'no-store',
-                headers: { 'Accept': 'application/json' }
+            document.getElementById('clearFiltersBtn').addEventListener('click', () => {
+                // Force reset all filters
+                const excludeBox = document.getElementById('excludeBots');
+                const showBox = document.getElementById('showOnlyBots');
+                
+                excludeBox.checked = true;
+                showBox.checked = false;
+                document.getElementById('countryFilter').value = '';
+                document.getElementById('deviceFilter').value = '';
+                document.getElementById('limitSelect').value = '100';
+                
+                // Override whatever is resetting them
+                setTimeout(() => {
+                    excludeBox.checked = true;
+                    showBox.checked = false;
+                }, 50);
+                
+                loadData(true);
             });
             
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            // DEBUG: Watch for checkbox changes
+            document.getElementById('excludeBots').addEventListener('change', function(e) {
+                console.log('excludeBots changed to:', this.checked, 'by:', e.target);
+            });     
             
-            const data = await response.json();
+            setInterval(() => loadData(false), REFRESH_INTERVAL);
+            document.getElementById('exportBtn').addEventListener('click', exportToCSV);
             
-            if (data.ok && Array.isArray(data.rows)) {
-                visitorData = data.rows;
+            ['excludeBots', 'showOnlyBots', 'countryFilter', 'deviceFilter', 'limitSelect'].forEach(id => {
+                document.getElementById(id).addEventListener('change', () => loadData(true));
+            });
+            
+            document.getElementById('showOnlyBots').addEventListener('change', function() {
+                if (this.checked) {
+                    document.getElementById('excludeBots').checked = false;
+                }
+            });
+            
+            document.getElementById('deleteAllBtn').addEventListener('click', async () => {
+                if (!confirm('⚠️ Delete ALL visitor data? This cannot be undone.')) return;
                 
-                if (document.getElementById('showOnlyBots').checked) {
-                    visitorData = visitorData.filter(row => row.bot === 1 || row.bot === true);
+                try {
+                    const response = await fetch('https://weathered-voice-debf.reich-family.workers.dev', {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    
+                    if (response.ok) {
+                        // Clear local data and refresh dashboard
+                        visitorData = [];
+                        uniqueCountries.clear();
+                        updateDashboard();
+                        updateLastUpdated();
+                        alert('All data deleted successfully');
+                    } else {
+                        alert('Delete failed: ' + response.status);
+                    }
+                } catch (e) {
+                    console.error('Delete failed:', e);
+                    alert('Delete failed: ' + e.message);
+                }
+            });
+            
+            document.getElementById('excludeBots').addEventListener('change', function() {
+                if (this.checked) {
+                    document.getElementById('showOnlyBots').checked = false;
+                }
+            });
+        });
+
+        async function loadData(showLoader = true) {
+            if (isLoading) return;
+            
+            try {
+                isLoading = true;
+                if (showLoader) {
+                    document.getElementById('tableBody').innerHTML = '<tr><td colspan="12" class="loading">📡 Fetching analytics data...</td></tr>';
                 }
                 
-                updateDashboard();
-                updateLastUpdated();
-            } else {
-                throw new Error(data.error || 'Invalid response');
+                const params = new URLSearchParams();
+                
+                if (document.getElementById('excludeBots').checked) {
+                    params.append('exclude_bots', '1');
+                }
+                
+                const country = document.getElementById('countryFilter').value;
+                if (country) {
+                    params.append('country', country);
+                }
+                
+                const limit = document.getElementById('limitSelect').value;
+                params.append('limit', limit);
+                
+                const url = `${API_URL}?${params.toString()}`;
+                console.log('Fetching:', url);
+                
+                const response = await fetch(url, {
+                    cache: 'no-store',
+                    headers: { 'Accept': 'application/json' }
+                });
+                
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const data = await response.json();
+                
+                if (data.ok && Array.isArray(data.rows)) {
+                    visitorData = data.rows;
+                    
+                    if (document.getElementById('showOnlyBots').checked) {
+                        visitorData = visitorData.filter(row => row.bot === 1 || row.bot === true);
+                    }
+                    
+                    updateDashboard();
+                    updateLastUpdated();
+                } else {
+                    throw new Error(data.error || 'Invalid response');
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('tableBody').innerHTML = `
+                    <tr>
+                        <td colspan="12" class="error">
+                            ❌ Failed to load analytics data<br>
+                            <span style="font-size: 12px;">${error.message}</span><br>
+                            <span style="font-size: 12px; margin-top: 8px; display: block;">
+                                Check that your Read Worker is running at:<br>
+                                <strong>${API_URL}</strong>
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        function updateDashboard() {
+            updateStats();
+            updateCountryFilter();
+            renderTable();
+            document.getElementById('rowCount').innerText = `${visitorData.length} visitors shown`;
+            document.getElementById('showingInfo').innerHTML = `Showing ${visitorData.length} visitors (last ${document.getElementById('limitSelect').value} requests)`;
+        }
+
+        function updateStats() {
+            const total = visitorData.length;
+            const uniqueSessions = new Set(visitorData.map(v => v.session_id).filter(Boolean)).size;
+            const bots = visitorData.filter(v => v.bot === 1 || v.bot === true).length;
+            const botPercentage = total ? ((bots / total) * 100).toFixed(1) : 0;
+            
+            const countryCounts = {};
+            visitorData.forEach(v => {
+                if (v.country) countryCounts[v.country] = (countryCounts[v.country] || 0) + 1;
+            });
+            
+            let topCountry = '—';
+            let topCountryPercent = '';
+            if (Object.keys(countryCounts).length > 0) {
+                const top = Object.entries(countryCounts).sort((a,b) => b[1] - a[1])[0];
+                topCountry = top[0];
+                topCountryPercent = `${((top[1] / total) * 100).toFixed(1)}%`;
             }
             
-        } catch (error) {
-            console.error('Error:', error);
-            document.getElementById('tableBody').innerHTML = `
-                <tr>
-                    <td colspan="9" class="error">
-                        ❌ Failed to load analytics data<br>
-                        <span style="font-size: 12px;">${error.message}</span><br>
-                        <span style="font-size: 12px; margin-top: 8px; display: block;">
-                            Check that your Read Worker is running at:<br>
-                            <strong>${API_URL}</strong>
-                        </span>
-                    </td>
-                </tr>
-            `;
-        } finally {
-            isLoading = false;
+            document.getElementById('totalVisitors').innerText = total;
+            document.getElementById('uniqueSessions').innerText = uniqueSessions;
+            document.getElementById('botCount').innerHTML = `${bots} <span style="font-size: 14px; color: #6b7280; font-weight: normal;">(${botPercentage}%)</span>`;
+            document.getElementById('botPercentage').innerText = `${botPercentage}% of traffic`;
+            document.getElementById('topCountry').innerText = topCountry;
+            document.getElementById('topCountryPercent').innerText = topCountryPercent;
         }
-    }
 
-    function updateDashboard() {
-        updateStats();
-        updateCountryFilter();
-        renderTable();
-        document.getElementById('rowCount').innerText = `${visitorData.length} visitors shown`;
-        document.getElementById('showingInfo').innerHTML = `Showing ${visitorData.length} visitors (last ${document.getElementById('limitSelect').value} requests)`;
-    }
-
-    function updateStats() {
-        const total = visitorData.length;
-        const uniqueSessions = new Set(visitorData.map(v => v.session_id).filter(Boolean)).size;
-        const bots = visitorData.filter(v => v.bot === 1 || v.bot === true).length;
-        const botPercentage = total ? ((bots / total) * 100).toFixed(1) : 0;
-        
-        const countryCounts = {};
-        visitorData.forEach(v => {
-            if (v.country) countryCounts[v.country] = (countryCounts[v.country] || 0) + 1;
-        });
-        
-        let topCountry = '—';
-        let topCountryPercent = '';
-        if (Object.keys(countryCounts).length > 0) {
-            const top = Object.entries(countryCounts).sort((a,b) => b[1] - a[1])[0];
-            topCountry = top[0];
-            topCountryPercent = `${((top[1] / total) * 100).toFixed(1)}%`;
+        function updateCountryFilter() {
+            const countries = new Set();
+            visitorData.forEach(v => {
+                if (v.country) countries.add(v.country);
+            });
+            
+            const currentValue = document.getElementById('countryFilter').value;
+            const select = document.getElementById('countryFilter');
+            
+            select.innerHTML = '<option value="">🌍 All countries</option>';
+            
+            [...countries].sort().forEach(country => {
+                const option = document.createElement('option');
+                option.value = country;
+                option.textContent = country;
+                select.appendChild(option);
+            });
+            
+            if (currentValue && countries.has(currentValue)) {
+                select.value = currentValue;
+            }
         }
-        
-        document.getElementById('totalVisitors').innerText = total;
-        document.getElementById('uniqueSessions').innerText = uniqueSessions;
-        document.getElementById('botCount').innerHTML = `${bots} <span style="font-size: 14px; color: #6b7280; font-weight: normal;">(${botPercentage}%)</span>`;
-        document.getElementById('botPercentage').innerText = `${botPercentage}% of traffic`;
-        document.getElementById('topCountry').innerText = topCountry;
-        document.getElementById('topCountryPercent').innerText = topCountryPercent;
-    }
 
-    function updateCountryFilter() {
-        const countries = new Set();
-        visitorData.forEach(v => {
-            if (v.country) countries.add(v.country);
-        });
-        
-        const currentValue = document.getElementById('countryFilter').value;
-        const select = document.getElementById('countryFilter');
-        
-        select.innerHTML = '<option value="">🌍 All countries</option>';
-        
-        [...countries].sort().forEach(country => {
-            const option = document.createElement('option');
-            option.value = country;
-            option.textContent = country;
-            select.appendChild(option);
-        });
-        
-        if (currentValue && countries.has(currentValue)) {
-            select.value = currentValue;
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            
+            if (visitorData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="12" class="loading">📭 No visitor data found</td></tr>';
+                return;
+            }
+            
+            let html = '';
+            visitorData.forEach(row => {
+                const date = new Date(row.ts);
+                const timeStr = date.toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                
+                // Browser display
+                const browserDisplay = row.browser && row.browser_version 
+                    ? `${row.browser} ${row.browser_version}` 
+                    : row.browser || '—';
+                
+                // OS display
+                const osDisplay = row.os && row.os_version 
+                    ? `${row.os} ${row.os_version}` 
+                    : row.os || '—';
+                
+                // Screen size display
+                const screenDisplay = row.screen_width && row.screen_height 
+                    ? `${row.screen_width}x${row.screen_height}` 
+                    : '—';
+                
+                // Location display - combine country and city into one string
+                const locationDisplay = row.country 
+                    ? `${row.country}${row.city ? `, ${row.city}` : ''}`
+                    : '—';
+                
+                // Device display - just the device name
+                const deviceDisplay = row.device || '—';
+                
+                const isBot = row.bot === 1 || row.bot === true;
+                const botBadge = isBot 
+                    ? '<span class="badge badge-bot">🤖 BOT</span>' 
+                    : '<span class="badge badge-real">👤 Real</span>';
+                
+                // Full URL for page
+                const pagePath = row.url || '/';
+                const fullPageUrl = pagePath.startsWith('http') ? pagePath : `https://reich.tf${pagePath}`;
+                const displayPageUrl = fullPageUrl.length > 50 ? fullPageUrl.substring(0, 50) + '…' : fullPageUrl;
+                
+                // Referrer
+                const referrer = row.referrer || '';
+                const displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer || '—';
+                
+                const sessionId = row.session_id 
+                    ? row.session_id.substring(0, 8) + '…' 
+                    : '—';
+                
+                html += `<tr>
+                    <td style="white-space: nowrap;">${timeStr}</td>
+                    <td>${row.ip || '—'}</td>
+                    <td>${locationDisplay}</td>
+                    <td>${deviceDisplay}</td>
+                    <td>${referrer !== '—' ? `<a href="${referrer}" target="_blank" title="${referrer}">${displayReferrer}</a>` : '—'}</td>
+                    <td><a href="${fullPageUrl}" target="_blank" title="${fullPageUrl}">${displayPageUrl}</a></td>
+                    <td>${browserDisplay}</td>
+                    <td>${osDisplay}</td>
+                    <td>${screenDisplay}</td>
+                    <td><div class="truncate" title="${row.ua || ''}">${row.ua ? row.ua.substring(0, 30) + '…' : '—'}</div></td>
+                    <td><span title="${row.session_id || ''}">${sessionId}</span></td>
+                    <td>${botBadge}</td>
+                </tr>`;
+            });
+            
+            tbody.innerHTML = html;
         }
-    }
-function renderTable() {
-    const tbody = document.getElementById('tableBody');
-    
-    if (visitorData.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="12" class="loading">📭 No visitor data found</td></tr>';
-        return;
-    }
-    
-    let html = '';
-    visitorData.forEach(row => {
-        const date = new Date(row.ts);
-        const timeStr = date.toLocaleString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        });
-        
-        // Browser display
-        const browserDisplay = row.browser && row.browser_version 
-            ? `${row.browser} ${row.browser_version}` 
-            : row.browser || '—';
-        
-        // OS display
-        const osDisplay = row.os && row.os_version 
-            ? `${row.os} ${row.os_version}` 
-            : row.os || '—';
-        
-        // Screen size display
-        const screenDisplay = row.screen_width && row.screen_height 
-            ? `${row.screen_width}x${row.screen_height}` 
-            : '—';
-        
-        const deviceIcons = {
-            'desktop': '💻',
-            'mobile': '📱',
-            'tablet': '📟',
-            'unknown': '❓'
-        };
-        const deviceIcon = deviceIcons[row.device?.toLowerCase()] || '💻';
-        
-        const isBot = row.bot === 1 || row.bot === true;
-        const botBadge = isBot 
-            ? '<span class="badge badge-bot">🤖 BOT</span>' 
-            : '<span class="badge badge-real">👤 Real</span>';
-        
-        // Full URL for page
-        const pagePath = row.url || '/';
-        const fullPageUrl = pagePath.startsWith('http') ? pagePath : `https://reich.tf${pagePath}`;
-        const displayPageUrl = fullPageUrl.length > 50 ? fullPageUrl.substring(0, 50) + '…' : fullPageUrl;
-        
-        // Referrer
-        const referrer = row.referrer || '';
-        const displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer || '—';
-        
-        const location = row.country 
-            ? `${row.country}${row.city ? `, ${row.city}` : ''}`
-            : '—';
-        
-        const sessionId = row.session_id 
-            ? row.session_id.substring(0, 8) + '…' 
-            : '—';
-        
-        html += `<tr>
-            <td style="white-space: nowrap;">${timeStr}</td>
-            <td>${row.ip || '—'}</td>
-            <td>
-                <span class="badge badge-country">${row.country || '🌐'}</span>
-                ${row.city ? `<span style="color: #6b7280; font-size: 11px;">${row.city}</span>` : ''}
-            </td>
-            <td>
-                <span class="badge badge-device">${deviceIcon} ${row.device || 'unknown'}</span>
-            </td>
-            <td>${referrer !== '—' ? `<a href="${referrer}" target="_blank" title="${referrer}">${displayReferrer}</a>` : '—'}</td>
-            <td><a href="${fullPageUrl}" target="_blank" title="${fullPageUrl}">${displayPageUrl}</a></td>
-            <td>${browserDisplay}</td>
-            <td>${osDisplay}</td>
-            <td>${screenDisplay}</td>
-            <td><div class="truncate" title="${row.ua || ''}">${row.ua ? row.ua.substring(0, 30) + '…' : '—'}</div></td>
-            <td><span title="${row.session_id || ''}">${sessionId}</span></td>
-            <td>${botBadge}</td>
-        </tr>`;
-    });
-    
-    tbody.innerHTML = html;
-}
-    function updateLastUpdated() {
-        const now = new Date();
-        document.getElementById('lastUpdated').innerHTML = `🔄 Updated: ${now.toLocaleTimeString()}`;
-    }
 
-    function exportToCSV() {
-        if (visitorData.length === 0) {
-            alert('No data to export');
-            return;
+        function updateLastUpdated() {
+            const now = new Date();
+            document.getElementById('lastUpdated').innerHTML = `🔄 Updated: ${now.toLocaleTimeString()}`;
         }
-        
-        const headers = ['Timestamp', 'IP', 'Country', 'City', 'Device', 'URL', 'Referrer', 'User Agent', 'Session ID', 'Is Bot'];
-        
-        const rows = visitorData.map(row => [
-            row.ts,
-            row.ip || '',
-            row.country || '',
-            row.city || '',
-            row.device || '',
-            row.url || '',
-            row.referrer || '',
-            (row.ua || '').replace(/,/g, ' '),
-            row.session_id || '',
-            row.bot ? 'Yes' : 'No'
-        ]);
-        
-        const csvContent = [
-            headers.join(','),
-            ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
-        ].join('\n');
-        
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        
-        link.setAttribute('href', url);
-        link.setAttribute('download', `analytics_export_${new Date().toISOString().slice(0,10)}.csv`);
-        link.style.visibility = 'hidden';
-        
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-</script>
-    
+
+        function exportToCSV() {
+            if (visitorData.length === 0) {
+                alert('No data to export');
+                return;
+            }
+            
+            const headers = ['Timestamp', 'IP', 'Country', 'City', 'Device', 'URL', 'Referrer', 'User Agent', 'Session ID', 'Is Bot'];
+            
+            const rows = visitorData.map(row => [
+                row.ts,
+                row.ip || '',
+                row.country || '',
+                row.city || '',
+                row.device || '',
+                row.url || '',
+                row.referrer || '',
+                (row.ua || '').replace(/,/g, ' '),
+                row.session_id || '',
+                row.bot ? 'Yes' : 'No'
+            ]);
+            
+            const csvContent = [
+                headers.join(','),
+                ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+            ].join('\n');
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `analytics_export_${new Date().toISOString().slice(0,10)}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
 </body>
 </html>
