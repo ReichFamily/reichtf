@@ -432,14 +432,25 @@
         
         document.getElementById('refreshBtn').addEventListener('click', () => loadData(true));
         
-        document.getElementById('clearFiltersBtn').addEventListener('click', () => {
-            document.getElementById('excludeBots').checked = true;
-            document.getElementById('showOnlyBots').checked = false;
-            document.getElementById('countryFilter').value = '';
-            document.getElementById('deviceFilter').value = '';
-            document.getElementById('limitSelect').value = '100';
-            loadData(true);
-        });
+document.getElementById('clearFiltersBtn').addEventListener('click', () => {
+    // Force reset all filters
+    const excludeBox = document.getElementById('excludeBots');
+    const showBox = document.getElementById('showOnlyBots');
+    
+    excludeBox.checked = true;
+    showBox.checked = false;
+    document.getElementById('countryFilter').value = '';
+    document.getElementById('deviceFilter').value = '';
+    document.getElementById('limitSelect').value = '100';
+    
+    // Override whatever is resetting them
+    setTimeout(() => {
+        excludeBox.checked = true;
+        showBox.checked = false;
+    }, 50);
+    
+    loadData(true);
+});
         
         setInterval(() => loadData(false), REFRESH_INTERVAL);
         document.getElementById('exportBtn').addEventListener('click', exportToCSV);
