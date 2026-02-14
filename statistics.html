@@ -27,13 +27,22 @@
             margin: 0 auto;
         }
 
-        /* Header - simplified */
+        /* Header */
         .sc-header {
             background: #064685;
             color: white;
             padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             border-bottom: 1px solid #053b6f;
             border-radius: 8px 8px 0 0;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
         .logo {
@@ -48,8 +57,11 @@
             background: #f0f2f5;
         }
 
-        /* Page header - simplified */
+        /* Page header */
         .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
         }
 
@@ -309,14 +321,16 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header - simplified -->
+        <!-- Header with your branding -->
         <div class="sc-header">
-            <div class="logo">Reich Family Statistics</div>
+            <div class="logo-area">
+                <div class="logo">Reich Family Statistics</div>
+            </div>
         </div>
 
         <!-- Main content area -->
         <div class="content">
-            <!-- Page header - simplified -->
+            <!-- Page header -->
             <div class="page-header">
                 <h1 class="page-title">
                     Page View Activity
@@ -506,7 +520,6 @@
             updateCountryFilter();
             renderTable();
             document.getElementById('rowCount').innerText = `${visitorData.length} visitors`;
-            document.getElementById('showingInfo').innerText = `Showing ${visitorData.length} visitors (last ${document.getElementById('limitSelect').value} requests)`;
         }
 
         function updateStats() {
