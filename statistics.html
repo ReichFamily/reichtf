@@ -764,6 +764,15 @@ console.log('- tableBody:', document.getElementById('tableBody'));
 console.log('- visitorTable:', document.getElementById('visitorTable'));
 console.log('- refreshBtn:', document.getElementById('refreshBtn'));
 
+        // DEBUG - ADD THIS
+console.log('Checking elements:');
+console.log('- tableBody:', document.getElementById('tableBody'));
+console.log('- visitorTable:', document.getElementById('visitorTable'));
+console.log('- refreshBtn:', document.getElementById('refreshBtn'));
+
+// ADD THIS NEW LINE
+console.log('All tbody elements:', document.querySelectorAll('tbody'));
+
         function clearFilters() {
             document.getElementById('excludeBots').checked = true;
             document.getElementById('showOnlyBots').checked = false;
