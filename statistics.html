@@ -758,6 +758,12 @@
             tbody.innerHTML = html;
         }
 
+        // DEBUG - ADD THIS
+console.log('Checking elements:');
+console.log('- tableBody:', document.getElementById('tableBody'));
+console.log('- visitorTable:', document.getElementById('visitorTable'));
+console.log('- refreshBtn:', document.getElementById('refreshBtn'));
+
         function clearFilters() {
             document.getElementById('excludeBots').checked = true;
             document.getElementById('showOnlyBots').checked = false;
