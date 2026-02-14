@@ -435,8 +435,8 @@
         <div class="sc-header">
             <div class="logo-area">
                 <div class="logo">Reich Family Statistics</div>
-        </div>
             </div>
+        </div>
 
         <!-- Main content area -->
         <div class="content">
@@ -543,8 +543,8 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
         </div>
-    </div>
     </div>
 
     <script>
@@ -682,80 +682,81 @@
                 select.value = currentValue;
             }
         }
-function renderTable() {
-    const tbody = document.getElementById('tableBody');
-    
-    if (visitorData.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" class="loading">📭 No visitor data found</td></tr>';
-        return;
-    }
-    
-    let html = '';
-    visitorData.forEach((row) => {
-        const date = new Date(row.ts);
-        const month = date.toLocaleString('en-US', { month: 'short' });
-        const day = date.getDate();
-        const time = date.toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
         
-        const browserDisplay = row.browser || 'Unknown';
-        const osDisplay = row.os || 'Unknown';
-        const screenDisplay = row.screen_width ? (row.screen_height ? `${row.screen_width}x${row.screen_height}` : String(row.screen_width)) : '—';
-        
-        const deviceIcon = row.device === 'mobile' ? '📱' : row.device === 'tablet' ? '📟' : '💻';
-        
-        const isBot = row.bot === 1 || row.bot === true;
-        const botBadge = isBot ? '<span class="badge-bot">🤖 BOT</span>' : '<span class="badge-real">👤 Real</span>';
-        
-        const locationParts = [];
-        if (row.city) locationParts.push(row.city);
-        if (row.region) locationParts.push(row.region);
-        if (row.country) locationParts.push(row.country);
-        const locationDisplay = locationParts.join(', ') || '—';
-        
-        // Country flag - uses lowercase country code (NL, GB, US, etc.)
-        const countryCode = row.country ? row.country.toLowerCase() : '';
-        const flagHtml = countryCode 
-            ? `<img src="https://flagcdn.com/24x18/${countryCode}.png" 
-                  onerror="this.style.display='none'"
-                  style="width: 18px; height: 12px; object-fit: cover; border: 1px solid #d1d9e6; border-radius: 2px; vertical-align: middle;"
-                  alt="${row.country} flag">`
-            : '<span style="display:inline-block; width:18px;"></span>';
-        
-        const pageUrl = row.url || '/';
-        const fullPageUrl = pageUrl.startsWith('http') ? pageUrl : `https://reich.tf${pageUrl}`;
-        const displayUrl = fullPageUrl.length > 60 ? fullPageUrl.substring(0, 60) + '…' : fullPageUrl;
-        
-        const referrer = row.referrer || '';
-        const displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer || '(No referring link)';
-        
-        const hostname = row.hostname || (row.ip ? `IP ${row.ip}` : '—');
-        
-        html += `<tr>
-            <td><span class="mag-icon">🔍</span></td>
-            <td>${month} ${day}</td>
-            <td>${time}</td>
-            <td><span class="device-icon">${deviceIcon}</span> ${row.device || 'desktop'}</td>
-            <td>
-                <div><strong>${browserDisplay}</strong></div>
-                <div>${osDisplay}</div>
-                <div style="color: #6f8fae; font-size: 11px;">${screenDisplay}</div>
-            </td>
-            <td>${flagHtml}</td>
-            <td class="location-cell">
-                <div>${locationDisplay}</div>
-                <div class="location-city">${row.language || ''}</div>
-            </td>
-            <td>
-                <div><span class="hostname">${hostname}</span></div>
-                <div><a href="${fullPageUrl}" target="_blank" class="page-url" title="${fullPageUrl}">${displayUrl}</a></div>
-                <div><span class="referrer" title="${referrer}">${displayReferrer}</span></div>
-                <div style="margin-top: 3px;">${botBadge}</div>
-            </td>
-        </tr>`;
-    });
-    
-    tbody.innerHTML = html;
-}
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            
+            if (visitorData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="loading">📭 No visitor data found</td></tr>';
+                return;
+            }
+            
+            let html = '';
+            visitorData.forEach((row) => {
+                const date = new Date(row.ts);
+                const month = date.toLocaleString('en-US', { month: 'short' });
+                const day = date.getDate();
+                const time = date.toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+                
+                const browserDisplay = row.browser || 'Unknown';
+                const osDisplay = row.os || 'Unknown';
+                const screenDisplay = row.screen_width ? (row.screen_height ? `${row.screen_width}x${row.screen_height}` : String(row.screen_width)) : '—';
+                
+                const deviceIcon = row.device === 'mobile' ? '📱' : row.device === 'tablet' ? '📟' : '💻';
+                
+                const isBot = row.bot === 1 || row.bot === true;
+                const botBadge = isBot ? '<span class="badge-bot">🤖 BOT</span>' : '<span class="badge-real">👤 Real</span>';
+                
+                const locationParts = [];
+                if (row.city) locationParts.push(row.city);
+                if (row.region) locationParts.push(row.region);
+                if (row.country) locationParts.push(row.country);
+                const locationDisplay = locationParts.join(', ') || '—';
+                
+                // Country flag - uses lowercase country code (NL, GB, US, etc.)
+                const countryCode = row.country ? row.country.toLowerCase() : '';
+                const flagHtml = countryCode 
+                    ? `<img src="https://flagcdn.com/24x18/${countryCode}.png" 
+                          onerror="this.style.display='none'"
+                          style="width: 18px; height: 12px; object-fit: cover; border: 1px solid #d1d9e6; border-radius: 2px; vertical-align: middle;"
+                          alt="${row.country} flag">`
+                    : '<span style="display:inline-block; width:18px;"></span>';
+                
+                const pageUrl = row.url || '/';
+                const fullPageUrl = pageUrl.startsWith('http') ? pageUrl : `https://reich.tf${pageUrl}`;
+                const displayUrl = fullPageUrl.length > 60 ? fullPageUrl.substring(0, 60) + '…' : fullPageUrl;
+                
+                const referrer = row.referrer || '';
+                const displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer || '(No referring link)';
+                
+                const hostname = row.hostname || (row.ip ? `IP ${row.ip}` : '—');
+                
+                html += `<tr>
+                    <td><span class="mag-icon">🔍</span></td>
+                    <td>${month} ${day}</td>
+                    <td>${time}</td>
+                    <td><span class="device-icon">${deviceIcon}</span> ${row.device || 'desktop'}</td>
+                    <td>
+                        <div><strong>${browserDisplay}</strong></div>
+                        <div>${osDisplay}</div>
+                        <div style="color: #6f8fae; font-size: 11px;">${screenDisplay}</div>
+                    </td>
+                    <td>${flagHtml}</td>
+                    <td class="location-cell">
+                        <div>${locationDisplay}</div>
+                        <div class="location-city">${row.language || ''}</div>
+                    </td>
+                    <td>
+                        <div><span class="hostname">${hostname}</span></div>
+                        <div><a href="${fullPageUrl}" target="_blank" class="page-url" title="${fullPageUrl}">${displayUrl}</a></div>
+                        <div><span class="referrer" title="${referrer}">${displayReferrer}</span></div>
+                        <div style="margin-top: 3px;">${botBadge}</div>
+                    </td>
+                </tr>`;
+            });
+            
+            tbody.innerHTML = html;
+        }
 
         function clearFilters() {
             document.getElementById('excludeBots').checked = true;
