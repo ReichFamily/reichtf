@@ -676,12 +676,12 @@
                 const fullPageUrl = pageUrl.startsWith('http') ? pageUrl : `https://reich.tf${pageUrl}`;
                 const displayUrl = fullPageUrl.length > 60 ? fullPageUrl.substring(0, 60) + '…' : fullPageUrl;
                 
-                const referrer = row.referrer || '';
-                const displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer || '(No referring link)';
+                let referrer = row.referrer || '';
+                let displayReferrer = '(No referring link)';
 
                 if (referrer && !referrer.includes('reich.tf') && !referrer.includes('reich-family')) {
-    displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer;
-}
+                displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer;
+                }
                 
                 const hostname = row.hostname || (row.ip ? `IP ${row.ip}` : '—');
                 
