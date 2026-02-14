@@ -5,6 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reich Family Statistics</title>
     <meta name="robots" content="noindex, nofollow">
+
+<!--CSS Referrals-->
+<link rel="canonical" href="https://reich.tf/" />
+<link href="layout.css" rel="stylesheet" type="text/css">
+<link href="boilerplate.css" rel="stylesheet" type="text/css">
+<link rel="shortcut icon" href="favicon.ico">
+
+<!--Favicon-->
+<link rel="shortcut icon" href="favicon.ico">
+
+<!--Fonts-->
+<link rel="preload" href="fonts/ITCEDSCR.TTF" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/OpenSans-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/TrajanPro3-Regular.otf" as="font" type="font/otf" crossorigin>
+<link rel="preload" href="fonts/Montserrat-Light.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/Montserrat-LightItalic.ttf" as="font" type="font/ttf" crossorigin>
+
+
 <style>
         * {
             margin: 0;
@@ -21,22 +39,62 @@
             padding: 20px;
         }
 
+@font-face {
+  font-family:ITCEDSCR;
+  src: url(fonts/ITCEDSCR.TTF);
+  font-display: block;
+}
+@font-face {
+  font-family:TrajanPro3-Regular;
+  src: url(fonts/TrajanPro3-Regular.otf);
+  font-display: block;
+}
+@font-face {
+  font-family:OpenSans-Light;
+  src: url(fonts/OpenSans-Light.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:OpenSans-Italic;
+  src: url(fonts/OpenSans-Italic.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:OpenSans-Regular;
+  src: url(fonts/OpenSans-Regular.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:Montserrat-Light;
+  src: url(fonts/Montserrat-Light.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:Montserrat-ThinItalic;
+  src: url(fonts/Montserrat-ThinItalic.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:Montserrat-LightItalic;
+  src: url(fonts/Montserrat-LightItalic.ttf);
+  font-display: block;
+}
+
+
         /* Center the content */
         .container {
-            max-width: 1400px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
         /* Header */
         .sc-header {
-            background: #0f1217;
             color: white;
             padding: 10px 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content:center;
             align-items: center;
-            border-bottom: 1px solid #2d3748;
-            border-radius: 8px 8px 0 0;
+
         }
 
         .logo-area {
@@ -53,8 +111,8 @@
 
         /* Content area */
         .content {
-            padding: 20px;
             background: #1a1e24;
+            margin-top:-20px;
         }
 
         /* Page header */
@@ -326,21 +384,19 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header with your branding -->
-        <div class="sc-header">
-            <div class="logo-area">
-                <div class="logo">Reich Family Statistics</div>
-            </div>
-        </div>
+
+<div class="header">
+<div style="margin:auto;">
+<p class="title">Reich Family</p>
+<p class="subtitle">Trinitarian Religious Group</p>
+</div>
+</div>
 
         <!-- Main content area -->
         <div class="content">
             <!-- Page header -->
             <div class="page-header">
-                <h1 class="page-title">
-                    Page View Activity
-                    <small>Realtime view of pageloads as they happen</small>
-                </h1>
+
             </div>
 
             <!-- Stats widgets -->
@@ -421,10 +477,10 @@
                     <table id="visitorTable">
                         <thead>
                             <tr>
-                                <th style="width: 30px;"></th>
+
                                 <th>Date</th>
                                 <th>Time</th>
-                                <th style="width: 70px;">System</th>
+                                <th>System</th>
                                 <th>Browser/OS/Screen</th>
                                 <th></th>
                                 <th>Location</th>
@@ -433,7 +489,7 @@
                         </thead>
                         <tbody id="tableBody">
                             <tr>
-                                <td colspan="8" class="loading">Loading visitor data...</td>
+                                <td colspan="7" class="loading">Loading visitor data...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -480,7 +536,7 @@
             try {
                 isLoading = true;
                 if (showLoader) {
-                    document.getElementById('tableBody').innerHTML = '<tr><td colspan="8" class="loading">📡 Fetching analytics data...</td></tr>';
+                    document.getElementById('tableBody').innerHTML = '<tr><td colspan="7" class="loading">📡 Fetching analytics data...</td></tr>';
                 }
                 
                 const params = new URLSearchParams();
@@ -513,7 +569,7 @@
                 
             } catch (error) {
                 document.getElementById('tableBody').innerHTML = `
-                    <tr><td colspan="8" class="error">❌ Failed to load analytics data: ${error.message}</td></tr>
+                    <tr><td colspan="7" class="error">❌ Failed to load analytics data: ${error.message}</td></tr>
                 `;
             } finally {
                 isLoading = false;
@@ -581,7 +637,7 @@
             const tbody = document.getElementById('tableBody');
             
             if (visitorData.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" class="loading">📭 No visitor data found</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" class="loading">📭 No visitor data found</td></tr>';
                 return;
             }
             
@@ -626,7 +682,6 @@
                 const hostname = row.hostname || (row.ip ? `IP ${row.ip}` : '—');
                 
                 html += `<tr>
-                    <td><span class="mag-icon">🔍</span></td>
                     <td>${month} ${day}</td>
                     <td>${time}</td>
                     <td><span class="device-icon">${deviceIcon}</span> ${row.device || 'desktop'}</td>
