@@ -304,15 +304,6 @@
             font-weight: 600;
         }
 
-        .badge-real {
-            background: #14532d;
-            color: #dcfce7;
-            padding: 2px 6px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 600;
-        }
-
         .device-icon {
             display: inline-block;
             width: 16px;
@@ -655,7 +646,6 @@
                 const deviceIcon = row.device === 'mobile' ? '📱' : row.device === 'tablet' ? '📟' : '💻';
                 
                 const isBot = row.bot === 1 || row.bot === true;
-                const botBadge = isBot ? '<span class="badge-bot">🤖 BOT</span>' : '<span class="badge-real">👤 Real</span>';
                 
                 const locationParts = [];
                 if (row.city) locationParts.push(row.city);
