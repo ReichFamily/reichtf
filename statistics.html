@@ -27,22 +27,13 @@
             margin: 0 auto;
         }
 
-        /* Header */
+        /* Header - simplified */
         .sc-header {
             background: #064685;
             color: white;
             padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             border-bottom: 1px solid #053b6f;
             border-radius: 8px 8px 0 0;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 15px;
         }
 
         .logo {
@@ -51,63 +42,14 @@
             letter-spacing: -0.5px;
         }
 
-        .project-badge {
-            background: #053b6f;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .project-name {
-            font-weight: 600;
-        }
-
-        .plan-badge {
-            background: #f5a623;
-            color: #1a2634;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .user-name {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-        }
-
-        .upgrade-btn {
-            background: #f5a623;
-            color: #1a2634;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-weight: 600;
-            font-size: 12px;
-            text-decoration: none;
-        }
-
-        /* Content area - full width */
+        /* Content area */
         .content {
             padding: 20px;
             background: #f0f2f5;
         }
 
-        /* Page header */
+        /* Page header - simplified */
         .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             margin-bottom: 20px;
         }
 
@@ -121,18 +63,6 @@
             font-size: 14px;
             color: #6f8fae;
             margin-left: 10px;
-        }
-
-        .date-range {
-            background: white;
-            border: 1px solid #d1d9e6;
-            border-radius: 4px;
-            padding: 6px 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-size: 13px;
         }
 
         /* Stats widgets */
@@ -263,13 +193,6 @@
             align-items: center;
         }
 
-        .wrap-toggle {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 12px;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -365,40 +288,6 @@
             cursor: pointer;
         }
 
-        .pagination {
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #d1d9e6;
-            background: #f8fafc;
-        }
-
-        .pagination-info {
-            color: #6f8fae;
-            font-size: 12px;
-        }
-
-        .pagination-controls {
-            display: flex;
-            gap: 5px;
-        }
-
-        .pagination-btn {
-            padding: 4px 8px;
-            border: 1px solid #d1d9e6;
-            background: white;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .pagination-btn.active {
-            background: #064685;
-            color: white;
-            border-color: #053b6f;
-        }
-
         .loading {
             text-align: center;
             padding: 40px;
@@ -420,37 +309,19 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header with your branding -->
+        <!-- Header - simplified -->
         <div class="sc-header">
-            <div class="logo-area">
-                <div class="logo">Reich Family Statistics</div>
-                <div class="project-badge">
-                    <span class="project-name">Reich Family</span>
-                    <span class="plan-badge">BASIC</span>
-                </div>
-            </div>
-            <div class="user-menu">
-                <div class="user-name">
-                    <span>👤 Reich-JMK (Admin User)</span>
-                    <span style="font-size: 10px;">▼</span>
-                </div>
-                <a href="#" class="upgrade-btn">Upgrade Now!</a>
-            </div>
+            <div class="logo">Reich Family Statistics</div>
         </div>
 
         <!-- Main content area -->
         <div class="content">
-            <!-- Page header -->
+            <!-- Page header - simplified -->
             <div class="page-header">
                 <h1 class="page-title">
                     Page View Activity
                     <small>Realtime view of pageloads as they happen</small>
                 </h1>
-                <div class="date-range">
-                    <span>📅</span>
-                    <span>Entire Log (4 months)</span>
-                    <span>▼</span>
-                </div>
             </div>
 
             <!-- Stats widgets -->
@@ -522,9 +393,6 @@
                         <span id="rowCount" style="color: #6f8fae; margin-left: 10px; font-weight: normal;"></span>
                     </div>
                     <div class="table-controls">
-                        <label class="wrap-toggle">
-                            <input type="checkbox" id="wrapUrls" checked> Wrap Long URLs
-                        </label>
                         <button id="exportBtn" class="btn btn-outline" style="font-size: 11px;">📥 Export CSV</button>
                         <button id="deleteAllBtn" class="btn btn-outline" style="color: #c00; border-color: #c00;">🗑️ Delete All</button>
                     </div>
@@ -550,17 +418,6 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                
-                <div class="pagination">
-                    <div class="pagination-info" id="showingInfo">Showing 0 of 0 visitors</div>
-                    <div class="pagination-controls">
-                        <button class="pagination-btn" id="prevPage" disabled>←</button>
-                        <button class="pagination-btn active">1</button>
-                        <button class="pagination-btn">2</button>
-                        <button class="pagination-btn">3</button>
-                        <button class="pagination-btn" id="nextPage">→</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -649,7 +506,7 @@
             updateCountryFilter();
             renderTable();
             document.getElementById('rowCount').innerText = `${visitorData.length} visitors`;
-            document.getElementById('showingInfo').innerHTML = `Showing ${visitorData.length} visitors (last ${document.getElementById('limitSelect').value} requests)`;
+            document.getElementById('showingInfo').innerText = `Showing ${visitorData.length} visitors (last ${document.getElementById('limitSelect').value} requests)`;
         }
 
         function updateStats() {
