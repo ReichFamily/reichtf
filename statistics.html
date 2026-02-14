@@ -294,16 +294,6 @@
             background: #2d3748;
         }
 
-        /* Badges */
-        .badge-bot {
-            background: #7f1d1d;
-            color: #fecaca;
-            padding: 2px 6px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 600;
-        }
-
         .device-icon {
             display: inline-block;
             width: 16px;
@@ -645,7 +635,7 @@
                 
                 const deviceIcon = row.device === 'mobile' ? '📱' : row.device === 'tablet' ? '📟' : '💻';
                 
-                const isBot = row.bot === 1 || row.bot === true;
+                // Bot check removed - no badge displayed
                 
                 const locationParts = [];
                 if (row.city) locationParts.push(row.city);
@@ -697,7 +687,6 @@
                         <div><span class="hostname">${hostname}</span></div>
                         <div><a href="${fullPageUrl}" target="_blank" class="page-url" title="${fullPageUrl}">${displayUrl}</a></div>
                         <div><span class="referrer" title="${referrer}">${displayReferrer}</span></div>
-                        <div style="margin-top: 3px;">${botBadge}</div>
                     </td>
                 </tr>`;
             });
