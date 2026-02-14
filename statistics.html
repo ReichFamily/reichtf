@@ -687,6 +687,8 @@
                     }
                 }
                 
+                const hostname = row.hostname || (row.ip ? `IP ${row.ip}` : '—');
+                
                 html += `<tr>
                     <td>${month} ${day}</td>
                     <td>${time}</td>
