@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My First Website</title>
+</head>
+<body>
+    <h1>Welcome to My Website</h1>
+    <p>This is my first paragraph.</p>
+
+  <script>
+  (function() {
+    const collector = 'https://crimson-hill-ea2e.reich-family.workers.dev';
+    const url = location.pathname + location.search;
+    let sid = localStorage.getItem('sid');
+    if (!sid) {
+      sid = 's_' + Math.random().toString(36).slice(2, 12);
+      localStorage.setItem('sid', sid);
+    }
+
+    // --- NEW: Collect Screen Size ---
+    const screenSize = {
+      width: window.screen.width,
+      height: window.screen.height
+    };
+
+    // --- NEW: Collect Full Browser Info ---
+    // We send the full User-Agent so your worker can parse exact browser & OS versions.
+    const userAgent = navigator.userAgent;
+
+    // Send ALL the data in one POST request
+    navigator.sendBeacon(collector, JSON.stringify({
+      u: url,
+      sid: sid,
+      r: document.referrer,
+      screen: screenSize,        // <-- NEW: Screen dimensions
+      ua_full: userAgent          // <-- NEW: Full User-Agent string for detailed parsing
+    }));
+  })();
+</script>
+  
+</body>
+</html>
