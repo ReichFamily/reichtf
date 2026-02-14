@@ -667,7 +667,7 @@
                     }
                 }
                 
-                const hostname = row.isp ? row.isp : (row.hostname ? row.hostname : (row.ip ? `IP ${row.ip}` : '—'));
+                const hostname = row.isp ? `${row.isp} (${row.ip})` : (row.ip ? `IP ${row.ip}` : '—');
                 
                 html += `<tr>
                     <td>${month} ${day}</td>
