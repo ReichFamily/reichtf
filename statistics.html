@@ -585,7 +585,8 @@
             try {
                 isLoading = true;
                 if (showLoader) {
-                    document.getElementById('tableBody').innerHTML = '<tr><td colspan="8" class="loading">📡 Fetching analytics data...</td></tr>';
+                    console.log('tableBody before setting innerHTML:', document.getElementById('tableBody'));
+document.getElementById('tableBody').innerHTML = '<tr><td colspan="8" class="loading">📡 Fetching analytics data...</td></tr>';
                 }
                 
                 const params = new URLSearchParams();
