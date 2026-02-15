@@ -503,6 +503,7 @@ const projects = [
             
             if (data.ok && Array.isArray(data.rows)) {
                 visitorData = data.rows;
+				console.log('All pageIds in data:', [...new Set(visitorData.map(row => row.pageId))]);
 				console.log('Total rows:', visitorData.length);
 				console.log('Sample row:', visitorData[0]);
             }
