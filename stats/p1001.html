@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reich Family Statistics</title>
+    <title>Reich Family Statistics - Reich Family</title>
     <meta name="robots" content="noindex, nofollow">
 
 <!--CSS Referrals-->
 <link rel="canonical" href="https://reich.tf/" />
-<link href="layout.css" rel="stylesheet" type="text/css">
-<link href="boilerplate.css" rel="stylesheet" type="text/css">
-<link rel="shortcut icon" href="favicon.ico">
+<link href="../layout.css" rel="stylesheet" type="text/css">
+<link href="../boilerplate.css" rel="stylesheet" type="text/css">
+<link rel="shortcut icon" href="../favicon.ico">
 
 <!--Favicon-->
-<link rel="shortcut icon" href="favicon.ico">
+<link rel="shortcut icon" href="../favicon.ico">
 
 <!--Fonts-->
-<link rel="preload" href="fonts/ITCEDSCR.TTF" as="font" type="font/ttf" crossorigin>
-<link rel="preload" href="fonts/OpenSans-Regular.ttf" as="font" type="font/ttf" crossorigin>
-<link rel="preload" href="fonts/TrajanPro3-Regular.otf" as="font" type="font/otf" crossorigin>
-<link rel="preload" href="fonts/Montserrat-Light.ttf" as="font" type="font/ttf" crossorigin>
-<link rel="preload" href="fonts/Montserrat-LightItalic.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="../fonts/ITCEDSCR.TTF" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="../fonts/OpenSans-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="../fonts/TrajanPro3-Regular.otf" as="font" type="font/otf" crossorigin>
+<link rel="preload" href="../fonts/Montserrat-Light.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="../fonts/Montserrat-LightItalic.ttf" as="font" type="font/ttf" crossorigin>
 
 
 <style>
@@ -41,42 +41,42 @@
 
 @font-face {
   font-family:ITCEDSCR;
-  src: url(fonts/ITCEDSCR.TTF);
+  src: url(../fonts/ITCEDSCR.TTF);
   font-display: block;
 }
 @font-face {
   font-family:TrajanPro3-Regular;
-  src: url(fonts/TrajanPro3-Regular.otf);
+  src: url(../fonts/TrajanPro3-Regular.otf);
   font-display: block;
 }
 @font-face {
   font-family:OpenSans-Light;
-  src: url(fonts/OpenSans-Light.ttf);
+  src: url(../fonts/OpenSans-Light.ttf);
   font-display: block;
 }
 @font-face {
   font-family:OpenSans-Italic;
-  src: url(fonts/OpenSans-Italic.ttf);
+  src: url(../fonts/OpenSans-Italic.ttf);
   font-display: block;
 }
 @font-face {
   font-family:OpenSans-Regular;
-  src: url(fonts/OpenSans-Regular.ttf);
+  src: url(../fonts/OpenSans-Regular.ttf);
   font-display: block;
 }
 @font-face {
   font-family:Montserrat-Light;
-  src: url(fonts/Montserrat-Light.ttf);
+  src: url(../fonts/Montserrat-Light.ttf);
   font-display: block;
 }
 @font-face {
   font-family:Montserrat-ThinItalic;
-  src: url(fonts/Montserrat-ThinItalic.ttf);
+  src: url(../fonts/Montserrat-ThinItalic.ttf);
   font-display: block;
 }
 @font-face {
   font-family:Montserrat-LightItalic;
-  src: url(fonts/Montserrat-LightItalic.ttf);
+  src: url(../fonts/Montserrat-LightItalic.ttf);
   font-display: block;
 }
 
@@ -462,7 +462,7 @@
             <div class="table-container">
                 <div class="table-header">
                     <div class="table-title">
-                        Visitor Log
+                        Visitor Log - Reich Family
                         <span id="rowCount" style="color: #6f8fae; margin-left: 10px; font-weight: normal;"></span>
                     </div>
                     <div class="table-controls">
@@ -499,6 +499,7 @@
 <script>
     // CONFIGURATION
     const API_URL = 'https://weathered-voice-debf.reich-family.workers.dev';
+    const PAGE_ID = 'p1001'; // Filter for Reich Family
 
     let visitorData = [];
     let isLoading = false;
@@ -570,10 +571,12 @@
         try {
             isLoading = true;
             if (showLoader) {
-                document.getElementById('tableBody').innerHTML = '<tr><td colspan="7" class="loading">📡 Fetching analytics data...</td></tr>';
+                document.getElementById('tableBody').innerHTML = '<tr><td colspan="7" class="loading">📡 Fetching analytics data for Reich Family...</td></tr>';
             }
             
             const params = new URLSearchParams();
+            params.append('pageId', PAGE_ID); // Filter for this project
+            
             if (document.getElementById('excludeBots').checked) params.append('exclude_bots', '1');
             
             const country = document.getElementById('countryFilter').value;
@@ -672,7 +675,7 @@
         const tbody = document.getElementById('tableBody');
         
         if (visitorData.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" class="loading">📭 No visitor data found</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" class="loading">📭 No visitor data found for Reich Family</td></tr>';
             return;
         }
         
@@ -754,14 +757,14 @@
     }
 
     async function deleteAllData() {
-        if (!confirm('⚠️ Delete ALL visitor data? This cannot be undone.')) return;
+        if (!confirm('⚠️ Delete ALL Reich Family visitor data? This cannot be undone.')) return;
         
         try {
-            const response = await fetch(API_URL, { method: 'DELETE' });
+            const response = await fetch(`${API_URL}?pageId=${PAGE_ID}`, { method: 'DELETE' });
             if (response.ok) {
                 visitorData = [];
                 updateDashboard();
-                alert('All data deleted successfully');
+                alert('All Reich Family data deleted successfully');
             }
         } catch (e) {
             alert('Delete failed: ' + e.message);
@@ -804,7 +807,7 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `analytics_${new Date().toISOString().slice(0,10)}_US_Eastern.csv`;
+        a.download = `reich_family_${new Date().toISOString().slice(0,10)}_US_Eastern.csv`;
         a.click();
     }
 </script>
