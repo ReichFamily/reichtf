@@ -511,24 +511,24 @@ const projects = [
         renderProjects();
     }
 
-    function getLast24HoursCount(pageId) {
-        if (!visitorData.length) return '0';
-        
-        const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
-        
-        const count = visitorData.filter(row => {
-            return row.page === pageId && new Date(row.ts).getTime() > oneDayAgo;
-        }).length;
-        
-        return count;
-    }
+function getLast24HoursCount(pageId) {
+    if (!visitorData.length) return '0';
+    
+    const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
+    
+    const count = visitorData.filter(row => {
+        return row.pageId === pageId && new Date(row.ts).getTime() > oneDayAgo;
+    }).length;
+    
+    return count;
+}
 
-    function getTotalCount(pageId) {
-        if (!visitorData.length) return '0';
-        
-        const count = visitorData.filter(row => row.page === pageId).length;
-        return count;
-    }
+function getTotalCount(pageId) {
+    if (!visitorData.length) return '0';
+    
+    const count = visitorData.filter(row => row.pageId === pageId).length;
+    return count;
+}
 
     function renderProjects() {
         const container = document.getElementById('projectsContainer');
