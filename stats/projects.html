@@ -503,6 +503,8 @@ const projects = [
             
             if (data.ok && Array.isArray(data.rows)) {
                 visitorData = data.rows;
+				console.log('Total rows:', visitorData.length);
+				console.log('Sample row:', visitorData[0]);
             }
         } catch (error) {
             console.error('Failed to load visit data:', error);
