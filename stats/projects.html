@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reich Family Statistics</title>
+    <meta name="robots" content="noindex, nofollow">
+
+<!--CSS Referrals-->
+<link rel="canonical" href="https://reich.tf/" />
+<link href="layout.css" rel="stylesheet" type="text/css">
+<link href="boilerplate.css" rel="stylesheet" type="text/css">
+<link rel="shortcut icon" href="favicon.ico">
+
+<!--Favicon-->
+<link rel="shortcut icon" href="favicon.ico">
+
+<!--Fonts-->
+<link rel="preload" href="fonts/ITCEDSCR.TTF" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/OpenSans-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/TrajanPro3-Regular.otf" as="font" type="font/otf" crossorigin>
+<link rel="preload" href="fonts/Montserrat-Light.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/Montserrat-LightItalic.ttf" as="font" type="font/ttf" crossorigin>
+
+
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #1a1e24;
+            color: #e5e7eb;
+            font-size: 13px;
+            line-height: 1.4;
+            padding: 20px;
+        }
+
+@font-face {
+  font-family:ITCEDSCR;
+  src: url(fonts/ITCEDSCR.TTF);
+  font-display: block;
+}
+@font-face {
+  font-family:TrajanPro3-Regular;
+  src: url(fonts/TrajanPro3-Regular.otf);
+  font-display: block;
+}
+@font-face {
+  font-family:OpenSans-Light;
+  src: url(fonts/OpenSans-Light.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:OpenSans-Italic;
+  src: url(fonts/OpenSans-Italic.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:OpenSans-Regular;
+  src: url(fonts/OpenSans-Regular.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:Montserrat-Light;
+  src: url(fonts/Montserrat-Light.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:Montserrat-ThinItalic;
+  src: url(fonts/Montserrat-ThinItalic.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:Montserrat-LightItalic;
+  src: url(fonts/Montserrat-LightItalic.ttf);
+  font-display: block;
+}
+
+
+        /* Center the content */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .sc-header {
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content:center;
+            align-items: center;
+
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        /* Content area */
+        .content {
+            background: #1a1e24;
+            margin-top:-20px;
+        }
+
+        /* Page header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        /* Stats widgets */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-widget {
+            background: #252a33;
+            border-radius: 4px;
+            border: 1px solid #374151;
+            padding: 15px;
+        }
+
+        .stat-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #9ca3af;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .stat-sub {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 5px;
+        }
+
+        /* Filter bar */
+        .filter-bar {
+            background: #252a33;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #9ca3af;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-select {
+            padding: 5px 10px;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            font-size: 12px;
+            background: #1a1e24;
+            color: #e5e7eb;
+        }
+
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #e5e7eb;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid #374151;
+            background: #252a33;
+            color: #e5e7eb;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            border-color: #1d4ed8;
+        }
+
+        .btn-outline {
+            background: #252a33;
+            color: #e5e7eb;
+        }
+
+        /* Table - keeping exact same styling but we'll repurpose it */
+        .table-container {
+            background: #252a33;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            overflow: auto;
+        }
+
+        .table-header {
+            padding: 12px 15px;
+            background: #1f2937;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .table-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        /* Project grid styles - new but using your existing design language */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            padding: 15px;
+        }
+
+        .project-card {
+            background: #1a1e24;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            padding: 15px;
+            transition: border-color 0.2s;
+        }
+
+        .project-card:hover {
+            border-color: #60a5fa;
+        }
+
+        .project-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .project-link {
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .project-link:hover {
+            text-decoration: underline;
+        }
+
+        .badge-bot {
+            background: #7f1d1d;
+            color: #fecaca;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .badge-real {
+            background: #14532d;
+            color: #dcfce7;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .device-icon {
+            display: inline-block;
+            width: 16px;
+            text-align: center;
+            margin-right: 4px;
+        }
+
+        .location-cell {
+            max-width: 150px;
+        }
+
+        .location-city {
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        .hostname {
+            color: #f87171;
+            font-weight: 500;
+        }
+
+        .page-url {
+            color: #60a5fa;
+            text-decoration: none;
+            max-width: 250px;
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .page-url:hover {
+            text-decoration: underline;
+        }
+
+        .referrer {
+            color: #4ade80;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .mag-icon {
+            color: #9ca3af;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #9ca3af;
+        }
+
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: #f87171;
+        }
+
+	.flag-icon {
+        width: 18px;
+        height: 12px;
+        background: transparent;
+        display: inline-block;
+        margin-right: 5px;
+        vertical-align: middle;
+        margin-top: 14px;
+       }
+
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+<div class="header">
+<div style="margin:auto;">
+<p class="title">Reich Family</p>
+<p class="subtitle">Trinitarian Religious Group</p>
+</div>
+</div>
+
+        <!-- Main content area -->
+        <div class="content">
+            <!-- Page header -->
+            <div class="page-header">
+
+            </div>
+
+            <!-- Stats widgets - EXACTLY as in your template -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-widget">
+                    <div class="stat-title">Total Visitors</div>
+                    <div class="stat-value" id="totalVisitors">-</div>
+                    <div class="stat-sub">Last 100 visits</div>
+                </div>
+                <div class="stat-widget">
+                    <div class="stat-title">Unique Sessions</div>
+                    <div class="stat-value" id="uniqueSessions">-</div>
+                    <div class="stat-sub">Based on session ID</div>
+                </div>
+                <div class="stat-widget">
+                    <div class="stat-title">Bot Traffic</div>
+                    <div class="stat-value" id="botCount">-</div>
+                    <div class="stat-sub" id="botPercentage">-</div>
+                </div>
+                <div class="stat-widget">
+                    <div class="stat-title">Top Country</div>
+                    <div class="stat-value" id="topCountry">-</div>
+                    <div class="stat-sub" id="topCountryPercent">-</div>
+                </div>
+            </div>
+
+            <!-- Filter bar - EXACTLY as in your template -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <span class="filter-label">FILTERS</span>
+                    <label class="filter-checkbox">
+                        <input type="checkbox" id="excludeBots" checked> Exclude bots
+                    </label>
+                    <label class="filter-checkbox">
+                        <input type="checkbox" id="showOnlyBots"> Show only bots
+                    </label>
+                </div>
+                
+                <div class="filter-group">
+                    <select id="countryFilter" class="filter-select">
+                        <option value="">All countries</option>
+                    </select>
+                    
+                    <select id="deviceFilter" class="filter-select">
+                        <option value="">All devices</option>
+                        <option value="desktop">Desktop</option>
+                        <option value="mobile">Mobile</option>
+                        <option value="tablet">Tablet</option>
+                    </select>
+                    
+                    <select id="limitSelect" class="filter-select">
+                        <option value="50">50 rows</option>
+                        <option value="100" selected>100 rows</option>
+                        <option value="250">250 rows</option>
+                    </select>
+                </div>
+                
+                <div style="margin-left: auto; display: flex; gap: 8px;">
+                    <button id="refreshBtn" class="btn btn-primary">🔄 Refresh</button>
+                    <button id="clearFiltersBtn" class="btn btn-outline">Clear</button>
+                </div>
+            </div>
+
+            <!-- Main table container - STRUCTURE KEPT, CONTENT CHANGED to projects -->
+            <div class="table-container">
+                <div class="table-header">
+                    <div class="table-title">
+                        Statistics Projects
+                        <span id="projectCount" style="color: #6f8fae; margin-left: 10px; font-weight: normal;">8 projects</span>
+                    </div>
+                    <div class="table-controls">
+                        <button id="exportBtn" class="btn btn-outline" style="font-size: 11px;">📋 View All</button>
+                    </div>
+                </div>
+                
+                <div style="overflow-x: auto;">
+                    <div id="projectsContainer" class="projects-grid">
+                        <!-- Projects will be loaded here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // Project list - exactly as you provided
+    const projects = [
+        { name: "Reich Family", url: "/stats/p1001" },
+        { name: "Maria Katsaris", url: "/stats/p1002" },
+        { name: "Steven Katsaris", url: "/stats/p1003" },
+        { name: "Maria Katsaris Disciples", url: "/stats/p1004" },
+        { name: "Polly Klaas", url: "/stats/p1005" },
+        { name: "Eugene Reed", url: "/stats/p1006" },
+        { name: "Research Home", url: "/stats/p1007" },
+        { name: "Sylvia Ralya Reinsch", url: "/stats/p1008" }
+    ];
+
+    // CONFIGURATION - keeping your API URL even though not used in this view
+    const API_URL = 'https://weathered-voice-debf.reich-family.workers.dev';
+
+    let visitorData = [];
+    let isLoading = false;
+
+    // Keeping ALL your original functions intact
+    function formatInEasternTime(timestamp) {
+        if (!timestamp) return { date: '—', time: '—' };
+        
+        try {
+            const date = new Date(timestamp);
+            
+            if (isNaN(date.getTime())) {
+                return { date: '—', time: '—' };
+            }
+            
+            const dateOptions = {
+                timeZone: 'America/New_York',
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            };
+            
+            const timeOptions = {
+                timeZone: 'America/New_York',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
+            
+            return {
+                date: date.toLocaleDateString('en-US', dateOptions),
+                time: date.toLocaleTimeString('en-US', timeOptions)
+            };
+        } catch (error) {
+            console.error('Date formatting error:', error);
+            return { date: '—', time: '—' };
+        }
+    }
+
+    // New function to render projects
+    function renderProjects() {
+        const container = document.getElementById('projectsContainer');
+        if (!container) return;
+        
+        let html = '';
+        projects.forEach(project => {
+            html += `
+                <div class="project-card">
+                    <div class="project-name">${project.name}</div>
+                    <a href="${project.url}" class="project-link">View Statistics →</a>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+        document.getElementById('projectCount').innerText = `${projects.length} projects`;
+    }
+
+    // Keeping your existing functions but they won't be used in this view
+    function updateDashboard() {
+        // Not used in projects view
+    }
+
+    function updateStats() {
+        // Not used in projects view
+    }
+
+    function updateCountryFilter() {
+        // Not used in projects view
+    }
+
+    function renderTable() {
+        // Not used in projects view
+    }
+
+    function clearFilters() {
+        document.getElementById('excludeBots').checked = true;
+        document.getElementById('showOnlyBots').checked = false;
+        document.getElementById('countryFilter').value = '';
+        document.getElementById('deviceFilter').value = '';
+        document.getElementById('limitSelect').value = '100';
+        // Don't call loadData since we're not loading visitor data
+    }
+
+    async function deleteAllData() {
+        // Not used in projects view
+    }
+
+    function exportToCSV() {
+        // Not used in projects view
+    }
+
+    // Override loadData to just show projects
+    async function loadData(showLoader = true) {
+        // Instead of loading visitor data, just show projects
+        renderProjects();
+        
+        // Update stats widgets with placeholder data (or you could fetch real totals)
+        document.getElementById('totalVisitors').innerText = projects.length;
+        document.getElementById('uniqueSessions').innerText = '8';
+        document.getElementById('botCount').innerHTML = `0 <span style="font-size: 14px; color: #6f8fae;">(0%)</span>`;
+        document.getElementById('botPercentage').innerText = '0% of traffic';
+        document.getElementById('topCountry').innerText = '—';
+        document.getElementById('topCountryPercent').innerText = '';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadData();
+        
+        document.getElementById('refreshBtn').addEventListener('click', () => loadData(true));
+        document.getElementById('clearFiltersBtn').addEventListener('click', clearFilters);
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            window.location.href = '/stats'; // or wherever your main projects page is
+        });
+        
+        ['excludeBots', 'showOnlyBots', 'countryFilter', 'deviceFilter', 'limitSelect'].forEach(id => {
+            document.getElementById(id).addEventListener('change', () => loadData(true));
+        });
+        
+        document.getElementById('showOnlyBots').addEventListener('change', function() {
+            if (this.checked) document.getElementById('excludeBots').checked = false;
+        });
+        
+        document.getElementById('excludeBots').addEventListener('change', function() {
+            if (this.checked) document.getElementById('showOnlyBots').checked = false;
+        });
+        
+        document.getElementById('deleteAllBtn').addEventListener('click', deleteAllData);
+    });
+</script>
+
+</body>
+</html>
