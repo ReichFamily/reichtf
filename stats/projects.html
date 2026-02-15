@@ -482,17 +482,16 @@
     const API_URL = 'https://weathered-voice-debf.reich-family.workers.dev';
 
     // Project list with their pageId values (matching what you put in snippets)
-    const projects = [
-        { name: "Reich Family", pageId: "homepage", url: "/stats/p1001", category: "main" },
-        { name: "Maria Katsaris", pageId: "maria-katsaris", url: "/stats/p1002", category: "research" },
-        { name: "Steven Katsaris", pageId: "steven-katsaris", url: "/stats/p1003", category: "research" },
-        { name: "Maria Katsaris Disciples", pageId: "maria-disciples", url: "/stats/p1004", category: "disciples" },
-        { name: "Polly Klaas", pageId: "polly-klaas", url: "/stats/p1005", category: "research" },
-        { name: "Eugene Reed", pageId: "eugene-reed", url: "/stats/p1006", category: "research" },
-        { name: "Research Home", pageId: "research-home", url: "/stats/p1007", category: "research" },
-        { name: "Sylvia Ralya Reinsch", pageId: "sylvia-ralya", url: "/stats/p1008", category: "main" }
-    ];
-
+const projects = [
+    { name: "Reich Family", pageId: "p1001", url: "/stats/p1001", category: "main" },
+    { name: "Maria Katsaris", pageId: "p1002", url: "/stats/p1002", category: "research" },
+    { name: "Steven Katsaris", pageId: "p1003", url: "/stats/p1003", category: "research" },
+    { name: "Maria Katsaris Disciples", pageId: "p1004", url: "/stats/p1004", category: "disciples" },
+    { name: "Polly Klaas", pageId: "p1005", url: "/stats/p1005", category: "research" },
+    { name: "Eugene Reed", pageId: "p1006", url: "/stats/p1006", category: "research" },
+    { name: "Research Home", pageId: "p1007", url: "/stats/p1007", category: "research" },
+    { name: "Sylvia Ralya Reinsch", pageId: "p1008", url: "/stats/p1008", category: "main" }
+];
     let visitorData = [];
 
     async function loadVisitData() {
