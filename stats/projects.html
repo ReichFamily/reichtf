@@ -478,7 +478,10 @@
     </div>
 
 <script>
-    // Project list
+    // API URL - same as your stats page
+    const API_URL = 'https://weathered-voice-debf.reich-family.workers.dev';
+
+    // Project list with their pageId values (matching what you put in snippets)
     const projects = [
         { name: "Reich Family", pageId: "homepage", url: "/stats/p1001", category: "main" },
         { name: "Maria Katsaris", pageId: "maria-katsaris", url: "/stats/p1002", category: "research" },
@@ -490,71 +493,12 @@
         { name: "Sylvia Ralya Reinsch", pageId: "sylvia-ralya", url: "/stats/p1008", category: "main" }
     ];
 
-    function renderProjects() {
-        const container = document.getElementById('projectsContainer');
-        const categoryFilter = document.getElementById('categoryFilter')?.value || '';
-        const showAll = document.getElementById('showAll')?.checked || true;
-        
-        let filteredProjects = projects;
-        
-        if (categoryFilter) {
-            filteredProjects = filteredProjects.filter(p => p.category === categoryFilter);
-        }
-        
-        let html = '';
-        filteredProjects.forEach(project => {
-            html += `
-                <div class="project-card">
-                    <div class="project-name">${project.name}</div>
-                    <a href="${project.url}" class="project-link">View Statistics →</a>
-                </div>
-            `;
-        });
-        
-        container.innerHTML = html || '<div style="padding: 20px; text-align: center; color: #9ca3af;">No projects found</div>';
-        document.getElementById('projectCount').innerText = `${filteredProjects.length} projects`;
-        
-        // Update stats widgets
-        document.getElementById('totalProjects').innerText = projects.length;
-        document.getElementById('lastUpdated').innerText = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        
-        const categories = [...new Set(projects.map(p => p.category))].length;
-        document.getElementById('categories').innerText = categories;
-        document.getElementById('topProject').innerText = 'Reich Family';
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        renderProjects();
-        
-        document.getElementById('refreshBtn').addEventListener('click', renderProjects);
-        document.getElementById('categoryFilter')?.addEventListener('change', renderProjects);
-        document.getElementById('showAll')?.addEventListener('change', renderProjects);
-        document.getElementById('exportBtn')?.addEventListener('click', () => {
-            alert('Export feature coming soon');
-        });
-    });
-
-    // API URL - same as your stats page
-    const API_URL = 'https://weathered-voice-debf.reich-family.workers.dev';
-
-    // Project list with their pageId values (matching what you put in snippets)
-    const projects = [
-        { name: "Reich Family", pageId: "homepage", url: "/p1001", category: "main" },
-        { name: "Maria Katsaris", pageId: "maria-katsaris", url: "/p1002", category: "main" },
-        { name: "Steven Katsaris", pageId: "steven-katsaris", url: "/p1003", category: "main" },
-        { name: "Maria Katsaris Disciples", pageId: "maria-disciples", url: "/p1004", category: "disciples" },
-        { name: "Polly Klaas", pageId: "polly-klaas", url: "/p1005", category: "main" },
-        { name: "Eugene Reed", pageId: "eugene-reed", url: "/p1006", category: "main" },
-        { name: "Research Home", pageId: "research-home", url: "/p1007", category: "research" },
-        { name: "Sylvia Ralya Reinsch", pageId: "sylvia-ralya", url: "/p1008", category: "main" }
-    ];
-
     let visitorData = [];
 
     async function loadVisitData() {
         try {
-            // Fetch last 24 hours of data (you can adjust limit)
-            const url = `${API_URL}?limit=1000`; // Get enough rows to cover 24h
+            // Fetch last 24 hours of data
+            const url = `${API_URL}?limit=1000`;
             const response = await fetch(url);
             const data = await response.json();
             
@@ -569,11 +513,10 @@
     }
 
     function getLast24HoursCount(pageId) {
-        if (!visitorData.length) return '...';
+        if (!visitorData.length) return '0';
         
         const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
         
-        // Count visits for this pageId in last 24 hours
         const count = visitorData.filter(row => {
             return row.page === pageId && new Date(row.ts).getTime() > oneDayAgo;
         }).length;
@@ -582,7 +525,7 @@
     }
 
     function getTotalCount(pageId) {
-        if (!visitorData.length) return '...';
+        if (!visitorData.length) return '0';
         
         const count = visitorData.filter(row => row.page === pageId).length;
         return count;
@@ -609,7 +552,7 @@
                         <div><span style="color: #9ca3af;">24h:</span> <span style="color: #60a5fa;">${last24h}</span></div>
                         <div><span style="color: #9ca3af;">Total:</span> <span style="color: #60a5fa;">${total}</span></div>
                     </div>
-                    <a href="${project.url}" class="project-link">View Details →</a>
+                    <a href="${project.url}" class="project-link">View Statistics →</a>
                 </div>
             `;
         });
@@ -617,10 +560,7 @@
         container.innerHTML = html || '<div style="padding: 20px; text-align: center; color: #9ca3af;">No projects found</div>';
         document.getElementById('projectCount').innerText = `${filteredProjects.length} projects`;
         
-        // Update stats widgets with real totals
-        const allVisits = visitorData.length;
-        const uniqueProjects = new Set(visitorData.map(v => v.page)).size;
-        
+        // Update stats widgets
         document.getElementById('totalProjects').innerText = projects.length;
         document.getElementById('lastUpdated').innerText = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
         document.getElementById('categories').innerText = [...new Set(projects.map(p => p.category))].length;
@@ -636,9 +576,10 @@
             }
         });
         document.getElementById('topProject').innerText = topProject;
-        document.getElementById('topProjectSub').innerText = `${topCount} visits (24h)`;
+        document.getElementById('topProjectSub').innerText = topCount ? `${topCount} visits (24h)` : 'Most visited';
     }
 
+    // Single event listener
     document.addEventListener('DOMContentLoaded', () => {
         loadVisitData();
         
