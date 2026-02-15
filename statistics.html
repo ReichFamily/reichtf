@@ -654,8 +654,8 @@
                 
                 const deviceIcon = row.device === 'mobile' ? '📱' : row.device === 'tablet' ? '📟' : '💻';
                 
-                const isBot = row.bot === 1 || row.bot === true;
-                const botBadge = isBot ? '<span class="badge-bot">🤖 BOT</span>' : '<span class="badge-real">👤 Real</span>';
+                // const isBot = row.bot === 1 || row.bot === true;
+                // const botBadge = isBot ? '<span class="badge-bot">🤖 BOT</span>' : '<span class="badge-real">👤 Real</span>';
                 
                 const locationParts = [];
                 if (row.city) locationParts.push(row.city);
@@ -707,7 +707,7 @@
                         <div><span class="hostname">${hostname}</span></div>
                         <div><a href="${fullPageUrl}" target="_blank" class="page-url" title="${fullPageUrl}">${displayUrl}</a></div>
                         <div><span class="referrer" title="${referrer}">${displayReferrer}</span></div>
-                        <div style="margin-top: 3px;">${botBadge}</div>
+                        // <div style="margin-top: 3px;">${botBadge}</div>
                     </td>
                 </tr>`;
             });
