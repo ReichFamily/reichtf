@@ -1228,9 +1228,10 @@ hs.src = ('//s10.histats.com/js15_as.js');
 <noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?5008388&101" alt="free webpage hit counter" border="0"></a></noscript>
 <!-- Histats.com  END  -->
 
-<script>
+  <script>
   (function() {
     const collector = 'https://crimson-hill-ea2e.reich-family.workers.dev';
+    const pageId = 'p1001';
     const url = location.pathname + location.search;
     let sid = localStorage.getItem('sid');
     if (!sid) {
@@ -1238,27 +1239,23 @@ hs.src = ('//s10.histats.com/js15_as.js');
       localStorage.setItem('sid', sid);
     }
 
-    // --- NEW: Collect Screen Size ---
     const screenSize = {
       width: window.screen.width,
       height: window.screen.height
     };
 
-    // --- NEW: Collect Full Browser Info ---
-    // We send the full User-Agent so your worker can parse exact browser & OS versions.
     const userAgent = navigator.userAgent;
 
-    // Send ALL the data in one POST request
     navigator.sendBeacon(collector, JSON.stringify({
+      page: pageId,
       u: url,
       sid: sid,
       r: document.referrer,
-      screen: screenSize,        // <-- NEW: Screen dimensions
-      ua_full: userAgent          // <-- NEW: Full User-Agent string for detailed parsing
+      screen: screenSize,
+      ua_full: userAgent
     }));
   })();
 </script>
 
 </body>
 </html>
-
