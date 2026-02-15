@@ -490,6 +490,35 @@ src="https://c.statcounter.com/13057938/0/66002c22/1/"
 alt="web statistics"
 referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 <!-- End of Statcounter Code -->
+
+<script>
+  (function() {
+    const collector = 'https://crimson-hill-ea2e.reich-family.workers.dev';
+    const pageId = 'p1008';
+    const url = location.pathname + location.search;
+    let sid = localStorage.getItem('sid');
+    if (!sid) {
+      sid = 's_' + Math.random().toString(36).slice(2, 12);
+      localStorage.setItem('sid', sid);
+    }
+
+    const screenSize = {
+      width: window.screen.width,
+      height: window.screen.height
+    };
+
+    const userAgent = navigator.userAgent;
+
+    navigator.sendBeacon(collector, JSON.stringify({
+      page: pageId,
+      u: url,
+      sid: sid,
+      r: document.referrer,
+      screen: screenSize,
+      ua_full: userAgent
+    }));
+  })();
+</script>
 	
 </body>
 </html>
