@@ -83,7 +83,7 @@
 
         /* Center the content */
         .container {
-            max-width: 990px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
@@ -479,10 +479,10 @@
                                 <th>Date</th>
                                 <th>Time</th>
                                 <th>System</th>
-                                <th>Browser/OS/Screen</th>
+                                <th>Browser / OS / Screen</th>
                                 <th></th>
                                 <th>Location</th>
-                                <th>Host Name/Web Page/Referrer</th>
+                                <th>ISP / IP / Page Visited / Referrer</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody">
@@ -736,21 +736,13 @@
                     <div>${locationDisplay}</div>
                     <div class="location-city">${row.language || ''}</div>
                 </td>
-				<td>
-			    <div>
-			        <span class="hostname">${hostname}</span>
-			    </div>
-			    <div>
-			        <span style="color: #ffffff;">(${row.ip || 'No IP'})</span>
-			        <span>IP: ${row.ip || 'No IP'}</span>
-			    </div>
-			    <div>
-			        <a href="${fullPageUrl}" target="_blank" class="page-url" title="${fullPageUrl}">${displayUrl}</a>
-			    </div>
-			    <div>
-			        <span class="referrer" title="${referrer}">${displayReferrer}</span>
-			    </div>
-			   </td>
+<td>
+<div><span class="hostname">${hostname}</span></div>
+<div><span>${row.ip || 'No IP'}</span></div>
+<div><a href="${fullPageUrl}" target="_blank" class="page-url" title="${fullPageUrl}">${displayUrl}</a></div>
+<div><span class="referrer" title="${referrer}">${displayReferrer}</span></div>
+</td>
+
             </tr>`;
         });
         
