@@ -517,10 +517,15 @@ const projects = [
 function getLast24HoursCount(pageId) {
     if (!visitorData.length) return '0';
     
-    const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
+    // Get midnight EST/EDT for today
+    const now = new Date();
+    const estNow = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+    const estMidnight = new Date(estNow);
+    estMidnight.setHours(0, 0, 0, 0);
+    const midnightTimestamp = estMidnight.getTime();
     
     const count = visitorData.filter(row => {
-        return row.pageId === pageId && new Date(row.ts).getTime() > oneDayAgo;
+        return row.pageId === pageId && new Date(row.ts).getTime() > midnightTimestamp;
     }).length;
     
     return count;
