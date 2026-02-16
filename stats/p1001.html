@@ -736,11 +736,21 @@
                     <div>${locationDisplay}</div>
                     <div class="location-city">${row.language || ''}</div>
                 </td>
-                <td>
-                    <div><span class="hostname">${hostname}</span> <span style="color: #ffffff;">(${row.ip || 'No IP'})</span></div>
-                    <div><a href="${fullPageUrl}" target="_blank" class="page-url" title="${fullPageUrl}">${displayUrl}</a></div>
-                    <div><span class="referrer" title="${referrer}">${displayReferrer}</span></div>
-                </td>
+				<td>
+			    <div>
+			        <span class="hostname">${hostname}</span>
+			    </div>
+			    <div>
+			        <span style="color: #ffffff;">(${row.ip || 'No IP'})</span>
+			        <span>IP: ${row.ip || 'No IP'}</span>
+			    </div>
+			    <div>
+			        <a href="${fullPageUrl}" target="_blank" class="page-url" title="${fullPageUrl}">${displayUrl}</a>
+			    </div>
+			    <div>
+			        <span class="referrer" title="${referrer}">${displayReferrer}</span>
+			    </div>
+			   </td>
             </tr>`;
         });
         
