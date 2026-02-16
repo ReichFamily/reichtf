@@ -738,7 +738,7 @@
                 </td>
 <td>
 <div><span class="hostname">${hostname}</span></div>
-<div><span>${row.ip || 'No IP'}</span></div>
+<div><span><a href="https://www.ip2location.com/demo/${row.ip || ''}" target="_blank" rel="noopener noreferrer" style="color: #66b0ff !important;">${row.ip || 'No IP'}</a></span></div>
 <div><a href="${fullPageUrl}" target="_blank" class="page-url" title="${fullPageUrl}">${displayUrl}</a></div>
 <div><span class="referrer" title="${referrer}">${displayReferrer}</span></div>
 </td>
