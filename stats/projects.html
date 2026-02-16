@@ -1,602 +1,519 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reich Family Projects</title>
-    <meta name="robots" content="noindex, nofollow">
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reich Family Projects</title>
+<meta name="robots" content="noindex, nofollow">
 <!--CSS Referrals-->
 <link rel="canonical" href="https://reich.tf/" />
 <link href="../layout.css" rel="stylesheet" type="text/css">
 <link href="../boilerplate.css" rel="stylesheet" type="text/css">
 <link rel="shortcut icon" href="../favicon.ico">
-
 <!--Favicon-->
 <link rel="shortcut icon" href="../favicon.ico">
-
 <!--Fonts-->
 <link rel="preload" href="../fonts/ITCEDSCR.TTF" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="../fonts/OpenSans-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="../fonts/TrajanPro3-Regular.otf" as="font" type="font/otf" crossorigin>
 <link rel="preload" href="../fonts/Montserrat-Light.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="../fonts/Montserrat-LightItalic.ttf" as="font" type="font/ttf" crossorigin>
-
-
 <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: #1a1e24;
-            color: #e5e7eb;
-            font-size: 13px;
-            line-height: 1.4;
-            padding: 20px;
-        }
-
-@font-face {
-  font-family:ITCEDSCR;
-  src: url(../fonts/ITCEDSCR.TTF);
-  font-display: block;
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+body {
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+background: #1a1e24;
+color: #e5e7eb;
+font-size: 13px;
+line-height: 1.4;
+padding: 20px;
 }
 @font-face {
-  font-family:TrajanPro3-Regular;
-  src: url(../fonts/TrajanPro3-Regular.otf);
-  font-display: block;
+font-family:ITCEDSCR;
+src: url(../fonts/ITCEDSCR.TTF);
+font-display: block;
 }
 @font-face {
-  font-family:OpenSans-Light;
-  src: url(../fonts/OpenSans-Light.ttf);
-  font-display: block;
+font-family:TrajanPro3-Regular;
+src: url(../fonts/TrajanPro3-Regular.otf);
+font-display: block;
 }
 @font-face {
-  font-family:OpenSans-Italic;
-  src: url(../fonts/OpenSans-Italic.ttf);
-  font-display: block;
+font-family:OpenSans-Light;
+src: url(../fonts/OpenSans-Light.ttf);
+font-display: block;
 }
 @font-face {
-  font-family:OpenSans-Regular;
-  src: url(../fonts/OpenSans-Regular.ttf);
-  font-display: block;
+font-family:OpenSans-Italic;
+src: url(../fonts/OpenSans-Italic.ttf);
+font-display: block;
 }
 @font-face {
-  font-family:Montserrat-Light;
-  src: url(../fonts/Montserrat-Light.ttf);
-  font-display: block;
+font-family:OpenSans-Regular;
+src: url(../fonts/OpenSans-Regular.ttf);
+font-display: block;
 }
 @font-face {
-  font-family:Montserrat-ThinItalic;
-  src: url(../fonts/Montserrat-ThinItalic.ttf);
-  font-display: block;
+font-family:Montserrat-Light;
+src: url(../fonts/Montserrat-Light.ttf);
+font-display: block;
 }
 @font-face {
-  font-family:Montserrat-LightItalic;
-  src: url(../fonts/Montserrat-LightItalic.ttf);
-  font-display: block;
+font-family:Montserrat-ThinItalic;
+src: url(../fonts/Montserrat-ThinItalic.ttf);
+font-display: block;
 }
-
-
-        /* Center the content */
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        /* Header */
-        .sc-header {
-            color: white;
-            padding: 10px 20px;
-            display: flex;
-            justify-content:center;
-            align-items: center;
-
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo {
-            font-size: 22px;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-        }
-
-        /* Content area */
-        .content {
-            background: #1a1e24;
-            margin-top:-20px;
-        }
-
-        /* Page header */
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        /* Stats widgets */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .stat-widget {
-            background: #252a33;
-            border-radius: 4px;
-            border: 1px solid #374151;
-            padding: 15px;
-        }
-
-        .stat-title {
-            font-size: 11px;
-            text-transform: uppercase;
-            color: #9ca3af;
-            letter-spacing: 0.5px;
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-size: 28px;
-            font-weight: 600;
-            color: #ffffff;
-        }
-
-        .stat-sub {
-            font-size: 11px;
-            color: #9ca3af;
-            margin-top: 5px;
-        }
-
-        /* Filter bar */
-        .filter-bar {
-            background: #252a33;
-            border: 1px solid #374151;
-            border-radius: 4px;
-            padding: 12px 15px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .filter-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .filter-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            color: #9ca3af;
-            letter-spacing: 0.5px;
-        }
-
-        .filter-select {
-            padding: 5px 10px;
-            border: 1px solid #374151;
-            border-radius: 4px;
-            font-size: 12px;
-            background: #1a1e24;
-            color: #e5e7eb;
-        }
-
-        .filter-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 12px;
-            color: #e5e7eb;
-        }
-
-        .btn {
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 500;
-            border: 1px solid #374151;
-            background: #252a33;
-            color: #e5e7eb;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .btn-primary {
-            background: #2563eb;
-            color: white;
-            border-color: #1d4ed8;
-        }
-
-        .btn-outline {
-            background: #252a33;
-            color: #e5e7eb;
-        }
-
-        /* Table */
-        .table-container {
-            background: #252a33;
-            border: 1px solid #374151;
-            border-radius: 4px;
-            overflow: auto;
-        }
-
-        .table-header {
-            padding: 12px 15px;
-            background: #1f2937;
-            border-bottom: 1px solid #374151;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .table-title {
-            font-weight: 600;
-            color: #ffffff;
-        }
-
-        .table-controls {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        /* Project grid */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-            padding: 15px;
-        }
-
-        .project-card {
-            background: #1a1e24;
-            border: 1px solid #374151;
-            border-radius: 4px;
-            padding: 15px;
-        }
-
-        .project-card:hover {
-            border-color: #60a5fa;
-        }
-
-        .project-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 10px;
-        }
-
-        .project-link {
-            color: #60a5fa;
-            text-decoration: none;
-            font-size: 12px;
-        }
-
-        .project-link:hover {
-            text-decoration: underline;
-        }
-
-        .badge-bot {
-            background: #7f1d1d;
-            color: #fecaca;
-            padding: 2px 6px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 600;
-        }
-
-        .badge-real {
-            background: #14532d;
-            color: #dcfce7;
-            padding: 2px 6px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 600;
-        }
-
-        .device-icon {
-            display: block;
-            width: 16px;
-            text-align: center;
-            margin-right: 4px;
-        }
-
-        .location-cell {
-            max-width: 150px;
-        }
-
-        .location-city {
-            color: #9ca3af;
-            font-size: 11px;
-        }
-
-        .hostname {
-            color: #f87171;
-            font-weight: 500;
-        }
-
-        .page-url {
-            color: #60a5fa;
-            text-decoration: none;
-            max-width: 250px;
-            display: block;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .page-url:hover {
-            text-decoration: underline;
-        }
-
-        .referrer {
-            color: #4ade80;
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            display: block;
-        }
-
-        .mag-icon {
-            color: #9ca3af;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #9ca3af;
-        }
-
-        .error {
-            text-align: center;
-            padding: 40px;
-            color: #f87171;
-        }
-
-	.flag-icon {
-        width: 18px;
-        height: 12px;
-        background: transparent;
-        display: block;
-        margin-right: 5px;
-        vertical-align: middle;
-        margin-top: 14px;
-       }
-
-        @media (max-width: 1200px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
+@font-face {
+font-family:Montserrat-LightItalic;
+src: url(../fonts/Montserrat-LightItalic.ttf);
+font-display: block;
+}
+/* Center the content */
+.container {
+max-width: 900px;
+margin: 0 auto;
+}
+/* Header */
+.sc-header {
+color: white;
+padding: 10px 20px;
+display: flex;
+justify-content:center;
+align-items: center;
+}
+.logo-area {
+display: flex;
+align-items: center;
+gap: 15px;
+}
+.logo {
+font-size: 22px;
+font-weight: 600;
+letter-spacing: -0.5px;
+}
+/* Content area */
+.content {
+background: #1a1e24;
+margin-top:-20px;
+}
+/* Page header */
+.page-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px;
+}
+/* Stats widgets */
+.stats-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 15px;
+margin-bottom: 20px;
+}
+.stat-widget {
+background: #252a33;
+border-radius: 4px;
+border: 1px solid #374151;
+padding: 15px;
+}
+.stat-title {
+font-size: 11px;
+text-transform: uppercase;
+color: #9ca3af;
+letter-spacing: 0.5px;
+margin-bottom: 5px;
+}
+.stat-value {
+font-size: 28px;
+font-weight: 600;
+color: #ffffff;
+}
+.stat-sub {
+font-size: 11px;
+color: #9ca3af;
+margin-top: 5px;
+}
+/* Filter bar */
+.filter-bar {
+background: #252a33;
+border: 1px solid #374151;
+border-radius: 4px;
+padding: 12px 15px;
+margin-bottom: 20px;
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+gap: 15px;
+}
+.filter-group {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.filter-label {
+font-size: 11px;
+text-transform: uppercase;
+color: #9ca3af;
+letter-spacing: 0.5px;
+}
+.filter-select {
+padding: 5px 10px;
+border: 1px solid #374151;
+border-radius: 4px;
+font-size: 12px;
+background: #1a1e24;
+color: #e5e7eb;
+}
+.filter-checkbox {
+display: flex;
+align-items: center;
+gap: 5px;
+font-size: 12px;
+color: #e5e7eb;
+}
+.btn {
+padding: 6px 12px;
+border-radius: 4px;
+font-size: 12px;
+font-weight: 500;
+border: 1px solid #374151;
+background: #252a33;
+color: #e5e7eb;
+cursor: pointer;
+display: inline-flex;
+align-items: center;
+gap: 5px;
+}
+.btn-primary {
+background: #2563eb;
+color: white;
+border-color: #1d4ed8;
+}
+.btn-outline {
+background: #252a33;
+color: #e5e7eb;
+}
+/* Table */
+.table-container {
+background: #252a33;
+border: 1px solid #374151;
+border-radius: 4px;
+overflow: auto;
+}
+.table-header {
+padding: 12px 15px;
+background: #1f2937;
+border-bottom: 1px solid #374151;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.table-title {
+font-weight: 600;
+color: #ffffff;
+}
+.table-controls {
+display: flex;
+gap: 15px;
+align-items: center;
+}
+/* Project grid */
+.projects-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+gap: 15px;
+padding: 15px;
+}
+.project-card {
+background: #1a1e24;
+border: 1px solid #374151;
+border-radius: 4px;
+padding: 15px;
+}
+.project-card:hover {
+border-color: #60a5fa;
+}
+.project-name {
+font-size: 14px;
+font-weight: 600;
+color: #ffffff;
+margin-bottom: 10px;
+}
+.project-link {
+color: #60a5fa;
+text-decoration: none;
+font-size: 12px;
+}
+.project-link:hover {
+text-decoration: underline;
+}
+.badge-bot {
+background: #7f1d1d;
+color: #fecaca;
+padding: 2px 6px;
+border-radius: 12px;
+font-size: 10px;
+font-weight: 600;
+}
+.badge-real {
+background: #14532d;
+color: #dcfce7;
+padding: 2px 6px;
+border-radius: 12px;
+font-size: 10px;
+font-weight: 600;
+}
+.device-icon {
+display: block;
+width: 16px;
+text-align: center;
+margin-right: 4px;
+}
+.location-cell {
+max-width: 150px;
+}
+.location-city {
+color: #9ca3af;
+font-size: 11px;
+}
+.hostname {
+color: #f87171;
+font-weight: 500;
+}
+.page-url {
+color: #60a5fa;
+text-decoration: none;
+max-width: 250px;
+display: block;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+}
+.page-url:hover {
+text-decoration: underline;
+}
+.referrer {
+color: #4ade80;
+max-width: 200px;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+display: block;
+}
+.mag-icon {
+color: #9ca3af;
+font-size: 14px;
+cursor: pointer;
+}
+.loading {
+text-align: center;
+padding: 40px;
+color: #9ca3af;
+}
+.error {
+text-align: center;
+padding: 40px;
+color: #f87171;
+}
+.flag-icon {
+width: 18px;
+height: 12px;
+background: transparent;
+display: block;
+margin-right: 5px;
+vertical-align: middle;
+margin-top: 14px;
+}
+@media (max-width: 1200px) {
+.stats-grid {
+grid-template-columns: repeat(2, 1fr);
+}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-
+<div class="container">
 <div class="header">
 <div style="margin:auto;">
 <p class="title">Reich Family</p>
 <p class="subtitle">Trinitarian Religious Group</p>
 </div>
 </div>
-
-        <!-- Main content area -->
-        <div class="content">
-            <!-- Page header -->
-            <div class="page-header">
-
-            </div>
-
-            <!-- Stats widgets -->
-            <div class="stats-grid" id="statsGrid">
-                <div class="stat-widget">
-                    <div class="stat-title">Total Projects</div>
-                    <div class="stat-value" id="totalProjects">8</div>
-                    <div class="stat-sub">Active stats pages</div>
-                </div>
-                <div class="stat-widget">
-                    <div class="stat-title">Last Updated</div>
-                    <div class="stat-value" id="lastUpdated">-</div>
-                    <div class="stat-sub">Today</div>
-                </div>
-                <div class="stat-widget">
-                    <div class="stat-title">Categories</div>
-                    <div class="stat-value" id="categories">4</div>
-                    <div class="stat-sub">Project types</div>
-                </div>
-                <div class="stat-widget">
-                    <div class="stat-title">Top Project</div>
-                    <div class="stat-value" id="topProject">-</div>
-                    <div class="stat-sub" id="topProjectSub">Most visited</div>
-                </div>
-            </div>
-
-            <!-- Filter bar -->
-            <div class="filter-bar">
-                <div class="filter-group">
-                    <span class="filter-label">VIEW</span>
-                    <label class="filter-checkbox">
-                        <input type="checkbox" id="showAll" checked> Show all projects
-                    </label>
-                </div>
-                
-                <div class="filter-group">
-                    <select id="categoryFilter" class="filter-select">
-                        <option value="">All categories</option>
-                        <option value="main">Main</option>
-                        <option value="disciples">Disciples</option>
-                        <option value="research">Research</option>
-                    </select>
-                    
-                    <select id="sortSelect" class="filter-select">
-                        <option value="name">Sort by name</option>
-                        <option value="recent">Most recent</option>
-                    </select>
-                </div>
-                
-                <div style="margin-left: auto; display: flex; gap: 8px;">
-                    <button id="refreshBtn" class="btn btn-primary">🔄 Refresh</button>
-                </div>
-            </div>
-
-            <!-- Projects grid container -->
-            <div class="table-container">
-                <div class="table-header">
-                    <div class="table-title">
-                        Statistics Projects
-                        <span id="projectCount" style="color: #6f8fae; margin-left: 10px; font-weight: normal;">8 projects</span>
-                    </div>
-                    <div class="table-controls">
-                        <button id="exportBtn" class="btn btn-outline" style="font-size: 11px;">📋 Export List</button>
-                    </div>
-                </div>
-                
-                <div style="overflow-x: auto;">
-                    <div id="projectsContainer" class="projects-grid">
-                        <!-- Projects will be inserted here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+<!-- Main content area -->
+<div class="content">
+<!-- Page header -->
+<div class="page-header">
+</div>
+<!-- Stats widgets -->
+<div class="stats-grid" id="statsGrid">
+<div class="stat-widget">
+<div class="stat-title">Total Projects</div>
+<div class="stat-value" id="totalProjects">8</div>
+<div class="stat-sub">Active stats pages</div>
+</div>
+<div class="stat-widget">
+<div class="stat-title">Last Updated</div>
+<div class="stat-value" id="lastUpdated">-</div>
+<div class="stat-sub">Today</div>
+</div>
+<div class="stat-widget">
+<div class="stat-title">Categories</div>
+<div class="stat-value" id="categories">4</div>
+<div class="stat-sub">Project types</div>
+</div>
+<div class="stat-widget">
+<div class="stat-title">Top Project</div>
+<div class="stat-value" id="topProject">-</div>
+<div class="stat-sub" id="topProjectSub">Most visited</div>
+</div>
+</div>
+<!-- Filter bar -->
+<div class="filter-bar">
+<div class="filter-group">
+<span class="filter-label">VIEW</span>
+<label class="filter-checkbox">
+<input type="checkbox" id="showAll" checked> Show all projects
+</label>
+</div>
+<div class="filter-group">
+<select id="categoryFilter" class="filter-select">
+<option value="">All categories</option>
+<option value="main">Main</option>
+<option value="disciples">Disciples</option>
+<option value="research">Research</option>
+</select>
+<select id="sortSelect" class="filter-select">
+<option value="name">Sort by name</option>
+<option value="recent">Most recent</option>
+</select>
+</div>
+<div style="margin-left: auto; display: flex; gap: 8px;">
+<button id="refreshBtn" class="btn btn-primary">🔄 Refresh</button>
+</div>
+</div>
+<!-- Projects grid container -->
+<div class="table-container">
+<div class="table-header">
+<div class="table-title">
+Statistics Projects
+<span id="projectCount" style="color: #6f8fae; margin-left: 10px; font-weight: normal;">8 projects</span>
+</div>
+<div class="table-controls">
+<button id="exportBtn" class="btn btn-outline" style="font-size: 11px;">📋 Export List</button>
+</div>
+</div>
+<div style="overflow-x: auto;">
+<div id="projectsContainer" class="projects-grid">
+<!-- Projects will be inserted here -->
+</div>
+</div>
+</div>
+</div>
+</div>
 <script>
-    // API URL - same as your stats page
-    const API_URL = 'https://weathered-voice-debf.reich-family.workers.dev';
-
-    // Project list with their pageId values (matching what you put in snippets)
+// API URL - same as your stats page
+const API_URL = 'https://weathered-voice-debf.reich-family.workers.dev';
+// Project list with their pageId values (matching what you put in snippets)
 const projects = [
-    { name: "Reich Family", pageId: "p1001", url: "/stats/p1001", category: "main" },
-    { name: "Maria Katsaris", pageId: "p1002", url: "/stats/p1002", category: "research" },
-    { name: "Steven Katsaris", pageId: "p1003", url: "/stats/p1003", category: "research" },
-    { name: "Maria Katsaris Disciples", pageId: "p1004", url: "/stats/p1004", category: "disciples" },
-    { name: "Polly Klaas", pageId: "p1005", url: "/stats/p1005", category: "research" },
-    { name: "Eugene Reed", pageId: "p1006", url: "/stats/p1006", category: "research" },
-    { name: "Research Home", pageId: "p1007", url: "/stats/p1007", category: "research" },
-    { name: "Sylvia Ralya Reinsch", pageId: "p1008", url: "/stats/p1008", category: "research" }
+{ name: "Reich Family", pageId: "p1001", url: "/stats/p1001", category: "main" },
+{ name: "Maria Katsaris", pageId: "p1002", url: "/stats/p1002", category: "research" },
+{ name: "Steven Katsaris", pageId: "p1003", url: "/stats/p1003", category: "research" },
+{ name: "Maria Katsaris Disciples", pageId: "p1004", url: "/stats/p1004", category: "disciples" },
+{ name: "Polly Klaas", pageId: "p1005", url: "/stats/p1005", category: "research" },
+{ name: "Eugene Reed", pageId: "p1006", url: "/stats/p1006", category: "research" },
+{ name: "Research Home", pageId: "p1007", url: "/stats/p1007", category: "research" },
+{ name: "Sylvia Ralya Reinsch", pageId: "p1008", url: "/stats/p1008", category: "research" }
 ];
-    let visitorData = [];
-
-    async function loadVisitData() {
-        try {
-            // Fetch last 24 hours of data
-            const url = `${API_URL}?limit=1000`;
-            const response = await fetch(url);
-            const data = await response.json();
-            
-            if (data.ok && Array.isArray(data.rows)) {
-                visitorData = data.rows;
-				console.log('All pageIds in data:', [...new Set(visitorData.map(row => row.pageId))]);
-				console.log('Total rows:', visitorData.length);
-				console.log('Sample row:', visitorData[0]);
-            }
-        } catch (error) {
-            console.error('Failed to load visit data:', error);
-        }
-        
-        renderProjects();
-    }
-
+let visitorData = [];
+async function loadVisitData() {
+try {
+// Fetch last 24 hours of data
+const url = `${API_URL}?limit=1000`;
+const response = await fetch(url);
+const data = await response.json();
+if (data.ok && Array.isArray(data.rows)) {
+visitorData = data.rows;
+console.log('All pageIds in data:', [...new Set(visitorData.map(row => row.pageId))]);
+console.log('Total rows:', visitorData.length);
+console.log('Sample row:', visitorData[0]);
+}
+} catch (error) {
+console.error('Failed to load visit data:', error);
+}
+renderProjects();
+}
 function getLast24HoursCount(pageId) {
-    if (!visitorData.length) return '0';
-    
-    // Get midnight EST/EDT for today
-    const now = new Date();
-    const estNow = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
-    const estMidnight = new Date(estNow);
-    estMidnight.setHours(0, 0, 0, 0);
-    const midnightTimestamp = estMidnight.getTime();
-    
-    const count = visitorData.filter(row => {
-        return row.pageId === pageId && new Date(row.ts).getTime() > midnightTimestamp;
-    }).length;
-    
-    return count;
+if (!visitorData.length) return '0';
+// Get midnight EST/EDT for today
+const now = new Date();
+const estNow = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+const estMidnight = new Date(estNow);
+estMidnight.setHours(0, 0, 0, 0);
+const midnightTimestamp = estMidnight.getTime();
+const count = visitorData.filter(row => {
+return row.pageId === pageId && new Date(row.ts).getTime() > midnightTimestamp;
+}).length;
+return count;
 }
-
 function getTotalCount(pageId) {
-    if (!visitorData.length) return '0';
-    
-    const count = visitorData.filter(row => row.pageId === pageId).length;
-    return count;
+if (!visitorData.length) return '0';
+const count = visitorData.filter(row => row.pageId === pageId).length;
+return count;
 }
-
-    function renderProjects() {
-        const container = document.getElementById('projectsContainer');
-        const categoryFilter = document.getElementById('categoryFilter')?.value || '';
-        
-        let filteredProjects = projects;
-        if (categoryFilter) {
-            filteredProjects = filteredProjects.filter(p => p.category === categoryFilter);
-        }
-        
-        let html = '';
-        filteredProjects.forEach(project => {
-            const last24h = getLast24HoursCount(project.pageId);
-            const total = getTotalCount(project.pageId);
-            
-            html += `
-                <div class="project-card">
-                    <div class="project-name">${project.name}</div>
-                    <div style="display: flex; gap: 15px; margin: 10px 0; font-size: 11px;">
-                        <div><span style="color: #9ca3af;">24h:</span> <span style="color: #60a5fa;">${last24h}</span></div>
-                        <div><span style="color: #9ca3af;">Total:</span> <span style="color: #60a5fa;">${total}</span></div>
-                    </div>
-                    <a href="${project.url}" class="project-link" target="_blank">View Statistics →</a>
-                </div>
-            `;
-        });
-        
-        container.innerHTML = html || '<div style="padding: 20px; text-align: center; color: #9ca3af;">No projects found</div>';
-        document.getElementById('projectCount').innerText = `${filteredProjects.length} projects`;
-        
-        // Update stats widgets
-        document.getElementById('totalProjects').innerText = projects.length;
-        document.getElementById('lastUpdated').innerText = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        document.getElementById('categories').innerText = [...new Set(projects.map(p => p.category))].length;
-        
-        // Find project with most visits in last 24h
-        let topProject = '—';
-        let topCount = 0;
-        projects.forEach(p => {
-            const count = getLast24HoursCount(p.pageId);
-            if (count > topCount) {
-                topCount = count;
-                topProject = p.name;
-            }
-        });
-        document.getElementById('topProject').innerText = topProject;
-        document.getElementById('topProjectSub').innerText = topCount ? `${topCount} visits (24h)` : 'Most visited';
-    }
-
-    // Single event listener
-    document.addEventListener('DOMContentLoaded', () => {
-        loadVisitData();
-        
-        document.getElementById('refreshBtn').addEventListener('click', loadVisitData);
-        document.getElementById('categoryFilter')?.addEventListener('change', renderProjects);
-        document.getElementById('exportBtn')?.addEventListener('click', () => {
-            alert('Export feature coming soon');
-        });
-    });
+function renderProjects() {
+const container = document.getElementById('projectsContainer');
+const categoryFilter = document.getElementById('categoryFilter')?.value || '';
+let filteredProjects = projects;
+if (categoryFilter) {
+filteredProjects = filteredProjects.filter(p => p.category === categoryFilter);
+}
+let html = '';
+filteredProjects.forEach(project => {
+const last24h = getLast24HoursCount(project.pageId);
+const total = getTotalCount(project.pageId);
+html += `
+<div class="project-card">
+<div class="project-name">${project.name}</div>
+<div style="display: flex; gap: 15px; margin: 10px 0; font-size: 11px;">
+<div><span style="color: #9ca3af;">24h:</span> <span style="color: #60a5fa;">${last24h}</span></div>
+<div><span style="color: #9ca3af;">Total:</span> <span style="color: #60a5fa;">${total}</span></div>
+</div>
+<a href="${project.url}" class="project-link" target="_blank">View Statistics →</a>
+</div>
+`;
+});
+container.innerHTML = html || '<div style="padding: 20px; text-align: center; color: #9ca3af;">No projects found</div>';
+document.getElementById('projectCount').innerText = `${filteredProjects.length} projects`;
+// Update stats widgets
+document.getElementById('totalProjects').innerText = projects.length;
+document.getElementById('lastUpdated').innerText = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+document.getElementById('categories').innerText = [...new Set(projects.map(p => p.category))].length;
+// Find project with most visits in last 24h
+let topProject = '—';
+let topCount = 0;
+projects.forEach(p => {
+const count = getLast24HoursCount(p.pageId);
+if (count > topCount) {
+topCount = count;
+topProject = p.name;
+}
+});
+document.getElementById('topProject').innerText = topProject;
+document.getElementById('topProjectSub').innerText = topCount ? `${topCount} visits (24h)` : 'Most visited';
+}
+// Single event listener
+document.addEventListener('DOMContentLoaded', () => {
+loadVisitData();
+document.getElementById('refreshBtn').addEventListener('click', loadVisitData);
+document.getElementById('categoryFilter')?.addEventListener('change', renderProjects);
+document.getElementById('exportBtn')?.addEventListener('click', () => {
+alert('Export feature coming soon');
+});
+});
 </script>
-
 </body>
 </html>
