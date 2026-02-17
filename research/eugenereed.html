@@ -398,6 +398,20 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
     const collector = 'https://crimson-hill-ea2e.reich-family.workers.dev';
     const pageId = 'p1006';
     const url = location.pathname + location.search;
+
+    /* ⭐⭐⭐ INSERT THIS BLOCK RIGHT HERE ⭐⭐⭐ */
+    let ref = document.referrer;
+
+    // fallback: use last internal page if referrer is empty
+    const lastPage = localStorage.getItem('last_page');
+    if (!ref && lastPage) {
+      ref = lastPage;
+    }
+
+    // update last_page for next navigation
+    localStorage.setItem('last_page', location.pathname + location.search);
+    /* ⭐⭐⭐ END OF INSERTED BLOCK ⭐⭐⭐ */
+
     let sid = localStorage.getItem('sid');
     if (!sid) {
       sid = 's_' + Math.random().toString(36).slice(2, 12);
@@ -415,7 +429,7 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
       page: pageId,
       u: url,
       sid: sid,
-      r: document.referrer,
+      r: ref,   // ⭐ use the new ref value
       screen: screenSize,
       ua_full: userAgent
     }));
