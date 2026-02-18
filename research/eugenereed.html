@@ -399,24 +399,12 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
     const pageId = 'p1007';
     const url = location.pathname + location.search;
 
-    /* ⭐⭐⭐ INSERT THIS BLOCK RIGHT HERE ⭐⭐⭐ */
     let ref = document.referrer;
-
-    // fallback: use last internal page if referrer is empty
     const lastPage = localStorage.getItem('last_page');
     if (!ref && lastPage) {
       ref = lastPage;
     }
-
-    // update last_page for next navigation
     localStorage.setItem('last_page', location.pathname + location.search);
-    /* ⭐⭐⭐ END OF INSERTED BLOCK ⭐⭐⭐ */
-    
-    /* ⭐⭐⭐ ADD THIS TEMPORARY TEST BLOCK ⭐⭐⭐ */
-    console.log('TEST - document.referrer:', document.referrer);
-    console.log('TEST - lastPage from storage:', lastPage);
-    console.log('TEST - final ref value:', ref);
-    /* ⭐⭐⭐ END OF TEST BLOCK ⭐⭐⭐ */
 
     let sid = localStorage.getItem('sid');
     if (!sid) {
@@ -431,11 +419,12 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 
     const userAgent = navigator.userAgent;
 
+    // Use sendBeacon with JSON (this IS a POST request)
     navigator.sendBeacon(collector, JSON.stringify({
       page: pageId,
       u: url,
       sid: sid,
-      r: ref,   // ⭐ use the new ref value
+      r: ref,
       screen: screenSize,
       ua_full: userAgent
     }));
@@ -444,6 +433,4 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 	
 </body>
 </html>
-
-
 
