@@ -396,10 +396,10 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 <script>
   (function() {
     const collector = 'https://crimson-hill-ea2e.reich-family.workers.dev';
-    const pageId = 'p1007';
+    const pageId = 'p1002';
     const url = location.pathname + location.search;
 
-    /* ⭐⭐⭐ INSERT THIS BLOCK RIGHT HERE ⭐⭐⭐ */
+    // ⭐⭐⭐ REFERRER CAPTURE WITH FALLBACK ⭐⭐⭐
     let ref = document.referrer;
 
     // fallback: use last internal page if referrer is empty
@@ -410,7 +410,7 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 
     // update last_page for next navigation
     localStorage.setItem('last_page', location.pathname + location.search);
-    /* ⭐⭐⭐ END OF INSERTED BLOCK ⭐⭐⭐ */
+    // ⭐⭐⭐ END REFERRER CAPTURE ⭐⭐⭐
 
     let sid = localStorage.getItem('sid');
     if (!sid) {
@@ -429,7 +429,7 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
       page: pageId,
       u: url,
       sid: sid,
-      r: ref,   // ⭐ use the new ref value
+      r: ref,   // ⭐ using the captured ref with fallback
       screen: screenSize,
       ua_full: userAgent
     }));
@@ -438,3 +438,4 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 	
 </body>
 </html>
+
