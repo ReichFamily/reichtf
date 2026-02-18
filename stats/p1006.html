@@ -601,7 +601,10 @@ const pageUrl = row.url || '/';
 const fullPageUrl = pageUrl.startsWith('http') ? pageUrl : `https://reich.tf${pageUrl}`;
 const displayUrl = fullPageUrl.length > 60 ? fullPageUrl.substring(0, 60) + '…' : fullPageUrl;
 let referrer = row.referrer || '';
-let displayReferrer = referrer ? (referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer) : '(No referring link)';
+let displayReferrer = '(No referring link)';
+if (referrer) {
+  displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer;
+}
 const hostname = row.isp || row.hostname || (row.ip ? `IP ${row.ip}` : '—');
 html += `<tr>
 <td>${easternTime.date}</td>
