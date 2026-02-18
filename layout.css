@@ -232,7 +232,7 @@ overflow-y: auto;
 padding: 16px;
 transition: right 0.3s ease;
 z-index: 1000;
-font-size: 13px;
+font-size: 12px;
 box-shadow: -6px 0 12px rgba(0,0,0,0.08);
 }
 .sidebar.open {
@@ -430,6 +430,21 @@ font-family:TrajanPro3-Regular;
 font-size:0.85rem;
 text-align:center;
 line-height:1;
+}
+.lastthingsheadings {
+font-family:TrajanPro3-Regular;
+font-size:0.85rem;
+font-weight:bold;
+text-align:center;
+line-height:1;
+margin-top:20px;
+}
+.lastthingssubheadings {
+font-family:Montserrat-LightItalic;
+font-size: 0.9rem;
+margin:10px auto 20px;
+line-height:1.8;
+text-align:justify;
 }
 .anticultheadings {
 font-family:TrajanPro3-Regular;
@@ -1018,10 +1033,13 @@ scroll-margin-top:15px;
 #charismata {
 scroll-margin-top:15px;
 }
-#enemies {
+#thelastthings {
 scroll-margin-top:15px;
 }
 #tithing {
+scroll-margin-top:15px;
+}
+#enemies {
 scroll-margin-top:15px;
 }
 #government {
@@ -1121,6 +1139,22 @@ font-family:TrajanPro3-Regular;
 font-size:0.9rem;
 text-align:center;
 line-height:1;
+}
+.lastthingsheadings {
+font-family:TrajanPro3-Regular;
+font-size:0.9rem;
+font-weight:bold;
+text-align:center;
+line-height:1;
+margin-top:30px;
+}
+.lastthingssubheadings {
+font-family:Montserrat-LightItalic;
+font-size: 1.0rem;
+justify-content:center;
+margin:-8px auto 30px;
+text-align:center;
+line-height:1.4;
 }
 .anticultheadings {
 font-family:TrajanPro3-Regular;
@@ -1722,10 +1756,13 @@ scroll-margin-top:15px;
 #charismata {
 scroll-margin-top:15px;
 }
-#enemies {
+#thelastthings {
 scroll-margin-top:15px;
 }
 #tithing {
+scroll-margin-top:15px;
+}
+#enemies {
 scroll-margin-top:15px;
 }
 #government {
@@ -2117,6 +2154,23 @@ font-family:TrajanPro3-Regular;
 font-size:0.9rem;
 text-align:center;
 line-height:1;
+}
+.lastthingsheadings {
+font-family:TrajanPro3-Regular;
+font-size:0.9rem;
+font-weight:bold;
+text-align:center;
+line-height:1;
+margin-top:30px;
+}
+.lastthingssubheadings {
+display:flex;
+justify-content:center;
+font-family:Montserrat-LightItalic;
+font-size: 1.0rem;
+margin:-8px auto 30px;
+text-align:center;
+line-height:1.4;
 }
 .anticultheadings {
 font-family:TrajanPro3-Regular;
@@ -2712,10 +2766,13 @@ scroll-margin-top:15px;
 #charismata {
 scroll-margin-top:15px;
 }
-#enemies {
+#thelastthings {
 scroll-margin-top:15px;
 }
 #tithing {
+scroll-margin-top:15px;
+}
+#enemies {
 scroll-margin-top:15px;
 }
 #government {
