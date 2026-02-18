@@ -709,16 +709,11 @@
             const fullPageUrl = pageUrl.startsWith('http') ? pageUrl : `https://reich.tf${pageUrl}`;
             const displayUrl = fullPageUrl.length > 60 ? fullPageUrl.substring(0, 60) + '…' : fullPageUrl;
             
-            let referrer = row.referrer || '';
-            let displayReferrer = '(No referring link)';
-
-            if (referrer) {
-                if (referrer.includes('reich.tf') || referrer.includes('weathered-voice-debf')) {
-                    displayReferrer = '(No referring link)';
-                } else {
-                    displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer;
-                }
-            }
+let referrer = row.referrer || '';
+let displayReferrer = '(No referring link)';
+if (referrer) {
+  displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer;
+}
             
             const hostname = row.isp || row.hostname || (row.ip ? `IP ${row.ip}` : '—');
             
