@@ -718,6 +718,20 @@ hs.src = ('//s10.histats.com/js15_as.js');
     const collector = 'https://crimson-hill-ea2e.reich-family.workers.dev';
     const pageId = 'p1002';
     const url = location.pathname + location.search;
+
+    // ⭐⭐⭐ REFERRER CAPTURE WITH FALLBACK ⭐⭐⭐
+    let ref = document.referrer;
+
+    // fallback: use last internal page if referrer is empty
+    const lastPage = localStorage.getItem('last_page');
+    if (!ref && lastPage) {
+      ref = lastPage;
+    }
+
+    // update last_page for next navigation
+    localStorage.setItem('last_page', location.pathname + location.search);
+    // ⭐⭐⭐ END REFERRER CAPTURE ⭐⭐⭐
+
     let sid = localStorage.getItem('sid');
     if (!sid) {
       sid = 's_' + Math.random().toString(36).slice(2, 12);
@@ -735,7 +749,7 @@ hs.src = ('//s10.histats.com/js15_as.js');
       page: pageId,
       u: url,
       sid: sid,
-      r: document.referrer,
+      r: ref,   // ⭐ using the captured ref with fallback
       screen: screenSize,
       ua_full: userAgent
     }));
@@ -744,4 +758,3 @@ hs.src = ('//s10.histats.com/js15_as.js');
 	
 </body>
 </html>
-
