@@ -279,45 +279,55 @@ src="https://c.statcounter.com/13065679/0/fcefdffa/1/"
 alt="Web Analytics"
 referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 <!-- End of Statcounter Code -->
-
 <script>
   (function() {
     const collector = 'https://crimson-hill-ea2e.reich-family.workers.dev';
     const pageId = 'p1007';
-    const url = encodeURIComponent(location.pathname + location.search);
+    const url = location.pathname + location.search;
+
+    /* ⭐⭐⭐ INSERT THIS BLOCK RIGHT HERE ⭐⭐⭐ */
+    let ref = document.referrer;
+
+    // fallback: use last internal page if referrer is empty
+    const lastPage = localStorage.getItem('last_page');
+    if (!ref && lastPage) {
+      ref = lastPage;
+    }
+
+    // update last_page for next navigation
+    localStorage.setItem('last_page', location.pathname + location.search);
+    /* ⭐⭐⭐ END OF INSERTED BLOCK ⭐⭐⭐ */
     
+    /* ⭐⭐⭐ ADD THIS TEMPORARY TEST BLOCK ⭐⭐⭐ */
+    console.log('TEST - document.referrer:', document.referrer);
+    console.log('TEST - lastPage from storage:', lastPage);
+    console.log('TEST - final ref value:', ref);
+    /* ⭐⭐⭐ END OF TEST BLOCK ⭐⭐⭐ */
+
     let sid = localStorage.getItem('sid');
     if (!sid) {
       sid = 's_' + Math.random().toString(36).slice(2, 12);
       localStorage.setItem('sid', sid);
     }
 
-    const screenSize = encodeURIComponent(JSON.stringify({
+    const screenSize = {
       width: window.screen.width,
       height: window.screen.height
-    }));
+    };
 
-    const userAgent = encodeURIComponent(navigator.userAgent);
-    
-    // Get referrer (with localStorage fallback)
-    let ref = document.referrer;
-    const lastPage = localStorage.getItem('last_page');
-    if (!ref && lastPage) {
-      ref = lastPage;
-    }
-    localStorage.setItem('last_page', location.pathname + location.search);
-    
-    /* ⭐⭐⭐ SIMPLE IMAGE BEACON like Statcounter ⭐⭐⭐ */
-    const img = new Image();
-    img.referrerPolicy = 'unsafe-url';  // This is the key!
-    img.src = collector + '?page=' + pageId + 
-              '&u=' + url + 
-              '&sid=' + sid + 
-              '&r=' + encodeURIComponent(ref) + 
-              '&screen=' + screenSize + 
-              '&ua=' + userAgent;
+    const userAgent = navigator.userAgent;
+
+    navigator.sendBeacon(collector, JSON.stringify({
+      page: pageId,
+      u: url,
+      sid: sid,
+      r: ref,   // ⭐ use the new ref value
+      screen: screenSize,
+      ua_full: userAgent
+    }));
   })();
 </script>
-
+	
 </body>
 </html>
+
