@@ -395,43 +395,91 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 
 <script>
   (function() {
+    console.log('=== DEBUG: Starting stats script ===');
+    
     const collector = 'https://crimson-hill-ea2e.reich-family.workers.dev';
     const pageId = 'p1007';
-    const url = encodeURIComponent(location.pathname + location.search);
+    const url = location.pathname + location.search;
+    
+    // Debug localStorage
+    console.log('Current page:', url);
+    console.log('document.referrer:', document.referrer);
+    console.log('localStorage last_page:', localStorage.getItem('last_page'));
     
     let sid = localStorage.getItem('sid');
     if (!sid) {
       sid = 's_' + Math.random().toString(36).slice(2, 12);
       localStorage.setItem('sid', sid);
+      console.log('New SID created:', sid);
+    } else {
+      console.log('Existing SID:', sid);
     }
 
-    const screenSize = encodeURIComponent(JSON.stringify({
+    const screenSize = {
       width: window.screen.width,
       height: window.screen.height
-    }));
+    };
 
-    const userAgent = encodeURIComponent(navigator.userAgent);
+    const userAgent = navigator.userAgent;
     
     // Get referrer (with localStorage fallback)
     let ref = document.referrer;
     const lastPage = localStorage.getItem('last_page');
+    
+    console.log('Before fallback - ref:', ref);
+    console.log('lastPage from storage:', lastPage);
+    
     if (!ref && lastPage) {
       ref = lastPage;
+      console.log('Using localStorage fallback - new ref:', ref);
     }
+    
+    // Store current page for next time
     localStorage.setItem('last_page', location.pathname + location.search);
+    console.log('Stored last_page:', location.pathname + location.search);
+    
+    // Build the URL
+    const imageUrl = collector + '?page=' + pageId + 
+              '&u=' + encodeURIComponent(url) + 
+              '&sid=' + encodeURIComponent(sid) + 
+              '&r=' + encodeURIComponent(ref) + 
+              '&screen=' + encodeURIComponent(JSON.stringify(screenSize)) + 
+              '&ua=' + encodeURIComponent(userAgent);
+    
+    console.log('Image URL:', imageUrl);
     
     /* ⭐⭐⭐ SIMPLE IMAGE BEACON like Statcounter ⭐⭐⭐ */
     const img = new Image();
-    img.referrerPolicy = 'unsafe-url';  // This is the key!
-    img.src = collector + '?page=' + pageId + 
-              '&u=' + url + 
-              '&sid=' + sid + 
-              '&r=' + encodeURIComponent(ref) + 
-              '&screen=' + screenSize + 
-              '&ua=' + userAgent;
+    img.referrerPolicy = 'unsafe-url';
+    
+    img.onload = function() {
+      console.log('✅ Image loaded successfully');
+    };
+    
+    img.onerror = function(e) {
+      console.log('❌ Image failed to load', e);
+    };
+    
+    img.src = imageUrl;
+    
+    // Also try sendBeacon as backup
+    setTimeout(function() {
+      navigator.sendBeacon(collector, JSON.stringify({
+        page: pageId,
+        u: url,
+        sid: sid,
+        r: ref,
+        screen: screenSize,
+        ua_full: userAgent
+      }));
+      console.log('✅ sendBeacon backup sent');
+    }, 500);
+    
+    console.log('=== DEBUG: Script complete ===');
   })();
 </script>
 	
 </body>
 </html>
+
 
