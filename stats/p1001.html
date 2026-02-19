@@ -711,8 +711,11 @@
             
 let referrer = row.referrer || '';
 let displayReferrer = '(No referring link)';
-if (referrer) {
-  displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer;
+
+if (referrer && !referrer.startsWith('https://reich.tf/')) {
+  displayReferrer = referrer.length > 40
+    ? referrer.substring(0, 40) + '…'
+    : referrer;
 }
             
             const hostname = row.isp || row.hostname || (row.ip ? `IP ${row.ip}` : '—');
