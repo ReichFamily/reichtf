@@ -602,9 +602,36 @@ const fullPageUrl = pageUrl.startsWith('http') ? pageUrl : `https://reich.tf${pa
 const displayUrl = fullPageUrl.length > 60 ? fullPageUrl.substring(0, 60) + '…' : fullPageUrl;
 let referrer = row.referrer || '';
 let displayReferrer = '(No referring link)';
-if (referrer) {
-  displayReferrer = referrer.length > 40 ? referrer.substring(0, 40) + '…' : referrer;
+
+// Normalize
+let normalized = referrer.trim();
+
+// Treat these as homepage hosts
+const homepageHosts = ['reich.tf', 'www.reich.tf'];
+
+try {
+  const url = new URL(normalized, 'https://reich.tf');
+
+  const isHomepage =
+    homepageHosts.includes(url.hostname) &&
+    (url.pathname === '/' || url.pathname === '');
+
+  if (
+    normalized &&
+    normalized !== '/' &&
+    !isHomepage
+  ) {
+    displayReferrer = normalized.length > 40
+      ? normalized.substring(0, 40) + '…'
+      : normalized;
+  }
+} catch {
+  // If it's not a URL, show it unless it's just "/"
+  if (normalized && normalized !== '/') {
+    displayReferrer = normalized;
+  }
 }
+
 const hostname = row.isp || row.hostname || (row.ip ? `IP ${row.ip}` : '—');
 html += `<tr>
 <td>${easternTime.date}</td>
