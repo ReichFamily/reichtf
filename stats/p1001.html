@@ -504,43 +504,46 @@
     let visitorData = [];
     let isLoading = false;
 
-    // Helper function to format date in US Eastern Time
-    function formatInEasternTime(timestamp) {
-        if (!timestamp) return { date: '—', time: '—' };
-        
-        try {
-            const date = new Date(timestamp);
-            
-            // Check if date is valid
-            if (isNaN(date.getTime())) {
-                return { date: '—', time: '—' };
-            }
-            
-            // Format options for Eastern Time
-            const dateOptions = {
-                timeZone: 'America/New_York',
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric'
-            };
-            
-            const timeOptions = {
-                timeZone: 'America/New_York',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false
-            };
-            
-            return {
-                date: date.toLocaleDateString('en-US', dateOptions),
-                time: date.toLocaleTimeString('en-US', timeOptions)
-            };
-        } catch (error) {
-            console.error('Date formatting error:', error);
-            return { date: '—', time: '—' };
-        }
+function formatInEasternTime(timestamp) {
+    if (!timestamp) return { date: '—', time: '—' };
+
+    try {
+        // Parse the UTC timestamp
+        const utc = new Date(timestamp);
+
+        // Extract UTC components
+        const year = utc.getUTCFullYear();
+        const month = utc.getUTCMonth();
+        const day = utc.getUTCDate();
+        const hour = utc.getUTCHours();
+        const minute = utc.getUTCMinutes();
+        const second = utc.getUTCSeconds();
+
+        // Determine Eastern offset manually (DST-aware)
+        const jan = new Date(year, 0, 1).getTimezoneOffset();
+        const jul = new Date(year, 6, 1).getTimezoneOffset();
+        const dstOffset = Math.min(jan, jul); // DST offset in minutes
+        const standardOffset = Math.max(jan, jul); // Standard offset in minutes
+
+        // New York offset is negative minutes (e.g., -300 or -240)
+        const isDST = utc.getTimezoneOffset() === dstOffset;
+        const offsetMinutes = isDST ? dstOffset : standardOffset;
+
+        // Convert UTC → Eastern
+        const easternMs = utc.getTime() - offsetMinutes * 60 * 1000;
+        const eastern = new Date(easternMs);
+
+        const pad = n => String(n).padStart(2, '0');
+
+        const dateStr = `${eastern.toLocaleString('en-US', { month: 'short' })} ${eastern.getUTCDate()}, ${eastern.getUTCFullYear()}`;
+        const timeStr = `${pad(eastern.getUTCHours())}:${pad(eastern.getUTCMinutes())}:${pad(eastern.getUTCSeconds())}`;
+
+        return { date: dateStr, time: timeStr };
+
+    } catch {
+        return { date: '—', time: '—' };
     }
+}
 
     document.addEventListener('DOMContentLoaded', () => {
         loadData();
@@ -709,37 +712,31 @@
             const fullPageUrl = pageUrl.startsWith('http') ? pageUrl : `https://reich.tf${pageUrl}`;
             const displayUrl = fullPageUrl.length > 60 ? fullPageUrl.substring(0, 60) + '…' : fullPageUrl;
             
-let referrer = row.referrer || '';
+let ref = (row.referrer || '').trim();
 let displayReferrer = '(No referring link)';
 
-// Normalize
-let normalized = referrer.trim();
+// No referrer at all
+if (!ref) {
+  displayReferrer = '(No referring link)';
+}
+// Homepage referrer → treat as no referrer
+else if (
+  ref === 'https://reich.tf/' ||
+  ref === 'https://reich.tf' ||
+  ref === '/'
+) {
+  displayReferrer = '(No referring link)';
+}
+// Path-only internal referrer → normalize
+else if (ref.startsWith('/')) {
+  displayReferrer = 'https://reich.tf' + ref;
+}
+// Everything else → show exactly what collector stored
+else {
+  displayReferrer = ref;
+}
 
-// Treat these as homepage hosts
-const homepageHosts = ['reich.tf', 'www.reich.tf'];
-
-try {
-  const url = new URL(normalized, 'https://reich.tf');
-
-  const isHomepage =
-    homepageHosts.includes(url.hostname) &&
-    (url.pathname === '/' || url.pathname === '');
-
-  if (
-    normalized &&
-    normalized !== '/' &&
-    !isHomepage
-  ) {
-    displayReferrer = normalized.length > 40
-      ? normalized.substring(0, 40) + '…'
-      : normalized;
-  }
-} catch {
-  // If it's not a URL, show it unless it's just "/"
-  if (normalized && normalized !== '/') {
-    displayReferrer = normalized;
-  }
-}           
+          
             const hostname = row.isp || row.hostname || (row.ip ? `IP ${row.ip}` : '—');
             
             html += `<tr>
@@ -760,7 +757,7 @@ try {
 <div><span class="hostname">${hostname}</span></div>
 <div><span><a href="https://www.ip2location.com/demo/${row.ip || ''}" target="_blank" rel="noopener noreferrer" style="color: #66b0ff !important;">${row.ip || 'No IP'}</a></span></div>
 <div><a href="${fullPageUrl}" target="_blank" class="page-url" title="${fullPageUrl}">${displayUrl}</a></div>
-<div><span class="referrer" title="${referrer}">${displayReferrer}</span></div>
+<div><span class="referrer" title="${ref}">${displayReferrer}</span></div>
 </td>
 
             </tr>`;

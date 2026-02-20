@@ -433,285 +433,341 @@ Visitor Log - Reich Family
 </div>
 </div>
 </div>
+
 <script>
-// CONFIGURATION
-const API_URL = 'https://weathered-voice-debf.reich-family.workers.dev';
-const PAGE_ID = 'p1007'; // Filter for Reich Family
-let visitorData = [];
-let isLoading = false;
-// Helper function to format date in US Eastern Time
+    // CONFIGURATION
+    const API_URL = 'https://weathered-voice-debf.reich-family.workers.dev';
+    const PAGE_ID = 'p1007'; // Filter for Reich Family
+
+    let visitorData = [];
+    let isLoading = false;
+
 function formatInEasternTime(timestamp) {
-if (!timestamp) return { date: '—', time: '—' };
-try {
-const date = new Date(timestamp);
-// Check if date is valid
-if (isNaN(date.getTime())) {
-return { date: '—', time: '—' };
+    if (!timestamp) return { date: '—', time: '—' };
+
+    try {
+        // Parse the UTC timestamp
+        const utc = new Date(timestamp);
+
+        // Extract UTC components
+        const year = utc.getUTCFullYear();
+        const month = utc.getUTCMonth();
+        const day = utc.getUTCDate();
+        const hour = utc.getUTCHours();
+        const minute = utc.getUTCMinutes();
+        const second = utc.getUTCSeconds();
+
+        // Determine Eastern offset manually (DST-aware)
+        const jan = new Date(year, 0, 1).getTimezoneOffset();
+        const jul = new Date(year, 6, 1).getTimezoneOffset();
+        const dstOffset = Math.min(jan, jul); // DST offset in minutes
+        const standardOffset = Math.max(jan, jul); // Standard offset in minutes
+
+        // New York offset is negative minutes (e.g., -300 or -240)
+        const isDST = utc.getTimezoneOffset() === dstOffset;
+        const offsetMinutes = isDST ? dstOffset : standardOffset;
+
+        // Convert UTC → Eastern
+        const easternMs = utc.getTime() - offsetMinutes * 60 * 1000;
+        const eastern = new Date(easternMs);
+
+        const pad = n => String(n).padStart(2, '0');
+
+        const dateStr = `${eastern.toLocaleString('en-US', { month: 'short' })} ${eastern.getUTCDate()}, ${eastern.getUTCFullYear()}`;
+        const timeStr = `${pad(eastern.getUTCHours())}:${pad(eastern.getUTCMinutes())}:${pad(eastern.getUTCSeconds())}`;
+
+        return { date: dateStr, time: timeStr };
+
+    } catch {
+        return { date: '—', time: '—' };
+    }
 }
-// Format options for Eastern Time
-const dateOptions = {
-timeZone: 'America/New_York',
-month: 'short',
-day: 'numeric',
-year: 'numeric'
-};
-const timeOptions = {
-timeZone: 'America/New_York',
-hour: '2-digit',
-minute: '2-digit',
-second: '2-digit',
-hour12: false
-};
-return {
-date: date.toLocaleDateString('en-US', dateOptions),
-time: date.toLocaleTimeString('en-US', timeOptions)
-};
-} catch (error) {
-console.error('Date formatting error:', error);
-return { date: '—', time: '—' };
-}
-}
-document.addEventListener('DOMContentLoaded', () => {
-loadData();
-document.getElementById('refreshBtn').addEventListener('click', () => loadData(true));
-document.getElementById('clearFiltersBtn').addEventListener('click', clearFilters);
-document.getElementById('exportBtn').addEventListener('click', exportToCSV);
-['excludeBots', 'showOnlyBots', 'countryFilter', 'deviceFilter', 'limitSelect'].forEach(id => {
-document.getElementById(id).addEventListener('change', () => loadData(true));
-});
-document.getElementById('showOnlyBots').addEventListener('change', function() {
-if (this.checked) document.getElementById('excludeBots').checked = false;
-});
-document.getElementById('excludeBots').addEventListener('change', function() {
-if (this.checked) document.getElementById('showOnlyBots').checked = false;
-});
-document.getElementById('deleteAllBtn').addEventListener('click', deleteAllData);
-});
-async function loadData(showLoader = true) {
-if (isLoading) return;
-try {
-isLoading = true;
-if (showLoader) {
-document.getElementById('tableBody').innerHTML = '<tr><td colspan="7" class="loading">📡 Fetching analytics data for Reich Family...</td></tr>';
-}
-const params = new URLSearchParams();
-params.append('pageId', PAGE_ID); // Filter for this project
-if (document.getElementById('excludeBots').checked) params.append('exclude_bots', '1');
-const country = document.getElementById('countryFilter').value;
-if (country) params.append('country', country);
-const limit = document.getElementById('limitSelect').value;
-params.append('limit', limit);
-const url = `${API_URL}?${params.toString()}`;
-const response = await fetch(url);
-if (!response.ok) throw new Error(`HTTP ${response.status}`);
-const data = await response.json();
-if (data.ok && Array.isArray(data.rows)) {
-visitorData = data.rows;
-if (document.getElementById('showOnlyBots').checked) {
-visitorData = visitorData.filter(row => row.bot === 1 || row.bot === true);
-}
-updateDashboard();
-} else {
-throw new Error(data.error || 'Invalid response');
-}
-} catch (error) {
-document.getElementById('tableBody').innerHTML = `
-<tr><td colspan="7" class="error">❌ Failed to load analytics data: ${error.message}</td></tr>
-`;
-console.error('Load error:', error);
-} finally {
-isLoading = false;
-}
-}
-function updateDashboard() {
-updateStats();
-updateCountryFilter();
-renderTable();
-document.getElementById('rowCount').innerText = `${visitorData.length} visitors`;
-}
-function updateStats() {
-const total = visitorData.length;
-const uniqueSessions = new Set(visitorData.map(v => v.session_id).filter(Boolean)).size;
-const bots = visitorData.filter(v => v.bot === 1 || v.bot === true).length;
-const botPercentage = total ? ((bots / total) * 100).toFixed(1) : 0;
-const countryCounts = {};
-visitorData.forEach(v => {
-if (v.country) countryCounts[v.country] = (countryCounts[v.country] || 0) + 1;
-});
-let topCountry = '—';
-let topCountryPercent = '';
-if (Object.keys(countryCounts).length > 0) {
-const top = Object.entries(countryCounts).sort((a,b) => b[1] - a[1])[0];
-topCountry = top[0];
-topCountryPercent = `${((top[1] / total) * 100).toFixed(1)}%`;
-}
-document.getElementById('totalVisitors').innerText = total;
-document.getElementById('uniqueSessions').innerText = uniqueSessions;
-document.getElementById('botCount').innerHTML = `${bots} <span style="font-size: 14px; color: #6f8fae;">(${botPercentage}%)</span>`;
-document.getElementById('botPercentage').innerText = `${botPercentage}% of traffic`;
-document.getElementById('topCountry').innerText = topCountry;
-document.getElementById('topCountryPercent').innerText = topCountryPercent;
-}
-function updateCountryFilter() {
-const countries = new Set();
-visitorData.forEach(v => {
-if (v.country) countries.add(v.country);
-});
-const currentValue = document.getElementById('countryFilter').value;
-const select = document.getElementById('countryFilter');
-select.innerHTML = '<option value="">All countries</option>';
-[...countries].sort().forEach(country => {
-const option = document.createElement('option');
-option.value = country;
-option.textContent = country;
-select.appendChild(option);
-});
-if (currentValue && countries.has(currentValue)) {
-select.value = currentValue;
-}
-}
-function renderTable() {
-const tbody = document.getElementById('tableBody');
-if (visitorData.length === 0) {
-tbody.innerHTML = '<tr><td colspan="7" class="loading">📭 No visitor data found for Reich Family</td></tr>';
-return;
-}
-let html = '';
-visitorData.forEach((row) => {
-// Use the Eastern Time formatter
-const easternTime = formatInEasternTime(row.ts);
-const browserDisplay = row.browser || 'Unknown';
-const osDisplay = row.os || 'Unknown';
-const screenDisplay = row.screen_width ? (row.screen_height ? `${row.screen_width}x${row.screen_height}` : String(row.screen_width)) : '—';
-const deviceIcon = row.device === 'mobile' ? '📱' : row.device === 'tablet' ? '📟' : '💻';
-const locationParts = [];
-if (row.city) locationParts.push(row.city);
-if (row.region) locationParts.push(row.region);
-if (row.country) locationParts.push(row.country);
-const locationDisplay = locationParts.join(', ') || '—';
-// Country flag
-const countryCode = row.country ? row.country.toLowerCase() : '';
-const flagHtml = countryCode 
-? `<img src="https://flagcdn.com/16x12/${countryCode}.png" 
-onerror="this.style.display='none'"
-class="flag-icon"
-alt="${row.country} flag">`
-: '<span class="flag-icon"></span>';
-const pageUrl = row.url || '/';
-const fullPageUrl = pageUrl.startsWith('http') ? pageUrl : `https://reich.tf${pageUrl}`;
-const displayUrl = fullPageUrl.length > 60 ? fullPageUrl.substring(0, 60) + '…' : fullPageUrl;
-let referrer = row.referrer || '';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadData();
+        
+        document.getElementById('refreshBtn').addEventListener('click', () => loadData(true));
+        document.getElementById('clearFiltersBtn').addEventListener('click', clearFilters);
+        document.getElementById('exportBtn').addEventListener('click', exportToCSV);
+        
+        ['excludeBots', 'showOnlyBots', 'countryFilter', 'deviceFilter', 'limitSelect'].forEach(id => {
+            document.getElementById(id).addEventListener('change', () => loadData(true));
+        });
+        
+        document.getElementById('showOnlyBots').addEventListener('change', function() {
+            if (this.checked) document.getElementById('excludeBots').checked = false;
+        });
+        
+        document.getElementById('excludeBots').addEventListener('change', function() {
+            if (this.checked) document.getElementById('showOnlyBots').checked = false;
+        });
+        
+        document.getElementById('deleteAllBtn').addEventListener('click', deleteAllData);
+        
+    });
+
+    async function loadData(showLoader = true) {
+        if (isLoading) return;
+        
+        try {
+            isLoading = true;
+            if (showLoader) {
+                document.getElementById('tableBody').innerHTML = '<tr><td colspan="7" class="loading">📡 Fetching analytics data for Reich Family...</td></tr>';
+            }
+            
+            const params = new URLSearchParams();
+            params.append('pageId', PAGE_ID); // Filter for this project
+            
+            if (document.getElementById('excludeBots').checked) params.append('exclude_bots', '1');
+            
+            const country = document.getElementById('countryFilter').value;
+            if (country) params.append('country', country);
+            
+            const limit = document.getElementById('limitSelect').value;
+            params.append('limit', limit);
+            
+            const url = `${API_URL}?${params.toString()}`;
+            
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            
+            const data = await response.json();
+            
+            if (data.ok && Array.isArray(data.rows)) {
+                visitorData = data.rows;
+                
+                if (document.getElementById('showOnlyBots').checked) {
+                    visitorData = visitorData.filter(row => row.bot === 1 || row.bot === true);
+                }
+                
+                updateDashboard();
+            } else {
+                throw new Error(data.error || 'Invalid response');
+            }
+            
+        } catch (error) {
+            document.getElementById('tableBody').innerHTML = `
+                <tr><td colspan="7" class="error">❌ Failed to load analytics data: ${error.message}</td></tr>
+            `;
+            console.error('Load error:', error);
+        } finally {
+            isLoading = false;
+        }
+    }
+
+    function updateDashboard() {
+        updateStats();
+        updateCountryFilter();
+        renderTable();
+        document.getElementById('rowCount').innerText = `${visitorData.length} visitors`;
+    }
+
+    function updateStats() {
+        const total = visitorData.length;
+        const uniqueSessions = new Set(visitorData.map(v => v.session_id).filter(Boolean)).size;
+        const bots = visitorData.filter(v => v.bot === 1 || v.bot === true).length;
+        const botPercentage = total ? ((bots / total) * 100).toFixed(1) : 0;
+        
+        const countryCounts = {};
+        visitorData.forEach(v => {
+            if (v.country) countryCounts[v.country] = (countryCounts[v.country] || 0) + 1;
+        });
+        
+        let topCountry = '—';
+        let topCountryPercent = '';
+        if (Object.keys(countryCounts).length > 0) {
+            const top = Object.entries(countryCounts).sort((a,b) => b[1] - a[1])[0];
+            topCountry = top[0];
+            topCountryPercent = `${((top[1] / total) * 100).toFixed(1)}%`;
+        }
+        
+        document.getElementById('totalVisitors').innerText = total;
+        document.getElementById('uniqueSessions').innerText = uniqueSessions;
+        document.getElementById('botCount').innerHTML = `${bots} <span style="font-size: 14px; color: #6f8fae;">(${botPercentage}%)</span>`;
+        document.getElementById('botPercentage').innerText = `${botPercentage}% of traffic`;
+        document.getElementById('topCountry').innerText = topCountry;
+        document.getElementById('topCountryPercent').innerText = topCountryPercent;
+    }
+
+    function updateCountryFilter() {
+        const countries = new Set();
+        visitorData.forEach(v => {
+            if (v.country) countries.add(v.country);
+        });
+        
+        const currentValue = document.getElementById('countryFilter').value;
+        const select = document.getElementById('countryFilter');
+        
+        select.innerHTML = '<option value="">All countries</option>';
+        
+        [...countries].sort().forEach(country => {
+            const option = document.createElement('option');
+            option.value = country;
+            option.textContent = country;
+            select.appendChild(option);
+        });
+        
+        if (currentValue && countries.has(currentValue)) {
+            select.value = currentValue;
+        }
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('tableBody');
+        
+        if (visitorData.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="loading">📭 No visitor data found for Reich Family</td></tr>';
+            return;
+        }
+        
+        let html = '';
+        visitorData.forEach((row) => {
+            // Use the Eastern Time formatter
+            const easternTime = formatInEasternTime(row.ts);
+            
+            const browserDisplay = row.browser || 'Unknown';
+            const osDisplay = row.os || 'Unknown';
+            const screenDisplay = row.screen_width ? (row.screen_height ? `${row.screen_width}x${row.screen_height}` : String(row.screen_width)) : '—';
+            
+            const deviceIcon = row.device === 'mobile' ? '📱' : row.device === 'tablet' ? '📟' : '💻';
+            
+            const locationParts = [];
+            if (row.city) locationParts.push(row.city);
+            if (row.region) locationParts.push(row.region);
+            if (row.country) locationParts.push(row.country);
+            const locationDisplay = locationParts.join(', ') || '—';
+            
+            // Country flag
+            const countryCode = row.country ? row.country.toLowerCase() : '';
+            const flagHtml = countryCode 
+                ? `<img src="https://flagcdn.com/16x12/${countryCode}.png" 
+                    onerror="this.style.display='none'"
+                    class="flag-icon"
+                    alt="${row.country} flag">`
+                : '<span class="flag-icon"></span>';
+                    
+            const pageUrl = row.url || '/';
+            const fullPageUrl = pageUrl.startsWith('http') ? pageUrl : `https://reich.tf${pageUrl}`;
+            const displayUrl = fullPageUrl.length > 60 ? fullPageUrl.substring(0, 60) + '…' : fullPageUrl;
+            
+let ref = (row.referrer || '').trim();
 let displayReferrer = '(No referring link)';
 
-// Normalize
-let normalized = referrer.trim();
-
-// Treat these as homepage hosts
-const homepageHosts = ['reich.tf', 'www.reich.tf'];
-
-try {
-  const url = new URL(normalized, 'https://reich.tf');
-
-  const isHomepage =
-    homepageHosts.includes(url.hostname) &&
-    (url.pathname === '/' || url.pathname === '');
-
-  if (
-    normalized &&
-    normalized !== '/' &&
-    !isHomepage
-  ) {
-    displayReferrer = normalized.length > 40
-      ? normalized.substring(0, 40) + '…'
-      : normalized;
-  }
-} catch {
-  // If it's not a URL, show it unless it's just "/"
-  if (normalized && normalized !== '/') {
-    displayReferrer = normalized;
-  }
+// No referrer at all
+if (!ref) {
+  displayReferrer = '(No referring link)';
+}
+// Homepage referrer → treat as no referrer
+else if (
+  ref === 'https://reich.tf/' ||
+  ref === 'https://reich.tf' ||
+  ref === '/'
+) {
+  displayReferrer = '(No referring link)';
+}
+// Path-only internal referrer → normalize
+else if (ref.startsWith('/')) {
+  displayReferrer = 'https://reich.tf' + ref;
+}
+// Everything else → show exactly what collector stored
+else {
+  displayReferrer = ref;
 }
 
-const hostname = row.isp || row.hostname || (row.ip ? `IP ${row.ip}` : '—');
-html += `<tr>
-<td>${easternTime.date}</td>
-<td>${easternTime.time}</td>
-<td><span class="device-icon">${deviceIcon}</span></td>
-<td>
-<div><strong>${browserDisplay}</strong></div>
-<div>${osDisplay}</div>
-<div style="color: #6f8fae; font-size: 11px;">${screenDisplay}</div>
-</td>
-<td style="padding: 0; line-height: 0; font-size: 0; margin-top:10px;">${flagHtml}</td>
-<td class="location-cell">
-<div>${locationDisplay}</div>
-<div class="location-city">${row.language || ''}</div>
-</td>
+          
+            const hostname = row.isp || row.hostname || (row.ip ? `IP ${row.ip}` : '—');
+            
+            html += `<tr>
+                <td>${easternTime.date}</td>
+                <td>${easternTime.time}</td>
+                <td><span class="device-icon">${deviceIcon}</span></td>
+                <td>
+                    <div><strong>${browserDisplay}</strong></div>
+                    <div>${osDisplay}</div>
+                    <div style="color: #6f8fae; font-size: 11px;">${screenDisplay}</div>
+                </td>
+                <td style="padding: 0; line-height: 0; font-size: 0; margin-top:10px;">${flagHtml}</td>
+                <td class="location-cell">
+                    <div>${locationDisplay}</div>
+                    <div class="location-city">${row.language || ''}</div>
+                </td>
 <td>
 <div><span class="hostname">${hostname}</span></div>
 <div><span><a href="https://www.ip2location.com/demo/${row.ip || ''}" target="_blank" rel="noopener noreferrer" style="color: #66b0ff !important;">${row.ip || 'No IP'}</a></span></div>
 <div><a href="${fullPageUrl}" target="_blank" class="page-url" title="${fullPageUrl}">${displayUrl}</a></div>
-<div><span class="referrer" title="${referrer}">${displayReferrer}</span></div>
+<div><span class="referrer" title="${ref}">${displayReferrer}</span></div>
 </td>
-</tr>`;
-});
-tbody.innerHTML = html;
-}
-function clearFilters() {
-document.getElementById('excludeBots').checked = true;
-document.getElementById('showOnlyBots').checked = false;
-document.getElementById('countryFilter').value = '';
-document.getElementById('deviceFilter').value = '';
-document.getElementById('limitSelect').value = '100';
-loadData(true);
-}
-async function deleteAllData() {
-if (!confirm('⚠️ Delete ALL Reich Family visitor data? This cannot be undone.')) return;
-try {
-const response = await fetch(`${API_URL}?pageId=${PAGE_ID}`, { method: 'DELETE' });
-if (response.ok) {
-visitorData = [];
-updateDashboard();
-alert('All Reich Family data deleted successfully');
-}
-} catch (e) {
-alert('Delete failed: ' + e.message);
-}
-}
-function exportToCSV() {
-if (visitorData.length === 0) {
-alert('No data to export');
-return;
-}
-const headers = ['Timestamp (US Eastern Time)', 'IP', 'Country', 'City', 'Device', 'URL', 'Referrer', 'Browser', 'OS', 'Screen', 'Bot'];
-const rows = visitorData.map(row => {
-const easternTime = formatInEasternTime(row.ts);
-const easternTimestamp = `${easternTime.date} ${easternTime.time}`;
-return [
-easternTimestamp,
-row.ip || '',
-row.country || '',
-row.city || '',
-row.device || '',
-row.url || '',
-row.referrer || '',
-row.browser || '',
-row.os || '',
-row.screen_width ? `${row.screen_width}${row.screen_height ? 'x'+row.screen_height : ''}` : '',
-row.bot ? 'Yes' : 'No'
-];
-});
-const csvContent = [
-headers.join(','),
-...rows.map(row => row.map(cell => `"${cell}"`).join(','))
-].join('\n');
-const blob = new Blob([csvContent], { type: 'text/csv' });
-const url = URL.createObjectURL(blob);
-const a = document.createElement('a');
-a.href = url;
-a.download = `reich_family_${new Date().toISOString().slice(0,10)}_US_Eastern.csv`;
-a.click();
-}
+
+            </tr>`;
+        });
+        
+        tbody.innerHTML = html;
+    }
+
+    function clearFilters() {
+        document.getElementById('excludeBots').checked = true;
+        document.getElementById('showOnlyBots').checked = false;
+        document.getElementById('countryFilter').value = '';
+        document.getElementById('deviceFilter').value = '';
+        document.getElementById('limitSelect').value = '100';
+        loadData(true);
+    }
+
+    async function deleteAllData() {
+        if (!confirm('⚠️ Delete ALL Reich Family visitor data? This cannot be undone.')) return;
+        
+        try {
+            const response = await fetch(`${API_URL}?pageId=${PAGE_ID}`, { method: 'DELETE' });
+            if (response.ok) {
+                visitorData = [];
+                updateDashboard();
+                alert('All Reich Family data deleted successfully');
+            }
+        } catch (e) {
+            alert('Delete failed: ' + e.message);
+        }
+    }
+
+    function exportToCSV() {
+        if (visitorData.length === 0) {
+            alert('No data to export');
+            return;
+        }
+        
+        const headers = ['Timestamp (US Eastern Time)', 'IP', 'Country', 'City', 'Device', 'URL', 'Referrer', 'Browser', 'OS', 'Screen', 'Bot'];
+        
+        const rows = visitorData.map(row => {
+            const easternTime = formatInEasternTime(row.ts);
+            const easternTimestamp = `${easternTime.date} ${easternTime.time}`;
+            
+            return [
+                easternTimestamp,
+                row.ip || '',
+                row.country || '',
+                row.city || '',
+                row.device || '',
+                row.url || '',
+                row.referrer || '',
+                row.browser || '',
+                row.os || '',
+                row.screen_width ? `${row.screen_width}${row.screen_height ? 'x'+row.screen_height : ''}` : '',
+                row.bot ? 'Yes' : 'No'
+            ];
+        });
+        
+        const csvContent = [
+            headers.join(','),
+            ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+        ].join('\n');
+        
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `reich_family_${new Date().toISOString().slice(0,10)}_US_Eastern.csv`;
+        a.click();
+    }
 </script>
+
 </body>
 </html>
