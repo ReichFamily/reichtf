@@ -446,38 +446,25 @@ function formatInEasternTime(timestamp) {
     if (!timestamp) return { date: '—', time: '—' };
 
     try {
-        // Parse the UTC timestamp
-        const utc = new Date(timestamp);
-
-        // Extract UTC components
-        const year = utc.getUTCFullYear();
-        const month = utc.getUTCMonth();
-        const day = utc.getUTCDate();
-        const hour = utc.getUTCHours();
-        const minute = utc.getUTCMinutes();
-        const second = utc.getUTCSeconds();
-
-        // Determine Eastern offset manually (DST-aware)
-        const jan = new Date(year, 0, 1).getTimezoneOffset();
-        const jul = new Date(year, 6, 1).getTimezoneOffset();
-        const dstOffset = Math.min(jan, jul); // DST offset in minutes
-        const standardOffset = Math.max(jan, jul); // Standard offset in minutes
-
-        // New York offset is negative minutes (e.g., -300 or -240)
-        const isDST = utc.getTimezoneOffset() === dstOffset;
-        const offsetMinutes = isDST ? dstOffset : standardOffset;
-
-        // Convert UTC → Eastern
-        const easternMs = utc.getTime() - offsetMinutes * 60 * 1000;
-        const eastern = new Date(easternMs);
-
-        const pad = n => String(n).padStart(2, '0');
-
-        const dateStr = `${eastern.toLocaleString('en-US', { month: 'short' })} ${eastern.getUTCDate()}, ${eastern.getUTCFullYear()}`;
-        const timeStr = `${pad(eastern.getUTCHours())}:${pad(eastern.getUTCMinutes())}:${pad(eastern.getUTCSeconds())}`;
-
+        const date = new Date(timestamp);
+        
+        const dateStr = date.toLocaleDateString('en-US', {
+            timeZone: 'America/New_York',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+        
+        const timeStr = date.toLocaleTimeString('en-US', {
+            timeZone: 'America/New_York',
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        
         return { date: dateStr, time: timeStr };
-
+        
     } catch {
         return { date: '—', time: '—' };
     }
