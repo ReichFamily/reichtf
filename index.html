@@ -1209,6 +1209,7 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 <script>
   (function() {
     const collector = 'https://crimson-hill-ea2e.reich-family.workers.dev';
+    const pixelDomain = 'https://stats.reich.tf';
     const pageId = 'p1001';
     const url = location.pathname + location.search;
 
@@ -1242,16 +1243,15 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
       page: pageId,
       u: url,
       sid: sid,
-      r: ref,   // ⭐ using the captured ref with fallback
+      r: ref,
       screen: screenSize,
       ua_full: userAgent
     }));
-    // Pixel fallback for ad-blockers
-new Image().src = collector + '/pixel.gif?p=' + encodeURIComponent(pageId) + '&r=' + encodeURIComponent(ref) + '&u=' + encodeURIComponent(url);
+    
+    // Pixel fallback for ad-blockers - now using custom domain
+    new Image().src = pixelDomain + '/pixel.gif?p=' + encodeURIComponent(pageId) + '&r=' + encodeURIComponent(ref) + '&u=' + encodeURIComponent(url);
   })();
 </script>
 
 </body>
 </html>
-
-
