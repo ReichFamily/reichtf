@@ -437,14 +437,29 @@ font-size:0.85rem;
 font-weight:bold;
 text-align:center;
 line-height:1;
-margin-top:20px;
 }
 .lastthingssubheadings {
 font-family:Montserrat-LightItalic;
 font-size: 0.9rem;
-margin:10px auto 20px;
+margin:10px auto 0px;
 line-height:1.8;
 text-align:justify;
+}
+.trinityritesheadings {
+font-family:TrajanPro3-Regular;
+font-size:0.85rem;
+font-weight:bold;
+text-align:center;
+line-height:1;
+margin-top:20px;
+}
+.trinityritessubheadings {
+display:flex;
+font-family:Montserrat-LightItalic;
+font-size: 0.9rem;
+margin:-8px auto 20px;
+justify-content:center;
+line-height:1.4;
 }
 .anticultheadings {
 font-family:TrajanPro3-Regular;
@@ -914,6 +929,11 @@ margin-right: auto;
 margin-left: auto;
 margin-right: auto;
 }
+.trinitysacredritesimage {
+max-width:450px;
+margin-left: auto;
+margin-right: auto;
+}
 .trinityseal {
 max-width:450px;
 margin-left: auto;
@@ -1042,6 +1062,9 @@ scroll-margin-top:15px;
 #enemies {
 scroll-margin-top:15px;
 }
+#trinitysacredrites {
+scroll-margin-top:15px;
+}
 #government {
 scroll-margin-top:15px;
 }
@@ -1146,14 +1169,29 @@ font-size:0.9rem;
 font-weight:bold;
 text-align:center;
 line-height:1;
-margin-top:30px;
 }
 .lastthingssubheadings {
 font-family:Montserrat-LightItalic;
 font-size: 1.0rem;
 justify-content:center;
-margin:-8px auto 30px;
+margin:-8px auto 0px;
 text-align:center;
+line-height:1.4;
+}
+.trinityritesheadings {
+font-family:TrajanPro3-Regular;
+font-size:0.9rem;
+font-weight:bold;
+text-align:center;
+line-height:1;
+margin-top:30px;
+}
+.trinityritessubheadings {
+display:flex;
+font-family:Montserrat-LightItalic;
+font-size: 1.0rem;
+margin:-8px auto 30px;
+justify-content:center;
 line-height:1.4;
 }
 .anticultheadings {
@@ -1630,8 +1668,18 @@ max-width:450px;
 float:left;
 margin-right:15px;
 }
+.trinitysacredritesimage {
+max-width:450px;
+float:right;
+margin-left:15px;
+}
 .trinityseal {
 max-width:450px;
+float:right;
+margin-left:15px;
+}
+.trinitysacredritesimage {
+max-width:500px;
 float:right;
 margin-left:15px;
 }
@@ -1765,6 +1813,9 @@ scroll-margin-top:15px;
 #enemies {
 scroll-margin-top:15px;
 }
+#trinitysacredrites {
+scroll-margin-top:15px;
+}
 #government {
 scroll-margin-top:15px;
 }
@@ -1886,6 +1937,11 @@ margin-right:15px;
 }
 .trinityseal {
 max-width:500px;
+float:right;
+margin-left:15px;
+}
+.trinitysacredritesimage {
+max-width:600px;
 float:right;
 margin-left:15px;
 }
@@ -2159,17 +2215,32 @@ line-height:1;
 font-family:TrajanPro3-Regular;
 font-size:0.9rem;
 font-weight:bold;
-text-align:center;
+text-align:left;
 line-height:1;
-margin-top:30px;
 }
 .lastthingssubheadings {
 display:flex;
 justify-content:center;
 font-family:Montserrat-LightItalic;
 font-size: 1.0rem;
-margin:-8px auto 30px;
+margin:-8px auto 0px;
 text-align:center;
+line-height:1.4;
+}
+.trinityritesheadings {
+font-family:TrajanPro3-Regular;
+font-size:0.9rem;
+font-weight:bold;
+text-align:center;
+line-height:1;
+margin-top:30px;
+}
+.trinityritessubheadings {
+display:flex;
+font-family:Montserrat-LightItalic;
+font-size: 1.0rem;
+margin:-8px auto 30px;
+justify-content:center;
 line-height:1.4;
 }
 .anticultheadings {
@@ -2633,6 +2704,11 @@ max-width:500px;
 float:right;
 margin-left:15px;
 }
+.trinitysacredritesimage {
+max-width:650px;
+float:right;
+margin-left:15px;
+}
 .trinitysealpage {
 max-width:500px;
 margin:26px auto 26px;
@@ -2773,6 +2849,9 @@ scroll-margin-top:15px;
 scroll-margin-top:15px;
 }
 #enemies {
+scroll-margin-top:15px;
+}
+#trinitysacredrites {
 scroll-margin-top:15px;
 }
 #government {
