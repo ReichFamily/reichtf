@@ -457,9 +457,12 @@ function getLast24HoursCount(pageId) {
 
     const midnightTimestamp = estMidnight.getTime();
 
-    const count = visitorData.filter(row => {
-        return row.pageId === pageId && new Date(row.ts).getTime() >= midnightTimestamp;
-    }).length;
+const count = visitorData.filter(row => {
+    if (row.pageId !== pageId) return false;
+    // Convert the database timestamp to EST for comparison
+    const estRowDate = new Date(new Date(row.ts).toLocaleString("en-US", { timeZone: "America/New_York" }));
+    return estRowDate.getTime() >= midnightTimestamp;
+}).length;
 
     return count;
 }
