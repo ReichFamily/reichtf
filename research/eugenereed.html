@@ -397,7 +397,8 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
   (function() {
     const collector = 'https://crimson-hill-ea2e.reich-family.workers.dev';
     const pageId = 'p1006';
-    const url = location.pathname + location.search;
+    const url = location.pathname + location.search + location.hash;
+    const hash = location.hash;
 
     // ⭐⭐⭐ REFERRER CAPTURE WITH FALLBACK ⭐⭐⭐
     let ref = document.referrer;
@@ -438,5 +439,3 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 	
 </body>
 </html>
-
-
