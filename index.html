@@ -1290,7 +1290,7 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
     const pixelDomain = 'https://stats.reich.tf';
     const pageId = 'p1001';
     const url = location.pathname + location.search + location.hash;
-    const hash = location.hash; // 👈 ADD THIS LINE
+    const hash = location.hash;
 
     // ⭐⭐⭐ REFERRER CAPTURE WITH FALLBACK ⭐⭐⭐
     let ref = document.referrer;
@@ -1333,5 +1333,3 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 
 </body>
 </html>
-
-
