@@ -10,8 +10,6 @@
 <link href="../layout.css" rel="stylesheet" type="text/css">
 <link href="../boilerplate.css" rel="stylesheet" type="text/css">
 <link rel="shortcut icon" href="../favicon.ico">
-<!--Favicon-->
-<link rel="shortcut icon" href="../favicon.ico">
 <!--Fonts-->
 <link rel="preload" href="../fonts/ITCEDSCR.TTF" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="../fonts/OpenSans-Regular.ttf" as="font" type="font/ttf" crossorigin>
@@ -98,7 +96,7 @@ letter-spacing: -0.5px;
 /* Content area */
 .content {
 background: #1a1e24;
-margin-top:-20px;
+margin-top:-24px;
 }
 /* Page header */
 .page-header {
@@ -128,7 +126,7 @@ letter-spacing: 0.5px;
 margin-bottom: 5px;
 }
 .stat-value {
-font-size: 28px;
+font-size: 16px;
 font-weight: 600;
 color: #ffffff;
 }
@@ -238,10 +236,10 @@ padding: 15px;
 border-color: #60a5fa;
 }
 .project-name {
-font-size: 14px;
+font-size: 18px;
 font-weight: 600;
 color: #ffffff;
-margin-bottom: 10px;
+margin-bottom: auto;
 }
 .project-link {
 color: #60a5fa;
@@ -414,6 +412,7 @@ Statistics Projects
 </div>
 </div>
 </div>
+
 <script>
 // API URL - same as your stats page
 const API_URL = 'https://weathered-voice-debf.reich-family.workers.dev';
@@ -485,7 +484,7 @@ const total = getTotalCount(project.pageId);
 html += `
 <div class="project-card">
 <div class="project-name">${project.name}</div>
-<div style="display: flex; gap: 15px; margin: 10px 0; font-size: 14px;">
+<div style="display: flex; gap: 8px; font-size: 14px;">
 <div><span style="color: #9ca3af;">24h:</span> <span style="color: #60a5fa;">${last24h}</span></div>
 <div><span style="color: #9ca3af;">Total:</span> <span style="color: #60a5fa;">${total}</span></div>
 </div>
@@ -522,5 +521,6 @@ alert('Export feature coming soon');
 });
 });
 </script>
+
 </body>
 </html>
