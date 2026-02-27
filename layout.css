@@ -431,14 +431,14 @@ font-size:0.85rem;
 text-align:center;
 line-height:1;
 }
-.lastthingsheadings {
+.lifeeverlastingheadings {
 font-family:TrajanPro3-Regular;
 font-size:0.85rem;
 font-weight:bold;
 text-align:center;
 line-height:1;
 }
-.lastthingssubheadings {
+.lifeeverlastingsubheadings {
 font-family:Montserrat-LightItalic;
 font-size: 0.9rem;
 margin:10px auto 0px;
@@ -1053,7 +1053,7 @@ scroll-margin-top:15px;
 #charismata {
 scroll-margin-top:15px;
 }
-#thelastthings {
+#lifeeverlasting {
 scroll-margin-top:15px;
 }
 #tithing {
@@ -1163,14 +1163,14 @@ font-size:0.9rem;
 text-align:center;
 line-height:1;
 }
-.lastthingsheadings {
+.lifeeverlastingheadings {
 font-family:TrajanPro3-Regular;
 font-size:0.9rem;
 font-weight:bold;
 text-align:center;
 line-height:1;
 }
-.lastthingssubheadings {
+.lifeeverlastingsubheadings {
 font-family:Montserrat-LightItalic;
 font-size: 1.0rem;
 justify-content:center;
@@ -1804,7 +1804,7 @@ scroll-margin-top:15px;
 #charismata {
 scroll-margin-top:15px;
 }
-#thelastthings {
+#lifeeverlasting {
 scroll-margin-top:15px;
 }
 #tithing {
@@ -2211,14 +2211,14 @@ font-size:0.9rem;
 text-align:center;
 line-height:1;
 }
-.lastthingsheadings {
+.lifeeverlastingheadings {
 font-family:TrajanPro3-Regular;
 font-size:0.9rem;
 font-weight:bold;
 text-align:left;
 line-height:1;
 }
-.lastthingssubheadings {
+.lifeeverlastingsubheadings {
 display:flex;
 justify-content:center;
 font-family:Montserrat-LightItalic;
@@ -2842,7 +2842,7 @@ scroll-margin-top:15px;
 #charismata {
 scroll-margin-top:15px;
 }
-#thelastthings {
+#lifeeverlasting {
 scroll-margin-top:15px;
 }
 #tithing {
