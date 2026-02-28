@@ -929,7 +929,25 @@ margin-right: auto;
 margin-left: auto;
 margin-right: auto;
 }
-.trinitysacredritesimage {
+.trinitysacredrites {
+max-width:450px;
+margin-left: auto;
+margin-right: auto;
+}
+.incenseburner {
+position: relative;
+max-width:450px;
+margin-left: auto;
+margin-right: auto;
+}
+.holycommunion {
+position: relative;
+max-width:450px;
+margin-left: auto;
+margin-right: auto;
+}
+.holyoilvessel {
+position: relative;
 max-width:450px;
 margin-left: auto;
 margin-right: auto;
@@ -1668,20 +1686,56 @@ max-width:450px;
 float:left;
 margin-right:15px;
 }
-.trinitysacredritesimage {
+.trinitysacredrites {
 max-width:450px;
 float:right;
 margin-left:15px;
+}
+.incenseburner {
+position: relative;
+max-width:450px;
+float:left;
+margin-right:15px;
+}
+.holycommunion {
+position: relative;
+max-width:450px;
+float:right;
+margin-left:15px;
+}
+.holyoilvessel {
+position: relative;
+max-width:450px;
+float:left;
+margin-right:15px;
 }
 .trinityseal {
 max-width:450px;
 float:right;
 margin-left:15px;
 }
-.trinitysacredritesimage {
+.trinitysacredrites {
 max-width:500px;
 float:right;
 margin-left:15px;
+}
+.incenseburner {
+position: relative;
+max-width:500px;
+float:left;
+margin-right:15px;
+}
+.holycommunion {
+position: relative;
+max-width:500px;
+float:right;
+margin-left:15px;
+}
+.holyoilvessel {
+position: relative;
+max-width:500px;
+float:left;
+margin-right:15px;
 }
 .trinitysealpage {
 max-width:500px;
@@ -1940,10 +1994,28 @@ max-width:500px;
 float:right;
 margin-left:15px;
 }
-.trinitysacredritesimage {
-max-width:600px;
+.trinitysacredrites {
+max-width:550px;
 float:right;
 margin-left:15px;
+}
+.incenseburner {
+position: relative;
+max-width:550px;
+float:left;
+margin-right:15px;
+}
+.holycommunion {
+position: relative;
+max-width:550px;
+float:right;
+margin-left:15px;
+}
+.holyoilvessel {
+position: relative;
+max-width:550px;
+float:left;
+margin-right:15px;
 }
 .trinitysealpage {
 max-width:500px;
@@ -2704,10 +2776,28 @@ max-width:500px;
 float:right;
 margin-left:15px;
 }
-.trinitysacredritesimage {
-max-width:650px;
+.trinitysacredrites {
+max-width:550px;
 float:right;
 margin-left:15px;
+}
+.incenseburner {
+position: relative;
+max-width:550px;
+float:left;
+margin-right:15px;
+}
+.holycommunion {
+position: relative;
+max-width:550px;
+float:right;
+margin-left:15px;
+}
+.holyoilvessel {
+position: relative;
+max-width:550px;
+float:left;
+margin-right:15px;
 }
 .trinitysealpage {
 max-width:500px;
