@@ -321,10 +321,6 @@ over div with the options below .container-->
 
 </style>
 
-<script src="respond.min.js"></script>
-
-<script src="essential_audio.js"></script>
-
 <script>
     function killCopy(e){
         return false;
@@ -1162,9 +1158,9 @@ style="-webkit-filter: drop-shadow(5px 5px 5px #000);filter: drop-shadow(5px 5px
 
 <p>The articles and memorials we produce are grounded in historical documents that bear witness to the lives of our ancestors. These include census records, marriage and death certificates, military service files, naturalisation papers, and ship manifests. Through these materials, we reconstruct the journeys, struggles, and triumphs of those who came before us, ensuring that their voices are not lost to time. Every memorial is crafted with care, reflecting our devotion to truth and our love for those whose lives we honour.</p>
 
-<p>With the exception of our publicly shared research on Find a Grave, all writings within the project are private, intended for members of the Reich Family and fellow researchers who share our commitment to historical integrity. However, in rare cases where an individual’s story holds broader significance to the public historical record, we make select memorials available beyond our circle. Examples include the articles honouring <a href="/research/pollyklaas" target="_blank">Polly Hannah Klaas</a> and her grandfather <a href="/research/eugenereed" target="_blank">Dr. Eugene Reed</a>, as well as <a href="/research/mariakatsaris" target="_blank">Maria Katsaris</a> and her father <a href="/research/stevenkatsaris" target="_blank">Steven Katsaris</a>. These memorials serve not only as tributes but as contributions to the greater understanding of history and humanity.</p>
+<p>With the exception of our publicly shared research on Find a Grave, all writings within the project are private, intended for members of the Reich Family and fellow researchers who share our commitment to historical integrity. However, in rare cases where an individual’s story holds broader significance to the public historical record, we make select memorials available beyond our circle. Examples include the articles honouring <a href="https://reich.tf/research/pollyklaas" target="_blank">Polly Hannah Klaas</a> and her grandfather <a href="https://reich.tf/research/eugenereed" target="_blank">Dr. Eugene Reed</a>, as well as <a href="https://reich.tf/research/mariakatsaris" target="_blank">Maria Katsaris</a> and her father <a href="https://reich.tf/research/stevenkatsaris" target="_blank">Steven Katsaris</a> and the companion article to the main article written by Sarah Reich at <a href="https://reich.tf/disciples/mariakatsaris" target="_blank">Maria Katsaris</a>. These memorials serve not only as tributes but as contributions to the greater understanding of history and humanity.</p>
 
-<p>The Genealogical Research Project is more than a collection of documents. It is a reflection of our sacred duty to remember, to preserve, and to pass on the truth. It is an expression of our love for one another and our reverence for the lives that have shaped our Family. Through this work, we remain connected to our past, grounded in our present, and prepared for the future that awaits us. <i>(Explore the <a href="javascript:void(0)" onclick="toggleMenu()">Table of Contents</a> or return to the <a href="#top">Beginning</a>)</i></p>
+<p>The <a href="https://reich.tf/research/" target="_blank">Genealogical Research Project</a> is more than a collection of documents. It is a reflection of our sacred duty to remember, to preserve, and to pass on the truth. It is an expression of our love for one another and our reverence for the lives that have shaped our Family. Through this work, we remain connected to our past, grounded in our present, and prepared for the future that awaits us. <i>(Explore the <a href="javascript:void(0)" onclick="toggleMenu()">Table of Contents</a> or return to the <a href="#top">Beginning</a>)</i></p>
 
 <div id="summary" style="margin:auto;">
 <div style="display:flex; justify-content:center;">
@@ -1407,7 +1403,7 @@ button.close-btn:hover {
 "https://reich.tf/research/eugenereed">reich.tf/research/eugenereed</a>. Accessed 28 Feb. 2026.</p>
 
 <div style="display:flex;margin:26px auto 26px;text-align:justify;font-size:1.09rem;">
-<p class="titlelinesparagraphs" style="font-family:OpenSans-LightItalic;max-width:820px;margin:auto;">The Reich Family Genealogical Research Project would like to thank Fielding McGehee and Rebecca Moore for linking to our articles: <a href="https://reich.tf/research/mariakatsaris">The Life and Death of Maria Katsaris</a> and <a href="https://reich.tf/research/stevenkatsaris">Remembering Steven Katsaris</a> from their <a href="https://jonestown.sdsu.edu/?page_id=108278" target="_blank">Remembrances</a> page and from the <a href="https://jonestown.sdsu.edu/?page_id=132189" target="_blank">Jonestown Report (Vol 27, Nov '25)</a> on their website. We consider their <a href="https://jonestown.sdsu.edu/" target="_blank">Jonestown & Peoples Temple: A Digital Archive</a> website to be the most comprehensive online resource available on the subject.</p>
+<p class="titlelinesparagraphs" style="font-family:OpenSans-LightItalic;max-width:820px;margin:auto;">The Reich Family Genealogical Research Project would like to thank Fielding McGehee and Rebecca Moore for linking to our articles: The Life and Death of Maria Katsaris and Remembering Steven Katsaris from their <a href="https://jonestown.sdsu.edu/?page_id=108278" target="_blank">Remembrances</a> page and from the <a href="https://jonestown.sdsu.edu/?page_id=132189" target="_blank">Jonestown Report (Vol 27, Nov '25)</a> on their website. We consider their <a href="https://jonestown.sdsu.edu/" target="_blank">Jonestown & Peoples Temple: A Digital Archive</a> website to be the most comprehensive online resource available on the subject.</p>
 </div>
 
 <p><b>Biblical Verses Cited</b></p>
@@ -1646,6 +1642,72 @@ button.close-btn:hover {
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Set scroll margin on all source paragraphs
+  document.querySelectorAll('div.sources p').forEach(p => {
+    p.style.scrollMarginTop = '15px';
+  });
+
+  // Get ALL body links (excluding sources section)
+  let bodyUrls = new Set();
+  document.querySelectorAll('body a[href^="http"]').forEach(link => {
+    // Only add if link is NOT inside div.sources
+    if (!link.closest('div.sources')) {
+      bodyUrls.add(link.href);
+    }
+  });
+
+  // Map ONLY source paragraphs that have URLs matching body links
+  let urlToSourceMap = {};
+  
+  document.querySelectorAll('div.sources p').forEach((p) => {
+    let sourceLink = p.querySelector('a');
+    if (sourceLink && bodyUrls.has(sourceLink.href)) {
+      urlToSourceMap[sourceLink.href] = p;
+    }
+  });
+  
+  // Process body links (excluding sources section)
+  let processedUrls = {};
+  let nextNumber = 1;
+  
+  document.querySelectorAll('body a[href^="http"]').forEach((link) => {
+    // Skip if link is inside div.sources
+    if (link.closest('div.sources')) return;
+    
+    let url = link.href;
+    let sourceP = urlToSourceMap[url];
+    
+    if (sourceP) {
+      if (!processedUrls[url]) {
+        sourceP.id = 'source-' + nextNumber;
+        processedUrls[url] = nextNumber;
+        
+        let parentSection = link.closest('p, h1, h2, h3, h4, li, div');
+        if (parentSection && !parentSection.id) {
+          parentSection.id = 'citation-location-' + nextNumber;
+        }
+        
+        if (parentSection && parentSection.id) {
+          let backlink = document.createElement('a');
+          backlink.href = '#' + parentSection.id;
+          backlink.innerHTML = ' ↩';
+          backlink.style.textDecoration = 'none';
+          backlink.style.marginLeft = '5px';
+          sourceP.appendChild(backlink);
+        }
+        
+        nextNumber++;
+      }
+      
+      let sourceNumber = processedUrls[url];
+      link.insertAdjacentHTML('afterend', ' <sup><a href="#source-' + sourceNumber + '">' + sourceNumber + '</a></sup>');
+    }
+  });
+});
+</script>
+
+<script>
 function toggleMenu() {
   const menu = document.getElementById('sidebar');
   const isOpen = menu.classList.toggle('open');
@@ -1751,4 +1813,3 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 
 </body>
 </html>
-
