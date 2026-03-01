@@ -1597,39 +1597,23 @@ button.close-btn:hover {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Set scroll margin on all source paragraphs
-  document.querySelectorAll('div.sources p').forEach(p => {
-    p.style.scrollMarginTop = '15px';
-  });
 
-  // Function to normalize URLs (handle + and trailing slash)
   function normalizeUrl(url) {
-    return url
-      .replace(/\+/g, '%20')
-      .replace(/\/$/, '');
+    return url.replace(/\+/g, '%20').replace(/\/$/, '');
   }
 
-  // Function to ensure an element has a unique ID
-  function ensureId(element, baseId) {
-    if (!element) return null;
-    if (element.id) return element.id;
-    let newId = baseId + '-' + Math.random().toString(36).substring(2, 8);
-    element.id = newId;
-    return newId;
-  }
-
-  // Map URLs to their source paragraphs
+  // Map URLs to source paragraphs
   let urlToSourceMap = {};
   document.querySelectorAll('div.sources p').forEach((p) => {
-    let sourceLink = p.querySelector('a');
-    if (sourceLink) {
-      let normalized = normalizeUrl(sourceLink.href);
-      urlToSourceMap[normalized] = p;
+    let a = p.querySelector('a');
+    if (a) {
+      urlToSourceMap[normalizeUrl(a.href)] = p;
+      p.style.scrollMarginTop = '15px';
     }
   });
 
-  // Process body links
-  let processedUrls = {};
+  // First pass: collect all occurrences
+  let urlInfo = {};
   let nextNumber = 1;
 
   document.querySelectorAll('body a[href^="http"]').forEach((link) => {
@@ -1637,35 +1621,84 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let url = normalizeUrl(link.href);
     let sourceP = urlToSourceMap[url];
+    if (!sourceP) return;
 
-    if (sourceP) {
-      if (!processedUrls[url]) {
-        processedUrls[url] = nextNumber;
-        sourceP.id = 'source-' + nextNumber;
-
-        let parentSection = link.closest('p, h1, h2, h3, h4, li, div:not(.sources)');
-        let targetId = ensureId(parentSection, 'citation-location-' + nextNumber);
-        
-        if (targetId) {
-          let backlink = document.createElement('a');
-          backlink.href = '#' + targetId;
-          backlink.innerHTML = ' ↩';
-          backlink.style.textDecoration = 'none';
-          backlink.style.marginLeft = '5px';
-          sourceP.appendChild(backlink);
-        }
-
-        nextNumber++;
-      }
-
-      let sourceNumber = processedUrls[url];
-      if (!link.nextSibling || link.nextSibling.nodeName !== 'SUP' || !link.nextSibling.textContent.includes(sourceNumber)) {
-        link.insertAdjacentHTML('afterend', ' <sup><a href="#source-' + sourceNumber + '">' + sourceNumber + '</a></sup>');
-      }
+    if (!urlInfo[url]) {
+      urlInfo[url] = {
+        number: nextNumber,
+        occurrences: [],
+        sourceP: sourceP
+      };
+      sourceP.id = 'source-' + nextNumber;
+      nextNumber++;
     }
+
+    let parent = link.closest('p, h1, h2, h3, h4, li, div:not(.sources)');
+    urlInfo[url].occurrences.push({ link, parent });
+  });
+
+  // Second pass: create anchors, backlinks, superscripts
+  Object.keys(urlInfo).forEach((url) => {
+    let info = urlInfo[url];
+    let sourceNumber = info.number;
+    let sourceP = info.sourceP;
+    let total = info.occurrences.length;
+
+    info.occurrences.forEach((occ, index) => {
+      let link = occ.link;
+      let parent = occ.parent;
+      let occurrenceIndex = index + 1;
+
+      // Create stable anchor before parent
+      let anchorId = `citation-location-${sourceNumber}-${occurrenceIndex}`;
+      if (parent && !document.getElementById(anchorId)) {
+        let anchor = document.createElement('span');
+        anchor.id = anchorId;
+        anchor.style.display = 'block';
+        anchor.style.position = 'relative';
+        anchor.style.top = '-50px';
+        parent.parentNode.insertBefore(anchor, parent);
+      }
+
+      // Create backlink
+      let backlink = document.createElement('a');
+      backlink.href = '#' + anchorId;
+      backlink.style.textDecoration = 'none';
+      backlink.style.marginLeft = '5px';
+
+      if (total === 1) {
+        // Only one occurrence → plain arrow
+        backlink.textContent = ' ↩';
+      } else {
+        // Multiple occurrences → ↩¹, ↩², ...
+        backlink.textContent = ' ↩';
+        let sup = document.createElement('sup');
+        sup.textContent = occurrenceIndex;
+        backlink.appendChild(sup);
+      }
+
+      sourceP.appendChild(backlink);
+
+      // Add superscript after link if missing
+      let sibling = link.nextSibling;
+      while (sibling && sibling.nodeType === 3 && !sibling.textContent.trim()) {
+        sibling = sibling.nextSibling;
+      }
+
+      let hasSup = sibling && sibling.nodeName === 'SUP' &&
+                   sibling.querySelector(`a[href="#source-${sourceNumber}"]`);
+
+      if (!hasSup) {
+        link.insertAdjacentHTML(
+          'afterend',
+          ` <sup><a href="#source-${sourceNumber}">${sourceNumber}</a></sup>`
+        );
+      }
+    });
   });
 });
 </script>
+
 <script>
 function toggleMenu() {
   const menu = document.getElementById('sidebar');
@@ -1772,3 +1805,4 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 
 </body>
 </html>
+
