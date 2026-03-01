@@ -1657,7 +1657,7 @@ document.addEventListener('DOMContentLoaded', function() {
         anchor.style.display = 'block';
         anchor.style.position = 'relative';
         anchor.style.top = '-50px';
-        parent.parentNode.insertBefore(anchor, parent);
+        parent.insertBefore(anchor, parent.firstChild);
       }
 
       // Create backlink
@@ -1805,4 +1805,3 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 
 </body>
 </html>
-
