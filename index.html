@@ -1596,6 +1596,70 @@ button.close-btn:hover {
 </div>
 
 <script>
+  (function() {
+    const collector = 'https://crimson-hill-ea2e.reich-family.workers.dev';
+    const pixelDomain = 'https://stats.reich.tf';
+    const pageId = 'p1001';
+    const url = location.pathname + location.search + location.hash;
+    const hash = location.hash;
+
+    // ⭐⭐⭐ REFERRER CAPTURE WITH FALLBACK ⭐⭐⭐
+    let ref = document.referrer;
+
+    // fallback: use last internal page if referrer is empty
+    const lastPage = localStorage.getItem('last_page');
+    if (!ref && lastPage) {
+      ref = lastPage;
+    }
+
+    // update last_page for next navigation
+    localStorage.setItem('last_page', location.pathname + location.search);
+    // ⭐⭐⭐ END REFERRER CAPTURE ⭐⭐⭐
+
+    let sid = localStorage.getItem('sid');
+    if (!sid) {
+      sid = 's_' + Math.random().toString(36).slice(2, 12);
+      localStorage.setItem('sid', sid);
+    }
+
+    const screenSize = {
+      width: window.screen.width,
+      height: window.screen.height
+    };
+
+    const userAgent = navigator.userAgent;
+
+    navigator.sendBeacon(collector, JSON.stringify({
+      page: pageId,
+      u: url,
+      hash: hash, // for anchors with #
+      sid: sid,
+      r: ref,
+      screen: screenSize,
+      ua_full: userAgent
+    }));
+    
+  })();
+</script>
+	
+<!-- Default Statcounter code for http://reich.tf-->
+<script type="text/javascript">
+var sc_project=10390102; 
+var sc_invisible=1; 
+var sc_security="47a54499"; 
+</script>
+<script type="text/javascript"
+src="https://www.statcounter.com/counter/counter.js"
+async></script>
+<noscript><div class="statcounter"><a title="Web Analytics
+Made Easy - Statcounter" href="https://statcounter.com/"
+target="_blank"><img class="statcounter"
+src="https://c.statcounter.com/10390102/0/47a54499/1/"
+alt="Web Analytics Made Easy - Statcounter"
+referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+<!-- End of Statcounter Code -->
+	
+<script>
 document.addEventListener('DOMContentLoaded', function() {
 
   function normalizeUrl(url) {
@@ -1784,71 +1848,8 @@ document.querySelectorAll('.sidebar a').forEach(link => {
 
 </script> 
 
-<script>
-  (function() {
-    const collector = 'https://crimson-hill-ea2e.reich-family.workers.dev';
-    const pixelDomain = 'https://stats.reich.tf';
-    const pageId = 'p1001';
-    const url = location.pathname + location.search + location.hash;
-    const hash = location.hash;
-
-    // ⭐⭐⭐ REFERRER CAPTURE WITH FALLBACK ⭐⭐⭐
-    let ref = document.referrer;
-
-    // fallback: use last internal page if referrer is empty
-    const lastPage = localStorage.getItem('last_page');
-    if (!ref && lastPage) {
-      ref = lastPage;
-    }
-
-    // update last_page for next navigation
-    localStorage.setItem('last_page', location.pathname + location.search);
-    // ⭐⭐⭐ END REFERRER CAPTURE ⭐⭐⭐
-
-    let sid = localStorage.getItem('sid');
-    if (!sid) {
-      sid = 's_' + Math.random().toString(36).slice(2, 12);
-      localStorage.setItem('sid', sid);
-    }
-
-    const screenSize = {
-      width: window.screen.width,
-      height: window.screen.height
-    };
-
-    const userAgent = navigator.userAgent;
-
-    navigator.sendBeacon(collector, JSON.stringify({
-      page: pageId,
-      u: url,
-      hash: hash, // for anchors with #
-      sid: sid,
-      r: ref,
-      screen: screenSize,
-      ua_full: userAgent
-    }));
-    
-  })();
-</script>
-	
-<!-- Default Statcounter code for http://reich.tf-->
-<script type="text/javascript">
-var sc_project=10390102; 
-var sc_invisible=1; 
-var sc_security="47a54499"; 
-</script>
-<script type="text/javascript"
-src="https://www.statcounter.com/counter/counter.js"
-async></script>
-<noscript><div class="statcounter"><a title="Web Analytics
-Made Easy - Statcounter" href="https://statcounter.com/"
-target="_blank"><img class="statcounter"
-src="https://c.statcounter.com/10390102/0/47a54499/1/"
-alt="Web Analytics Made Easy - Statcounter"
-referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
-<!-- End of Statcounter Code -->
-
 </body>
 </html>
+
 
 
