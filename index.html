@@ -1712,6 +1712,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let supLink = document.createElement('a');
             supLink.href = `#source-${sourceNumber}`;
             supLink.textContent = `[${sourceNumber}]`;
+			supLink.style.color = '#990000'; // Sup link color
             sup.appendChild(supLink);
             
             // Insert space then sup after the punctuation
@@ -1726,9 +1727,9 @@ document.addEventListener('DOMContentLoaded', function() {
           } else {
             // No punctuation, use original spacing logic (space + sup)
             link.insertAdjacentHTML(
-              'afterend',
-              ` <sup><a href="#source-${sourceNumber}">[${sourceNumber}]</a></sup>`
-            );
+            'afterend',
+            ` <sup><a href="#source-${sourceNumber}" style="color: #990000;">[${sourceNumber}]</a></sup>` // Sup link color and space before
+);
           }
         } else {
           // No text node after, use original spacing logic
@@ -1849,3 +1850,4 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 
 </body>
 </html>
+
