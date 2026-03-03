@@ -682,6 +682,48 @@ video.addEventListener('ended', function() {
 
 </div>
 
+<script>
+  (function() {
+    const collector = 'https://stats.reich.tf';
+    const pageId = 'p1002';
+    const url = location.pathname + location.search + location.hash;
+    const hash = location.hash;
+
+    let ref = document.referrer;
+    const lastPage = localStorage.getItem('last_page');
+    if (!ref && lastPage) {
+      ref = lastPage;
+    }
+    localStorage.setItem('last_page', location.pathname + location.search);
+
+    let sid = localStorage.getItem('sid');
+    if (!sid) {
+      sid = 's_' + Math.random().toString(36).slice(2, 12);
+      localStorage.setItem('sid', sid);
+    }
+
+    const payload = {
+      page: pageId,
+      u: url,
+      hash: hash,
+      sid: sid,
+      r: ref,
+      screen: {
+        width: window.screen.width,
+        height: window.screen.height
+      },
+      ua_full: navigator.userAgent
+    };
+
+    fetch(collector, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      keepalive: true
+    });
+  })();
+</script>
+
 <!-- Default Statcounter code for Maria Katsaris Memorial
 http://reich.tf/research/mariakatsaris -->
 <script type="text/javascript">
@@ -699,50 +741,7 @@ src="https://c.statcounter.com/13039041/0/59a4093d/1/"
 alt="Web Analytics"
 referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 <!-- End of Statcounter Code -->
-
-<script>
-  (function() {
-    const collector = 'https://crimson-hill-ea2e.reich-family.workers.dev';
-    const pageId = 'p1002';
-    const url = location.pathname + location.search + location.hash;
-    const hash = location.hash;
-
-    // ⭐⭐⭐ REFERRER CAPTURE WITH FALLBACK ⭐⭐⭐
-    let ref = document.referrer;
-
-    // fallback: use last internal page if referrer is empty
-    const lastPage = localStorage.getItem('last_page');
-    if (!ref && lastPage) {
-      ref = lastPage;
-    }
-
-    // update last_page for next navigation
-    localStorage.setItem('last_page', location.pathname + location.search);
-    // ⭐⭐⭐ END REFERRER CAPTURE ⭐⭐⭐
-
-    let sid = localStorage.getItem('sid');
-    if (!sid) {
-      sid = 's_' + Math.random().toString(36).slice(2, 12);
-      localStorage.setItem('sid', sid);
-    }
-
-    const screenSize = {
-      width: window.screen.width,
-      height: window.screen.height
-    };
-
-    const userAgent = navigator.userAgent;
-
-    navigator.sendBeacon(collector, JSON.stringify({
-      page: pageId,
-      u: url,
-      sid: sid,
-      r: ref,   // ⭐ using the captured ref with fallback
-      screen: screenSize,
-      ua_full: userAgent
-    }));
-  })();
-</script>
 	
 </body>
 </html>
+
