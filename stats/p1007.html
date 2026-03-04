@@ -77,258 +77,320 @@ font-display: block;
 max-width: 990px;
 margin: 0 auto;
 }
-/* Header */
-.sc-header {
-color: white;
-padding: 10px 20px;
-display: flex;
-justify-content:center;
-align-items: center;
+        /* Center the content */
+        .container {
+            max-width: 990px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .sc-header {
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content:center;
+            align-items: center;
+
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        /* Content area */
+        .content {
+            background: #1a1e24;
+            margin-top:-20px;
+        }
+
+        /* Page header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        /* Stats widgets */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-widget {
+            background: #252a33;
+            border-radius: 4px;
+            border: 1px solid #374151;
+            padding: 15px;
+        }
+
+        .stat-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #9ca3af;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .stat-sub {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 5px;
+        }
+
+        /* Filter bar */
+        .filter-bar {
+            background: #252a33;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #9ca3af;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-select {
+            padding: 5px 10px;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            font-size: 12px;
+            background: #1a1e24;
+            color: #e5e7eb;
+        }
+
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #e5e7eb;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid #374151;
+            background: #252a33;
+            color: #e5e7eb;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            border-color: #1d4ed8;
+        }
+
+        .btn-outline {
+            background: #252a33;
+            color: #e5e7eb;
+        }
+
+        /* Table */
+        .table-container {
+            background: #252a33;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            overflow: auto;
+        }
+
+        .table-header {
+            padding: 12px 15px;
+            background: #1f2937;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .table-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 15px;
+            background: #1f2937;
+            color: #e5e7eb;
+            font-weight: 600;
+            border-bottom: 1px solid #374151;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #374151;
+            background: #252a33;
+            color: #e5e7eb;
+            white-space: nowrap;
+        }
+
+        tr:hover td {
+            background: #2d3748;
+        }
+
+        /* Badges */
+        .badge-bot {
+            background: #7f1d1d;
+            color: #fecaca;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .badge-real {
+            background: #14532d;
+            color: #dcfce7;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .device-icon {
+            display: inline-block;
+            width: 16px;
+            text-align: center;
+            margin-right: 4px;
+        }
+
+/* For the next column to prevent overlap */
+td:nth-child(7) { /* Adjust this number based on which column follows location */
+    word-break: break-word;
+    max-width: 300px;
 }
-.logo-area {
-display: flex;
-align-items: center;
-gap: 15px;
-}
-.logo {
-font-size: 22px;
-font-weight: 600;
-letter-spacing: -0.5px;
-}
-/* Content area */
-.content {
-background: #1a1e24;
-margin-top:-20px;
-}
-/* Page header */
-.page-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 20px;
-}
-/* Stats widgets */
-.stats-grid {
-display: grid;
-grid-template-columns: repeat(4, 1fr);
-gap: 15px;
-margin-bottom: 20px;
-}
-.stat-widget {
-background: #252a33;
-border-radius: 4px;
-border: 1px solid #374151;
-padding: 15px;
-}
-.stat-title {
-font-size: 11px;
-text-transform: uppercase;
-color: #9ca3af;
-letter-spacing: 0.5px;
-margin-bottom: 5px;
-}
-.stat-value {
-font-size: 16px;
-font-weight: 600;
-color: #ffffff;
-}
-.stat-sub {
-font-size: 11px;
-color: #9ca3af;
-margin-top: 5px;
-}
-/* Filter bar */
-.filter-bar {
-background: #252a33;
-border: 1px solid #374151;
-border-radius: 4px;
-padding: 12px 15px;
-margin-bottom: 20px;
-display: flex;
-flex-wrap: wrap;
-align-items: center;
-gap: 15px;
-}
-.filter-group {
-display: flex;
-align-items: center;
-gap: 10px;
-}
-.filter-label {
-font-size: 11px;
-text-transform: uppercase;
-color: #9ca3af;
-letter-spacing: 0.5px;
-}
-.filter-select {
-padding: 5px 10px;
-border: 1px solid #374151;
-border-radius: 4px;
-font-size: 12px;
-background: #1a1e24;
-color: #e5e7eb;
-}
-.filter-checkbox {
-display: flex;
-align-items: center;
-gap: 5px;
-font-size: 12px;
-color: #e5e7eb;
-}
-.btn {
-padding: 6px 12px;
-border-radius: 4px;
-font-size: 12px;
-font-weight: 500;
-border: 1px solid #374151;
-background: #252a33;
-color: #e5e7eb;
-cursor: pointer;
-display: inline-flex;
-align-items: center;
-gap: 5px;
-}
-.btn-primary {
-background: #2563eb;
-color: white;
-border-color: #1d4ed8;
-}
-.btn-outline {
-background: #252a33;
-color: #e5e7eb;
-}
-/* Table */
-.table-container {
-background: #252a33;
-border: 1px solid #374151;
-border-radius: 4px;
-overflow: auto;
-}
-.table-header {
-padding: 12px 15px;
-background: #1f2937;
-border-bottom: 1px solid #374151;
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-.table-title {
-font-weight: 600;
-color: #ffffff;
-}
-.table-controls {
-display: flex;
-gap: 15px;
-align-items: center;
-}
-table {
-width: 100%;
-border-collapse: collapse;
-font-size: 12px;
-}
-th {
-text-align: left;
-padding: 10px 15px;
-background: #1f2937;
-color: #e5e7eb;
-font-weight: 600;
-border-bottom: 1px solid #374151;
-white-space: nowrap;
-}
-td {
-padding: 10px 15px;
-border-bottom: 1px solid #374151;
-background: #252a33;
-color: #e5e7eb;
-white-space: nowrap;
-}
-tr:hover td {
-background: #2d3748;
-}
-/* Badges */
-.badge-bot {
-background: #7f1d1d;
-color: #fecaca;
-padding: 2px 6px;
-border-radius: 12px;
-font-size: 10px;
-font-weight: 600;
-}
-.badge-real {
-background: #14532d;
-color: #dcfce7;
-padding: 2px 6px;
-border-radius: 12px;
-font-size: 10px;
-font-weight: 600;
-}
-.device-icon {
-display: block;
-width: 16px;
-text-align: center;
-margin-right: 4px;
-}
+
 .location-cell {
-max-width: 150px;
+    max-width: 150px;
+    line-height: 1.4;
 }
-.location-city {
-color: #9ca3af;
-font-size: 11px;
+.location-city-line {
+    font-weight: 500;
 }
-.hostname {
-color: #f87171;
-font-weight: 500;
+.location-state-line {
+    color: #6f8fae;
 }
-.page-url {
-color: #60a5fa;
-text-decoration: none;
-max-width: 250px;
-display: block;
-overflow: hidden;
-text-overflow: ellipsis;
-white-space: nowrap;
+.location-country-line {
+    color: #8a9fb0;
 }
-.page-url:hover {
-text-decoration: underline;
-}
-.referrer {
-color: #4ade80;
-max-width: 200px;
-overflow: hidden;
-text-overflow: ellipsis;
-white-space: nowrap;
-display: block;
-}
-.mag-icon {
-color: #9ca3af;
-font-size: 14px;
-cursor: pointer;
-}
-.loading {
-text-align: center;
-padding: 40px;
-color: #9ca3af;
-}
-.error {
-text-align: center;
-padding: 40px;
-color: #f87171;
-}
-.flag-icon {
-width: 18px;
-height: 12px;
-background: transparent;
-display: block;
-margin-right: 5px;
-vertical-align: middle;
-margin-top: 14px;
-}
-@media (max-width: 1200px) {
-.stats-grid {
-grid-template-columns: repeat(2, 1fr);
-}
-}
-</style>
+
+        .location-city {
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        .hostname {
+            color: #f87171;
+            font-weight: 500;
+        }
+
+        .page-url {
+            color: #60a5fa;
+            text-decoration: none;
+            max-width: 250px;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .page-url:hover {
+            text-decoration: underline;
+        }
+
+        .referrer {
+            color: #4ade80;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display:block;
+        }
+
+        .mag-icon {
+            color: #9ca3af;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #9ca3af;
+        }
+
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: #f87171;
+        }
+
+	.flag-icon {
+        width: 18px;
+        height: 12px;
+        background: transparent;
+        display:block;
+        margin-right: 5px;
+        vertical-align: middle;
+        margin-top: 14px;
+       }
+
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -441,6 +503,15 @@ Visitor Log - Reich Family
 
     let visitorData = [];
     let isLoading = false;
+
+function getCountryName(code) {
+    const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+    try {
+        return regionNames.of(code);
+    } catch {
+        return code;
+    }
+}
 
 function formatInEasternTime(timestamp) {
     if (!timestamp) return { date: '—', time: '—' };
@@ -681,10 +752,14 @@ else {
                     <div style="color: #6f8fae; font-size: 11px;">${screenDisplay}</div>
                 </td>
                 <td style="padding: 0; line-height: 0; font-size: 0; margin-top:10px;">${flagHtml}</td>
-                <td class="location-cell">
-                    <div>${locationDisplay}</div>
-                    <div class="location-city">${row.language || ''}</div>
-                </td>
+<td class="location-cell">
+    <div class="location-city-line">${row.city || ''}</div>
+    <div class="location-state-line">${row.state || row.region || ''}</div>
+    <div class="location-country-line">
+        ${row.country ? getCountryName(row.country) : ''}
+        ${row.language ? ' / ' + row.language.split(',')[0] : ''}
+    </div>
+</td>
 <td>
 <div><span class="hostname">${hostname}</span></div>
 <div><span><a href="https://www.ip2location.com/demo/${row.ip || ''}" target="_blank" rel="noopener noreferrer" style="color: #66b0ff !important;">${row.ip || 'No IP'}</a></span></div>
@@ -762,5 +837,6 @@ else {
         a.click();
     }
 </script>
+
 </body>
 </html>

@@ -308,9 +308,25 @@
             margin-right: 4px;
         }
 
-        .location-cell {
-            max-width: 150px;
-        }
+/* For the next column to prevent overlap */
+td:nth-child(7) { /* Adjust this number based on which column follows location */
+    word-break: break-word;
+    max-width: 300px;
+}
+
+.location-cell {
+    max-width: 150px;
+    line-height: 1.4;
+}
+.location-city-line {
+    font-weight: 500;
+}
+.location-state-line {
+    color: #6f8fae;
+}
+.location-country-line {
+    color: #8a9fb0;
+}
 
         .location-city {
             color: #9ca3af;
@@ -503,6 +519,15 @@
 
     let visitorData = [];
     let isLoading = false;
+
+function getCountryName(code) {
+    const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+    try {
+        return regionNames.of(code);
+    } catch {
+        return code;
+    }
+}
 
 function formatInEasternTime(timestamp) {
     if (!timestamp) return { date: '—', time: '—' };
@@ -743,10 +768,14 @@ else {
                     <div style="color: #6f8fae; font-size: 11px;">${screenDisplay}</div>
                 </td>
                 <td style="padding: 0; line-height: 0; font-size: 0; margin-top:10px;">${flagHtml}</td>
-                <td class="location-cell">
-                    <div>${locationDisplay}</div>
-                    <div class="location-city">${row.language || ''}</div>
-                </td>
+<td class="location-cell">
+    <div class="location-city-line">${row.city || ''}</div>
+    <div class="location-state-line">${row.state || row.region || ''}</div>
+    <div class="location-country-line">
+        ${row.country ? getCountryName(row.country) : ''}
+        ${row.language ? ' / ' + row.language.split(',')[0] : ''}
+    </div>
+</td>
 <td>
 <div><span class="hostname">${hostname}</span></div>
 <div><span><a href="https://www.ip2location.com/demo/${row.ip || ''}" target="_blank" rel="noopener noreferrer" style="color: #66b0ff !important;">${row.ip || 'No IP'}</a></span></div>
