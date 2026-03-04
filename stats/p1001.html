@@ -629,6 +629,12 @@ function formatInEasternTime(timestamp) {
             topCountry = top[0];
             topCountryPercent = `${((top[1] / total) * 100).toFixed(1)}%`;
         }
+
+	const stateCounts = {};
+	visitorData.forEach(v => {
+    	if (v.state) stateCounts[v.state] = (stateCounts[v.state] || 0) + 1;
+	});
+	console.log('Visitors by state:', stateCounts);
         
         document.getElementById('totalVisitors').innerText = total;
         document.getElementById('uniqueSessions').innerText = uniqueSessions;
@@ -682,6 +688,7 @@ function formatInEasternTime(timestamp) {
             
             const locationParts = [];
             if (row.city) locationParts.push(row.city);
+            if (row.state) locationParts.push(row.state); 
             if (row.region) locationParts.push(row.region);
             if (row.country) locationParts.push(row.country);
             const locationDisplay = locationParts.join(', ') || '—';
@@ -739,6 +746,7 @@ else {
                 <td class="location-cell">
                     <div>${locationDisplay}</div>
                     <div class="location-city">${row.language || ''}</div>
+                    <div>${row.state || ''}</div>
                 </td>
 <td>
 <div><span class="hostname">${hostname}</span></div>
