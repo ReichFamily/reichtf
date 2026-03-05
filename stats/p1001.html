@@ -33,9 +33,7 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: #1a1e24;
-            color: #e5e7eb;
-            font-size: 13px;
-            line-height: 1.4;
+	    color:white;
             padding: 20px;
         }
 
@@ -254,10 +252,13 @@
             align-items: center;
         }
 
+        :root {
+        --fs: 13px;   /* Main text size */
+        }
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12px;
+            font-size:var(--fs);
         }
 
         th {
@@ -330,7 +331,6 @@ td:nth-child(7) { /* Adjust this number based on which column follows location *
 
         .location-city {
             color: #9ca3af;
-            font-size: 11px;
         }
 
         .hostname {
@@ -515,7 +515,7 @@ td:nth-child(7) { /* Adjust this number based on which column follows location *
 <script>
     // CONFIGURATION
     const API_URL = 'https://weathered-voice-debf.reich-family.workers.dev';
-    const PAGE_ID = 'p1001'; // Filter for Reich Family
+    const PAGE_ID = 'p1001';
 
     let visitorData = [];
     let isLoading = false;
@@ -759,21 +759,30 @@ else {
             const hostname = row.isp || row.hostname || (row.ip ? `IP ${row.ip}` : '—');
             
             html += `<tr>
-                <td>${easternTime.date}</td>
-                <td>${easternTime.time}</td>
-                <td><span class="device-icon">${deviceIcon}</span></td>
-                <td>
-                    <div><strong>${browserDisplay}</strong></div>
-                    <div>${osDisplay}</div>
-                    <div style="color: #6f8fae; font-size: 11px;">${screenDisplay}</div>
-                </td>
+<td>${easternTime.date}</td>
+<td>${easternTime.time}</td>
+<td><span class="device-icon">${deviceIcon}</span></td>
+<td>
+    <!-- Browser -->
+    <div>${browserDisplay}</div>
+
+    <!-- Operating System with version (hidden on phones) -->
+    <div>${row.device === 'mobile' ? '' : (row.os_version ? `${row.os} ${row.os_version}` : row.os)}</div>
+
+    <!-- Device Model (show only on phones) -->
+    <div>${row.device === 'mobile' ? (row.device_model || '—') : ''}</div>
+
+    <!-- Screen resolution -->
+    <div style="color: #6f8fae;">${screenDisplay}</div>
+</td>
+
                 <td style="padding: 0; line-height: 0; font-size: 0; margin-top:10px;">${flagHtml}</td>
 <td class="location-cell">
     <div class="location-city-line">${row.city || ''}</div>
     <div class="location-state-line">${row.state || row.region || ''}</div>
     <div class="location-country-line">
         ${row.country ? getCountryName(row.country) : ''}
-        ${row.language ? ' / ' + row.language.split(',')[0] : ''}
+        ${row.language ? ' / ' + row.language.split(',')[0].toLowerCase() : ''}
     </div>
 </td>
 <td>
