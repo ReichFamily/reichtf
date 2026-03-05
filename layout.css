@@ -283,11 +283,12 @@ font-weight: bold;
 
 /*Mobile and Nexus 7*/
 @media (max-width: 600px) {
-.sidebar {
-width: 280px;           /* narrower on mobile */
-font-size: 11px;        /* smaller text */
-padding: 12px;
-}
+  .sidebar {
+    width: 80%;        /* make it responsive instead of fixed 280px */
+    right: -100%;      /* hide fully off-screen when closed */
+    font-size: 11px;
+    padding: 12px;
+  }
 .sidebar h3 {
 font-size: 11px;
 }
