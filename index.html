@@ -1785,45 +1785,58 @@ document.querySelectorAll('.sidebar a').forEach(link => {
 </script> 
 
 <script>
-  (function() {
-    const collector = 'https://stats.reich.tf';
-    const pageId = 'p1001';
-    const url = location.pathname + location.search + location.hash;
-    const hash = location.hash;
+(function() {
+  const collector = 'https://stats.reich.tf';   // your collector worker URL
+  const pageId = 'p1001';                       // page identifier
+  const url = location.pathname + location.search + location.hash;
+  const hash = location.hash;
 
-    let ref = document.referrer;
-    const lastPage = localStorage.getItem('last_page');
-    if (!ref && lastPage) {
-      ref = lastPage;
-    }
-    localStorage.setItem('last_page', location.pathname + location.search);
+  // Referrer handling: use document.referrer or last_page from localStorage
+  let ref = document.referrer;
+  const lastPage = localStorage.getItem('last_page');
+  if (!ref && lastPage) {
+    ref = lastPage;
+  }
+  localStorage.setItem('last_page', location.pathname + location.search);
 
-    let sid = localStorage.getItem('sid');
-    if (!sid) {
-      sid = 's_' + Math.random().toString(36).slice(2, 12);
-      localStorage.setItem('sid', sid);
-    }
+  // Session ID handling
+  let sid = localStorage.getItem('sid');
+  if (!sid) {
+    sid = 's_' + Math.random().toString(36).slice(2, 12);
+    localStorage.setItem('sid', sid);
+  }
 
-    const payload = {
-      page: pageId,
-      u: url,
-      hash: hash,
-      sid: sid,
-      r: ref,
-      screen: {
-        width: window.screen.width,
-        height: window.screen.height
-      },
-      ua_full: navigator.userAgent
+  // Build payload
+  const payload = {
+    page: pageId,
+    u: url,
+    hash: hash,
+    sid: sid,
+    r: ref,
+    screen: {
+      width: window.screen.width,
+      height: window.screen.height,
+      orientation: screen.orientation ? screen.orientation.type : null
+    },
+    ua_full: navigator.userAgent
+  };
+
+  // Add User-Agent Client Hints if available (Chromium browsers)
+  if (navigator.userAgentData) {
+    payload.ua_data = {
+      brands: navigator.userAgentData.brands,
+      mobile: navigator.userAgentData.mobile
     };
+  }
 
-    fetch(collector, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-      keepalive: true
-    });
-  })();
+  // Send to collector worker
+  fetch(collector, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+    keepalive: true
+  }).catch(err => console.error("Collector error:", err));
+})();
 </script>
 	
 <!-- Default Statcounter code for http://reich.tf-->
@@ -1845,4 +1858,5 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 
 </body>
 </html>
+
 
