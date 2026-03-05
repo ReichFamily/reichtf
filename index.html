@@ -1834,42 +1834,38 @@ document.querySelectorAll('.sidebar a').forEach(link => {
 
 <script>
 (function() {
-  const collector = 'https://stats.reich.tf';   // your collector worker URL
-  const pageId = 'p1001';                       // page identifier
+  const collector = 'https://stats.reich.tf';
+  const pageId = 'p1001';
   const url = location.pathname + location.search + location.hash;
   const hash = location.hash;
 
-  // Referrer handling: use document.referrer or last_page from localStorage
   let ref = document.referrer;
   const lastPage = localStorage.getItem('last_page');
-  if (!ref && lastPage) {
-    ref = lastPage;
-  }
+  if (!ref && lastPage) ref = lastPage;
   localStorage.setItem('last_page', location.pathname + location.search);
 
-  // Session ID handling
   let sid = localStorage.getItem('sid');
   if (!sid) {
     sid = 's_' + Math.random().toString(36).slice(2, 12);
     localStorage.setItem('sid', sid);
   }
 
-  // Get real device model from browser
+  // Get device model - works in ALL browsers
   let deviceModel = null;
-  if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
-    try {
-      const highEntropyValues = await navigator.userAgentData.getHighEntropyValues(['model']);
-      deviceModel = highEntropyValues.model;
-    } catch (e) {}
-  }
+  const ua = navigator.userAgent;
   
-  // Fallback to UA parsing if needed
-  if (!deviceModel) {
-    const match = navigator.userAgent.match(/; (.*?) Build\//);
-    if (match) deviceModel = match[1];
-  }
+  // Method 1: Extract from UA directly
+  const androidMatch = ua.match(/; (.*?) Build\//);
+  if (androidMatch) deviceModel = androidMatch[1];
+  
+  // Method 2: iPhone models
+  const iPhoneMatch = ua.match(/iPhone(\d+,\d+)/);
+  if (iPhoneMatch) deviceModel = 'iPhone ' + iPhoneMatch[1].replace(',', '/');
+  
+  // Method 3: iPad models
+  const iPadMatch = ua.match(/iPad(\d+,\d+)/);
+  if (iPadMatch) deviceModel = 'iPad ' + iPadMatch[1].replace(',', '/');
 
-  // Build payload
   const payload = {
     page: pageId,
     u: url,
@@ -1882,18 +1878,9 @@ document.querySelectorAll('.sidebar a').forEach(link => {
       orientation: screen.orientation ? screen.orientation.type : null
     },
     device_model: deviceModel,
-    ua_full: navigator.userAgent
+    ua_full: ua
   };
 
-  // Add User-Agent Client Hints if available (Chromium browsers)
-  if (navigator.userAgentData) {
-    payload.ua_data = {
-      brands: navigator.userAgentData.brands,
-      mobile: navigator.userAgentData.mobile
-    };
-  }
-
-  // Send to collector worker
   fetch(collector, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -1922,6 +1909,7 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 
 </body>
 </html>
+
 
 
 
