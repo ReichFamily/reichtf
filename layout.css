@@ -935,18 +935,42 @@ margin-left: auto;
 margin-right: auto;
 }
 .incenseburner {
+display:none;
+position: relative;
+max-width:450px;
+margin-left: auto;
+margin-right: auto;
+}
+.incenseburnermobile {
+display:block;
 position: relative;
 max-width:450px;
 margin-left: auto;
 margin-right: auto;
 }
 .holycommunion {
+display:none;
+position: relative;
+max-width:450px;
+margin-left: auto;
+margin-right: auto;
+}
+.holycommunionmobile {
+display:block;
 position: relative;
 max-width:450px;
 margin-left: auto;
 margin-right: auto;
 }
 .holyoilvessel {
+display:none;
+position: relative;
+max-width:450px;
+margin-left: auto;
+margin-right: auto;
+}
+.holyoilvesselmobile {
+display:block;
 position: relative;
 max-width:450px;
 margin-left: auto;
@@ -1692,6 +1716,14 @@ float:right;
 margin-left:15px;
 }
 .incenseburner {
+display:block;
+position: relative;
+max-width:450px;
+float:left;
+margin-right:15px;
+}
+.incenseburnermobile {
+display:none;
 position: relative;
 max-width:450px;
 float:left;
@@ -1703,7 +1735,21 @@ max-width:450px;
 float:right;
 margin-left:15px;
 }
+.holycommunionmobile {
+display:none;
+position: relative;
+max-width:450px;
+float:right;
+margin-left:15px;
+}
 .holyoilvessel {
+position: relative;
+max-width:450px;
+float:left;
+margin-right:15px;
+}
+.holyoilvesselmobile {
+display:none;
 position: relative;
 max-width:450px;
 float:left;
@@ -1713,29 +1759,6 @@ margin-right:15px;
 max-width:450px;
 float:right;
 margin-left:15px;
-}
-.trinitysacredrites {
-max-width:500px;
-float:right;
-margin-left:15px;
-}
-.incenseburner {
-position: relative;
-max-width:500px;
-float:left;
-margin-right:15px;
-}
-.holycommunion {
-position: relative;
-max-width:500px;
-float:right;
-margin-left:15px;
-}
-.holyoilvessel {
-position: relative;
-max-width:500px;
-float:left;
-margin-right:15px;
 }
 .trinitysealpage {
 max-width:500px;
@@ -2000,6 +2023,14 @@ float:right;
 margin-left:15px;
 }
 .incenseburner {
+display:block;
+position: relative;
+max-width:550px;
+float:left;
+margin-right:15px;
+}
+.incenseburnermobile {
+display:none;
 position: relative;
 max-width:550px;
 float:left;
@@ -2011,7 +2042,21 @@ max-width:550px;
 float:right;
 margin-left:15px;
 }
+.holycommunionmobile {
+display:none;
+position: relative;
+max-width:550px;
+float:right;
+margin-left:15px;
+}
 .holyoilvessel {
+position: relative;
+max-width:550px;
+float:left;
+margin-right:15px;
+}
+.holyoilvesselmobile {
+display:none;
 position: relative;
 max-width:550px;
 float:left;
@@ -2782,6 +2827,14 @@ float:right;
 margin-left:15px;
 }
 .incenseburner {
+display:block;
+position: relative;
+max-width:550px;
+float:left;
+margin-right:15px;
+}
+.incenseburnermobile {
+display:none;
 position: relative;
 max-width:550px;
 float:left;
@@ -2793,7 +2846,21 @@ max-width:550px;
 float:right;
 margin-left:15px;
 }
+.holycommunionmobile {
+display:none;
+position: relative;
+max-width:550px;
+float:right;
+margin-left:15px;
+}
 .holyoilvessel {
+position: relative;
+max-width:550px;
+float:left;
+margin-right:15px;
+}
+.holyoilvesselmobile {
+display:none;
 position: relative;
 max-width:550px;
 float:left;
