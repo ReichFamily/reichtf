@@ -413,18 +413,6 @@ position: relative;
 margin-left:auto;
 margin-right:auto;
 }
-.desktopdisplay {
-display:none;
-}
-.twelveninetabletdisplay {
-display:none;
-}
-.tabletdisplay {
-display:none;
-}
-.mobiledisplay {
-display:block;
-}
 .sectionheadings {
 font-family:TrajanPro3-Regular;
 font-size:0.85rem;
@@ -1186,18 +1174,6 @@ position: relative;
 max-width:500px;
 float:right;
 margin-left:15px;
-}
-.desktopdisplay {
-display:none;
-}
-.twelveninetabletdisplay {
-display:none;
-}
-.tabletdisplay {
-display:block;
-}
-.mobiledisplay {
-display:none;
 }
 .sectionheadings {
 font-family:TrajanPro3-Regular;
@@ -1997,18 +1973,6 @@ border-width:0px 0px 1px 0px;
 border:1px solid #555;
 border-width:0px 0px 1px 0px;
 }
-.desktopdisplay {
-display:none;
-}
-.twelveninetabletdisplay {
-display:block;
-}
-.tabletdisplay {
-display:none;
-}
-.mobiledisplay {
-display:none;
-}
 .holybible {
 max-width:450px;
 float:left;
@@ -2312,18 +2276,6 @@ position: relative;
 max-width:800px;
 float:right;
 margin-left:15px;
-}
-.desktopdisplay {
-display:block;
-}
-.twelveninetabletdisplay {
-display:none;
-}
-.tabletdisplay {
-display:none;
-}
-.mobiledisplay {
-display:none;
 }
 .sectionheadings {
 position:relative;
