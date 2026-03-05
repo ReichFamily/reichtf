@@ -925,42 +925,36 @@ margin-right: auto;
 .incenseburner {
 display:none;
 position: relative;
-max-width:450px;
 margin-left: auto;
 margin-right: auto;
 }
 .incenseburnermobile {
 display:block;
 position: relative;
-max-width:450px;
 margin-left: auto;
 margin-right: auto;
 }
 .holycommunion {
 display:none;
 position: relative;
-max-width:450px;
 margin-left: auto;
 margin-right: auto;
 }
 .holycommunionmobile {
 display:block;
 position: relative;
-max-width:450px;
 margin-left: auto;
 margin-right: auto;
 }
 .holyoilvessel {
 display:none;
 position: relative;
-max-width:450px;
 margin-left: auto;
 margin-right: auto;
 }
 .holyoilvesselmobile {
 display:block;
 position: relative;
-max-width:450px;
 margin-left: auto;
 margin-right: auto;
 }
