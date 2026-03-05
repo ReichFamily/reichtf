@@ -1854,6 +1854,21 @@ document.querySelectorAll('.sidebar a').forEach(link => {
     localStorage.setItem('sid', sid);
   }
 
+  // Get real device model from browser
+  let deviceModel = null;
+  if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+    try {
+      const highEntropyValues = await navigator.userAgentData.getHighEntropyValues(['model']);
+      deviceModel = highEntropyValues.model;
+    } catch (e) {}
+  }
+  
+  // Fallback to UA parsing if needed
+  if (!deviceModel) {
+    const match = navigator.userAgent.match(/; (.*?) Build\//);
+    if (match) deviceModel = match[1];
+  }
+
   // Build payload
   const payload = {
     page: pageId,
@@ -1866,6 +1881,7 @@ document.querySelectorAll('.sidebar a').forEach(link => {
       height: window.screen.height,
       orientation: screen.orientation ? screen.orientation.type : null
     },
+    device_model: deviceModel,
     ua_full: navigator.userAgent
   };
 
@@ -1906,5 +1922,6 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 
 </body>
 </html>
+
 
 
