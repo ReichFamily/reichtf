@@ -1730,6 +1730,7 @@ float:left;
 margin-right:15px;
 }
 .holycommunion {
+display:block;
 position: relative;
 max-width:450px;
 float:right;
@@ -1743,6 +1744,7 @@ float:right;
 margin-left:15px;
 }
 .holyoilvessel {
+display:block;
 position: relative;
 max-width:450px;
 float:left;
@@ -2037,6 +2039,7 @@ float:left;
 margin-right:15px;
 }
 .holycommunion {
+display:block;
 position: relative;
 max-width:550px;
 float:right;
@@ -2050,6 +2053,7 @@ float:right;
 margin-left:15px;
 }
 .holyoilvessel {
+display:block;
 position: relative;
 max-width:550px;
 float:left;
@@ -2841,6 +2845,7 @@ float:left;
 margin-right:15px;
 }
 .holycommunion {
+display:block;
 position: relative;
 max-width:550px;
 float:right;
@@ -2854,6 +2859,7 @@ float:right;
 margin-left:15px;
 }
 .holyoilvessel {
+display:block;
 position: relative;
 max-width:550px;
 float:left;
