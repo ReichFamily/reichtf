@@ -751,11 +751,11 @@ else {
     <!-- Browser -->
     <div>${browserDisplay}</div>
 
-    <!-- Operating System with version (hidden on phones) -->
-    <div>${row.device === 'mobile' ? '' : (row.os_version ? `${row.os} ${row.os_version}` : row.os)}</div>
+    <!-- Operating System with version (ONLY for desktop) -->
+    ${row.device !== 'mobile' ? `<div>${row.os_version ? `${row.os} ${row.os_version}` : row.os}</div>` : ''}
 
-    <!-- Device Model (show only on phones) -->
-    <div>${row.device === 'mobile' ? (row.device_model || '—') : ''}</div>
+    <!-- Device Model (only for mobile) -->
+    ${row.device === 'mobile' ? `<div>${row.device_model || 'Unknown Device'}</div>` : ''}
 
     <!-- Screen resolution -->
     <div style="color: #6f8fae;">${screenDisplay}</div>
