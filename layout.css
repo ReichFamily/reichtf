@@ -212,27 +212,28 @@ border: 1px solid #f5c6cb;
 
 /* Sidebar container */
 .sidebar {
-position: fixed;
-right: -384px;            /* hidden off-screen initially */ /* HIDE OFFSET CALCULATION:
-Take sidebar width (350px)
-+ left/right padding (16px + 16px = 32px)
-+ border (2px)
-= 384px total.
-Use a slightly larger negative offset (-390px)
-so the entire menu, including the close button,
-slides fully off-screen. */
-top: 0;
-width: 350px;
-height: 100%;
-background: #ffedd0;
-font-family:TrajanPro3-Regular;
-border-left: 2px solid #ccc;
-overflow-y: auto;
-padding: 16px;
-transition: right 0.3s ease;
-z-index: 1000;
-font-size: 12.5px;
-box-shadow: -6px 0 12px rgba(0,0,0,0.08);
+  position: fixed;
+  top: 0;                 /* anchor to top of viewport */
+  right: -384px;          /* hidden off-screen initially */
+  /* HIDE OFFSET CALCULATION:
+     Sidebar width (350px)
+     + left/right padding (16px + 16px = 32px)
+     + border (2px)
+     = 384px total.
+     Use a slightly larger negative offset (-390px)
+     so the entire menu, including the close button,
+     slides fully off-screen. */
+  width: 350px;
+  height: 100%;           /* full viewport height */
+  background: #ffedd0;
+  font-family: TrajanPro3-Regular;
+  border-left: 2px solid #ccc;
+  overflow-y: auto;       /* scroll inside the TOC if needed */
+  padding: 16px;
+  transition: right 0.3s ease;
+  z-index: 1000;
+  font-size: 12.5px;
+  box-shadow: -6px 0 12px rgba(0,0,0,0.08);
 }
 .sidebar.open {
 right: 0;                 /* slide in */
