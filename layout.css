@@ -946,6 +946,18 @@ position: relative;
 margin-left: auto;
 margin-right: auto;
 }
+.girlfirstcommunion {
+display:none;
+position: relative;
+margin-left: auto;
+margin-right: auto;
+}
+.girlfirstcommunionmobile {
+display:block;
+position: relative;
+margin-left: auto;
+margin-right: auto;
+}
 .holyoilvessel {
 display:none;
 position: relative;
@@ -1014,10 +1026,6 @@ margin-left: auto;
 margin-right: auto;
 }
 .littlegirlspastelpink {
-margin-left: auto;
-margin-right: auto;
-}
-.girlfirstcommunion {
 margin-left: auto;
 margin-right: auto;
 }
@@ -1713,6 +1721,20 @@ max-width:450px;
 float:right;
 margin-left:15px;
 }
+.girlfirstcommunion {
+display:block;
+position: relative;
+max-width:450px;
+float:right;
+margin-left:15px;
+}
+.girlfirstcommunionmobile {
+display:none;
+position: relative;
+max-width:450px;
+float:right;
+margin-left:15px;
+}
 .holyoilvessel {
 display:block;
 position: relative;
@@ -1787,10 +1809,6 @@ margin-right:auto;
 margin-left:auto;
 }
 .littlegirlspastelpink {
-margin-left: auto;
-margin-right: auto;
-}
-.girlfirstcommunion {
 margin-left: auto;
 margin-right: auto;
 }
@@ -2010,6 +2028,20 @@ max-width:550px;
 float:right;
 margin-left:15px;
 }
+.girlfirstcommunion {
+display:block;
+position: relative;
+max-width:550px;
+float:right;
+margin-left:15px;
+}
+.girlfirstcommunionmobile {
+display:none;
+position: relative;
+max-width:550px;
+float:right;
+margin-left:15px;
+}
 .holyoilvessel {
 display:block;
 position: relative;
@@ -2089,11 +2121,6 @@ float:right;
 margin-left:15px;
 }
 .littlegirlspastelpink {
-max-width:700px;
-float:right;
-margin-left:15px;
-}
-.girlfirstcommunion {
 max-width:700px;
 float:right;
 margin-left:15px;
@@ -2804,6 +2831,20 @@ max-width:550px;
 float:right;
 margin-left:15px;
 }
+.girlfirstcommunion {
+display:block;
+position: relative;
+max-width:550px;
+float:right;
+margin-left:15px;
+}
+.girlfirstcommunionmobile {
+display:none;
+position: relative;
+max-width:550px;
+float:right;
+margin-left:15px;
+}
 .holyoilvessel {
 display:block;
 position: relative;
@@ -2878,11 +2919,6 @@ float:right;
 margin-left:15px;
 }
 .littlegirlspastelpink {
-max-width:700px;
-float:right;
-margin-left:15px;
-}
-.girlfirstcommunion {
 max-width:700px;
 float:right;
 margin-left:15px;
