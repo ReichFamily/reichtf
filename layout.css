@@ -24,6 +24,32 @@ color:black;
 text-decoration:none;
 }
 
+.ordination-grid-1 {
+    column-count: 3;  /* 3 columns on desktop */
+    column-gap: 40px;
+    column-rule: 1px solid #ccc; /* vertical lines between columns */
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Tablet: 2 columns */
+@media (max-width: 850px) {
+    .ordination-grid-1 {
+        column-count: 2;
+    }
+}
+
+/* Phone: 1 column */
+@media (max-width: 600px) {
+    .ordination-grid-1 {
+        column-count: 1;
+        column-rule: none; /* remove vertical line on mobile */
+		border:none;
+    }
+}
+
 /* Vote Ballot */
 .candidate-info {
 padding: 1rem;
@@ -917,6 +943,15 @@ margin-right: auto;
 margin-left: auto;
 margin-right: auto;
 }
+.jesusordainsdisciples {
+display:none;
+}
+.jesusordainsdisciplesmobile {
+display:block;
+position: relative;
+margin-left:auto;
+margin-right:auto;
+}
 .sacredritestrinity {
 max-width:500px;
 margin-left: auto;
@@ -1092,6 +1127,9 @@ scroll-margin-top:15px;
 scroll-margin-top:15px;
 }
 #enemies {
+scroll-margin-top:15px;
+}
+#ordination {
 scroll-margin-top:15px;
 }
 #sacredritestrinity {
@@ -1688,6 +1726,16 @@ max-width:450px;
 float:left;
 margin-right:15px;
 }
+.jesusordainsdisciples {
+display:block;
+position: relative;
+max-width:500px;
+float:left;
+margin-right:15px;
+}
+.jesusordainsdisciplesmobile {
+display:none;
+}
 .sacredritestrinity {
 max-width:450px;
 float:right;
@@ -1880,6 +1928,9 @@ scroll-margin-top:15px;
 #enemies {
 scroll-margin-top:15px;
 }
+#ordination {
+scroll-margin-top:15px;
+}
 #sacredritestrinity {
 scroll-margin-top:15px;
 }
@@ -1994,6 +2045,16 @@ margin-right:15px;
 max-width:500px;
 float:right;
 margin-left:15px;
+}
+.jesusordainsdisciples {
+display:block;
+position: relative;
+max-width:700px;
+float:left;
+margin-right:15px;
+}
+.jesusordainsdisciplesmobile {
+display:none;
 }
 .sacredritestrinity {
 max-width:550px;
@@ -2798,6 +2859,16 @@ max-width:500px;
 float:right;
 margin-left:15px;
 }
+.jesusordainsdisciples {
+display:block;
+position: relative;
+max-width:700px;
+float:left;
+margin-right:15px;
+}
+.jesusordainsdisciplesmobile {
+display:none;
+}
 .sacredritestrinity {
 max-width:550px;
 float:right;
@@ -2994,6 +3065,9 @@ scroll-margin-top:15px;
 scroll-margin-top:15px;
 }
 #enemies {
+scroll-margin-top:15px;
+}
+#ordination {
 scroll-margin-top:15px;
 }
 #sacredritestrinity {
