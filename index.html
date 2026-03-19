@@ -1933,6 +1933,25 @@ document.addEventListener('DOMContentLoaded', function() {
       backlink.href = '#' + anchorId;
       backlink.style.textDecoration = 'none';
       backlink.style.marginLeft = '5px';
+      
+      // Add click handler for better scroll positioning
+      backlink.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Get the citation link element
+        let targetLink = link;
+        
+        // Calculate position with 15px margin from top
+        let rect = targetLink.getBoundingClientRect();
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        let targetPosition = rect.top + scrollTop - 4; // 15px margin from top
+        
+        // Smooth scroll to position
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'auto'
+        });
+      });
 
       if (total === 1) {
         // Only one occurrence → plain arrow
@@ -1981,7 +2000,8 @@ document.addEventListener('DOMContentLoaded', function() {
             let supLink = document.createElement('a');
             supLink.href = `#source-${sourceNumber}`;
             supLink.textContent = `[${sourceNumber}]`;
-			supLink.style.color = '#990000'; // Sup link color
+            supLink.style.color = '#990000'; // Sup link color
+            // REMOVED target="_blank" - now opens in same window
             sup.appendChild(supLink);
             
             // Insert space then sup after the punctuation
@@ -1996,15 +2016,15 @@ document.addEventListener('DOMContentLoaded', function() {
           } else {
             // No punctuation, use original spacing logic (space + sup)
             link.insertAdjacentHTML(
-            'afterend',
-            ` <sup><a href="#source-${sourceNumber}" style="color: #990000;" target="_blank">[${sourceNumber}]</a></sup>` // Sup link color and space before
-);
+              'afterend',
+              ` <sup><a href="#source-${sourceNumber}" style="color: #990000;">[${sourceNumber}]</a></sup>` // REMOVED target="_blank"
+            );
           }
         } else {
           // No text node after, use original spacing logic
           link.insertAdjacentHTML(
             'afterend',
-            ` <sup><a href="#source-${sourceNumber}" target="_blank">[${sourceNumber}]</a></sup>`
+            ` <sup><a href="#source-${sourceNumber}">[${sourceNumber}]</a></sup>` // REMOVED target="_blank"
           );
         }
       }
@@ -2024,7 +2044,7 @@ document.addEventListener('DOMContentLoaded', function() {
     sourceP.insertBefore(document.createTextNode(' '), sourceP.firstChild.nextSibling);
   });
   
-    // Sort sources by number
+  // Sort sources by number
   let sourcesDiv = document.querySelector('div.sources');
   if (sourcesDiv) {
     let sourceParagraphs = Array.from(sourcesDiv.querySelectorAll('p'));
@@ -2037,6 +2057,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
 });
+
 </script>
 
 <script>
