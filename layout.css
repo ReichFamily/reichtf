@@ -521,12 +521,18 @@ line-height:1.8;
 text-align:justify;
 margin-bottom:2px;
 }
+.sources a[href*="biblegateway.com"] {
+word-break: break-all !important;
+overflow-wrap: break-word !important;
+word-wrap: break-word !important;
+-ms-word-break: break-all !important;
+hyphens: none !important;
+}
 .sources {
 display:flex;
 flex-direction:column;
 font-size: 0.9rem;
 margin:26px auto 20px;
-max-width:700px;
 text-align:center;
 justify-content:space-around;
 }
@@ -1652,12 +1658,19 @@ margin:10px auto 10px;
 line-height:1.6;
 text-align:justify;
 }
+.sources a[href*="biblegateway.com"] {
+word-break: break-all !important;
+overflow-wrap: break-word !important;
+word-wrap: break-word !important;
+-ms-word-break: break-all !important;
+hyphens: none !important;
+}
 .sources {
 display:flex;
 flex-direction:column;
 font-size: 1.0rem;
-margin:0px auto 26px;
-max-width:700px;
+margin:26px auto 26px;
+max-width:870px;
 text-align:center;
 justify-content:space-around;
 }
@@ -2292,12 +2305,19 @@ font-size: 1.0rem;
 line-height:1.6;
 text-align:justify;
 }
+.sources a[href*="biblegateway.com"] {
+word-break: break-all !important;
+overflow-wrap: break-word !important;
+word-wrap: break-word !important;
+-ms-word-break: break-all !important;
+hyphens: none !important;
+}
 .sources {
 display:flex;
 flex-direction:column;
 font-size: 1.0rem;
-margin:0px auto 26px;
-max-width:700px;
+margin:26px auto 26px;
+max-width:870px;
 text-align:center;
 justify-content:space-around;
 }
@@ -2771,12 +2791,19 @@ font-size: 1.0rem;
 line-height:1.6;
 text-align:justify;
 }
+.sources a[href*="biblegateway.com"] {
+word-break: break-all !important;
+overflow-wrap: break-word !important;
+word-wrap: break-word !important;
+-ms-word-break: break-all !important;
+hyphens: none !important;
+}
 .sources {
 display:flex;
 flex-direction:column;
 font-size: 1.0rem;
-margin:0px auto 26px;
-max-width:800px;
+margin:26px auto 26px;
+max-width:870px;
 text-align:center;
 justify-content:space-around;
 }
