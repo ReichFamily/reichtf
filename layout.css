@@ -34,6 +34,13 @@ text-decoration:none;
     border-bottom: 1px solid #ccc;
 }
 
+.force-column-break {
+    break-before: column;
+    -webkit-column-break-before: always;
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
 /* Tablet: 2 columns */
 @media (max-width: 850px) {
     .ordination-grid-1 {
@@ -45,6 +52,40 @@ text-decoration:none;
 @media (max-width: 600px) {
     .ordination-grid-1 {
         column-count: 1;
+        column-rule: none; /* remove vertical line on mobile */
+		border:none;
+    }
+}
+
+.baptism-grid {
+    column-count: 3;  /* 3 columns on desktop */
+    column-gap: 40px;
+    column-rule: 1px solid #ccc; /* vertical lines between columns */
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.force-column-break {
+    break-before: column;
+    -webkit-column-break-before: always;
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+/* Tablet: 2 columns */
+@media (max-width: 850px) {
+    .baptism-grid {
+        column-count: 2;
+    }
+}
+
+/* Phone: 1 column */
+@media (max-width: 600px) {
+    .baptism-grid {
+        column-count: 1;
+		padding-top: 0px;
+		padding-bottom: 0px;
+		column-gap: 0px;
         column-rule: none; /* remove vertical line on mobile */
 		border:none;
     }
@@ -788,7 +829,7 @@ margin:16px auto 14px;
 padding:6px 0px 6px;
 line-height:2.0;
 }
-figcaption {
+figcaption, .figcaption {
 font-family:Montserrat-LightItalic;
 font-size:0.85rem;
 text-align:justify;
@@ -955,6 +996,24 @@ display:none;
 .jesusordainsdisciplesmobile {
 display:block;
 position: relative;
+margin-left:auto;
+margin-right:auto;
+}
+.baptismwomanmobile {
+position: relative;
+display:block;
+margin-left:auto;
+margin-right:auto;
+}
+.baptismwoman {
+position: relative;
+display:none;
+margin-left:auto;
+margin-right:auto;
+}
+.baptisminfant {
+position: relative;
+display:block;
 margin-left:auto;
 margin-right:auto;
 }
@@ -1136,6 +1195,9 @@ scroll-margin-top:15px;
 scroll-margin-top:15px;
 }
 #ordination {
+scroll-margin-top:10px;
+}
+#baptism {
 scroll-margin-top:10px;
 }
 #sacredritestrinity {
@@ -1452,7 +1514,7 @@ margin:15px auto 4px;
 padding:5px 0px 5px;
 line-height:2.0;
 }
-figcaption {
+figcaption, .figcaption {
 font-family:Montserrat-LightItalic;
 font-size: 0.95rem;
 text-align:justify;
@@ -1749,6 +1811,25 @@ margin-right:15px;
 .jesusordainsdisciplesmobile {
 display:none;
 }
+.baptismwomanmobile {
+position: relative;
+display:none;
+margin-left:auto;
+margin-right:auto;
+}
+.baptismwoman {
+position: relative;
+display:block;
+margin-left:auto;
+margin-right:auto;
+}
+.baptisminfant {
+position: relative;
+display:block;
+max-width:450px;
+float:right;
+margin-left:15px;
+}
 .sacredritestrinity {
 max-width:450px;
 float:right;
@@ -1944,6 +2025,9 @@ scroll-margin-top:15px;
 #ordination {
 scroll-margin-top:15px;
 }
+#baptism {
+scroll-margin-top:15px;
+}
 #sacredritestrinity {
 scroll-margin-top:15px;
 }
@@ -2068,6 +2152,26 @@ margin-right:15px;
 }
 .jesusordainsdisciplesmobile {
 display:none;
+}
+.baptismwomanmobile {
+position: relative;
+display:none;
+margin-left:auto;
+margin-right:auto;
+}
+.baptismwoman {
+position: relative;
+display:block;
+max-width:700px;
+float:left;
+margin-right:15px;
+}
+.baptisminfant {
+position: relative;
+display:block;
+max-width:700px;
+float:right;
+margin-left:15px;
 }
 .sacredritestrinity {
 max-width:550px;
@@ -2607,7 +2711,7 @@ margin:15px auto 4px;
 padding:5px 0px 5px;
 line-height:2.0;
 }
-figcaption {
+figcaption, .figcaption {
 font-family:Montserrat-LightItalic;
 text-align:justify;
 font-size: 0.95rem;
@@ -2896,6 +3000,26 @@ margin-right:15px;
 .jesusordainsdisciplesmobile {
 display:none;
 }
+.baptismwomanmobile {
+position: relative;
+display:none;
+margin-left:auto;
+margin-right:auto;
+}
+.baptismwoman {
+position: relative;
+display:block;
+max-width:800px;
+float:left;
+margin-right:15px;
+}
+.baptisminfant {
+position: relative;
+display:block;
+max-width:700px;
+float:right;
+margin-left:15px;
+}
 .sacredritestrinity {
 max-width:550px;
 float:right;
@@ -3095,6 +3219,9 @@ scroll-margin-top:15px;
 scroll-margin-top:15px;
 }
 #ordination {
+scroll-margin-top:15px;
+}
+#baptism {
 scroll-margin-top:15px;
 }
 #sacredritestrinity {
