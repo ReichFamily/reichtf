@@ -1615,7 +1615,7 @@ style="-webkit-filter: drop-shadow(5px 5px 5px #000);filter: drop-shadow(5px 5px
 
 <p>The articles and memorials we produce are grounded in historical documents that bear witness to the lives of our ancestors. These include census records, marriage and death certificates, military service files, naturalisation papers, and ship manifests. Through these materials, we reconstruct the journeys, struggles, and triumphs of those who came before us, ensuring that their voices are not lost to time. Every memorial is crafted with care, reflecting our devotion to truth and our love for those whose lives we honour.</p>
 
-<p>With the exception of our publicly shared research on Find a Grave, all writings within the project are private, intended for members of the Reich Family and fellow researchers who share our commitment to historical integrity. However, in rare cases where an individual’s story holds broader significance to the public historical record, we make select memorials available beyond our circle. Examples include the articles honouring <a href="/research/pollyklaas" target="_blank">Polly Hannah Klaas</a> and her grandfather <a href="/research/eugenereed" target="_blank">Dr. Eugene Reed</a>, as well as <a href="/research/mariakatsaris" target="_blank">Maria Katsaris</a> and her father <a href="/research/stevenkatsaris" target="_blank">Steven Katsaris</a> and the companion article to the main article written by Sarah Reich at <a href="/disciples/mariakatsaris" target="_blank">Maria Katsaris</a>. These memorials serve not only as tributes but as contributions to the greater understanding of history and humanity.</p>
+<p>With the exception of our publicly shared research on Find a Grave, all writings within the project are private, intended for members of the Reich Family and fellow researchers who share our commitment to historical integrity. However, in rare cases where an individual’s story holds broader significance to the public historical record, we make select memorials available beyond our circle. Examples include the articles honouring <a href="/research/pollyklaas" target="_blank">Polly Hannah Klaas</a> and her grandfather <a href="/research/eugenereed" target="_blank">Dr. Eugene Reed</a>, as well as <a href="/research/mariakatsaris" target="_blank">The Life and Death of Maria Katsaris</a>, its companion article, <a href="/disciples/mariakatsaris" target="_blank">Maria Katsaris: Through the Eyes of Another Disciple</a>, and Maria's father's article, <a href="/research/stevenkatsaris" target="_blank">Remembering Steven Katsaris</a>. These memorials serve not only as tributes but as contributions to the greater understanding of history and humanity.</p>
 
 <p>The Reich Family Genealogical Research Project would like to thank Fielding McGehee and Rebecca Moore for linking to our articles: <a href="/research/mariakatsaris" target="_blank">The Life and Death of Maria Katsaris</a> and <a href="/research/stevenkatsaris" target="_blank">Remembering Steven Katsaris</a> from their <a href="https://jonestown.sdsu.edu/?page_id=108278" target="_blank">Remembrances</a> page and from the <a href="https://jonestown.sdsu.edu/?page_id=132189" target="_blank">Jonestown Report (Vol 27, Nov '25)</a> on their website. We consider their <a href="https://jonestown.sdsu.edu/" target="_blank">Jonestown & Peoples Temple: A Digital Archive</a> website to be the most comprehensive online resource available on the subject.</p>
 
@@ -2162,16 +2162,19 @@ document.querySelectorAll('body a[href^="http"], body a[href^="/"]').forEach((li
         });
       });
 
-      if (total === 1) {
-        // Only one occurrence → plain arrow
-        backlink.textContent = ' ↩';
-      } else {
-        // Multiple occurrences → ↩¹, ↩², ...
-        backlink.textContent = ' ↩';
-        let sup = document.createElement('sup');
-        sup.textContent = '[' + occurrenceIndex + ']';  // Added brackets
-        backlink.appendChild(sup);
-      }
+let arrowSpan = document.createElement('span');
+arrowSpan.textContent = '↩';
+arrowSpan.style.display = 'inline-block';
+arrowSpan.style.transform = 'rotate(90deg)';
+
+if (total === 1) {
+  backlink.appendChild(arrowSpan);
+} else {
+  backlink.appendChild(arrowSpan);
+  let sup = document.createElement('sup');
+  sup.textContent = '[' + occurrenceIndex + ']';
+  backlink.appendChild(sup);
+}
 
       sourceP.appendChild(backlink);
 
@@ -2268,46 +2271,6 @@ document.querySelectorAll('body a[href^="http"], body a[href^="/"]').forEach((li
 });
 
 </script>
-
-<script>
-function toggleMenu() {
-  const menu = document.getElementById('sidebar');
-  const isOpen = menu.classList.toggle('open');
-  menu.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
-}
-function closeMenu() {
-  const menu = document.getElementById('sidebar');
-  menu.classList.remove('open');
-  menu.setAttribute('aria-hidden', 'true');
-}
-
-function toggleMenu() {
-  const sidebar = document.querySelector('.sidebar');
-  const overlay = document.querySelector('.overlay');
-
-  const isOpen = sidebar.classList.toggle('open');
-  if (isOpen) {
-    overlay.classList.add('active');
-  } else {
-    overlay.classList.remove('active');
-  }
-}
-
-// Allow clicking the overlay to close the menu
-document.querySelector('.overlay').addEventListener('click', () => {
-  document.querySelector('.sidebar').classList.remove('open');
-  document.querySelector('.overlay').classList.remove('active');
-});
-
-// Close sidebar + overlay when a link is clicked
-document.querySelectorAll('.sidebar a').forEach(link => {
-  link.addEventListener('click', () => {
-    document.querySelector('.sidebar').classList.remove('open');
-    document.querySelector('.overlay').classList.remove('active');
-  });
-});
-
-</script> 
 
 <script>
 function toggleMenu() {
