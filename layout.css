@@ -1075,6 +1075,11 @@ max-width:450px;
 margin-left: auto;
 margin-right: auto;
 }
+.littlegirlpraying {
+position: relative;
+margin-left: auto;
+margin-right: auto;
+}
 .trinitysealpage {
 margin:26px auto auto;
 }
@@ -1896,6 +1901,12 @@ max-width:450px;
 float:right;
 margin-left:15px;
 }
+.littlegirlpraying {
+position: relative;
+max-width:530px;
+float:left;
+margin-right:15px;
+}
 .trinitysealpage {
 max-width:500px;
 margin:26px auto 26px;
@@ -2142,6 +2153,12 @@ margin-right:15px;
 max-width:500px;
 float:right;
 margin-left:15px;
+}
+.littlegirlpraying {
+position: relative;
+max-width:700px;
+float:left;
+margin-right:15px;
 }
 .jesusordainsdisciples {
 display:block;
@@ -2989,6 +3006,12 @@ margin-right:15px;
 max-width:500px;
 float:right;
 margin-left:15px;
+}
+.littlegirlpraying {
+max-width:700px;
+position: relative;
+float:left;
+margin-right:15px;
 }
 .jesusordainsdisciples {
 display:block;
