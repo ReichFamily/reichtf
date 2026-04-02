@@ -1075,7 +1075,14 @@ max-width:450px;
 margin-left: auto;
 margin-right: auto;
 }
+.littlegirlprayingmobile {
+display:block;
+position: relative;
+margin-left: auto;
+margin-right: auto;
+}
 .littlegirlpraying {
+display:none;
 position: relative;
 margin-left: auto;
 margin-right: auto;
@@ -1901,7 +1908,14 @@ max-width:450px;
 float:right;
 margin-left:15px;
 }
+.littlegirlprayingmobile {
+display:none;
+position: relative;
+margin-left: auto;
+margin-right: auto;
+}
 .littlegirlpraying {
+display:block;
 position: relative;
 max-width:530px;
 float:left;
@@ -2154,7 +2168,14 @@ max-width:500px;
 float:right;
 margin-left:15px;
 }
+.littlegirlprayingmobile {
+display:none;
+position: relative;
+margin-left: auto;
+margin-right: auto;
+}
 .littlegirlpraying {
+display:block;
 position: relative;
 max-width:700px;
 float:left;
@@ -3007,7 +3028,14 @@ max-width:500px;
 float:right;
 margin-left:15px;
 }
+.littlegirlprayingmobile {
+display:none;
+position: relative;
+margin-left: auto;
+margin-right: auto;
+}
 .littlegirlpraying {
+display:block;
 max-width:700px;
 position: relative;
 float:left;
