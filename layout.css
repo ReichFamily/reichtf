@@ -641,7 +641,7 @@ font-size:0.80rem;
 text-align:center;
 margin:4px auto auto;
 }
-footer {
+.footer {
 margin-top:10px;
 margin-bottom:auto;
 }
@@ -1807,7 +1807,7 @@ font-size:0.90rem;
 text-align:center;
 margin:4px auto auto;
 }
-footer {
+.footer {
 margin-top:15px;
 margin-bottom:auto;
 }
@@ -3011,7 +3011,7 @@ font-size:0.90rem;
 text-align:center;
 margin:4px auto auto;
 }
-footer {
+.footer {
 margin-top:15px;
 margin-bottom:auto;
 }
