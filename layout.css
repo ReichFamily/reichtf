@@ -611,8 +611,8 @@ display:none;
 display:inline-block;
 border:1px solid #555;
 border-width:1px 0px 1px 0px;
-padding:5px 0px 3px 0px;
-margin:25px auto 15px;
+padding:15px 0px 10px 0px;
+margin: 30px auto 25px;
 }
 .corporateaddresstopmobile {
 display:block;
@@ -631,6 +631,12 @@ font-weight:normal;
 }
 .email {
 display:none;
+}
+.emailmobile {
+display:block;
+font-family:Montserrat-LightItalic;
+font-size:0.90rem;
+font-weight:bold;
 }
 .corporateidnumber {
 display:none;
@@ -1825,6 +1831,12 @@ font-family:Montserrat-LightItalic;
 font-size:0.75rem;
 font-weight:bold;
 }
+.emailmobile {
+display:none;
+font-family:Montserrat-LightItalic;
+font-size:0.75rem;
+font-weight:bold;
+}
 .corporateidnumber {
 display:block;
 font-family:Montserrat-LightItalic;
@@ -1861,7 +1873,7 @@ margin:-4px auto auto;
 }
 .footercopyright {
 font-family:Montserrat-LightItalic;
-font-size:0.80rem;
+font-size:0.85rem;
 text-align:center;
 margin:auto auto auto;
 }
@@ -2581,6 +2593,12 @@ font-family:Montserrat-LightItalic;
 font-size:0.85rem;
 font-weight:bold;
 }
+.emailmobile {
+display:none;
+font-family:Montserrat-LightItalic;
+font-size:0.85rem;
+font-weight:bold;
+}
 .corporateidnumber {
 display:block;
 font-family:Montserrat-LightItalic;
@@ -2589,6 +2607,9 @@ font-size:0.85rem;
 }
 .corporateidnumbermobile {
 display:none;
+}
+.footercopyright {
+font-size:0.85rem;
 }
 }
 
@@ -3089,6 +3110,12 @@ font-family:Montserrat-LightItalic;
 font-size:0.90rem;
 font-weight:bold;
 }
+.emailmobile {
+display:none;
+font-family:Montserrat-LightItalic;
+font-size:0.90rem;
+font-weight:bold;
+}
 .corporateidnumber {
 display:block;
 font-family:Montserrat-LightItalic;
@@ -3099,13 +3126,13 @@ font-size:0.90rem;
 display:none;
 }
 .footerimage {
-max-width:100px;
+max-width:90px;
 display:block;
 margin:auto;
 }
 .footertitle {
 font-family:ITCEDSCR;
-font-size:2.4rem;
+font-size:2.1rem;
 text-align:center;
 margin:auto;
 }
