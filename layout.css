@@ -578,10 +578,6 @@ text-align:center;
 justify-content:space-around;
 }
 .header {
-display:flex;
-margin: 5px 0px 5px;
-justify-content:space-between;
-align-items:center;
 line-height:1;
 }
 .titlecorners {
@@ -594,13 +590,11 @@ opacity:1.0;
 font-family:ITCEDSCR;
 font-size:2.1rem;
 text-align:center;
-margin:-2px auto 0px;
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
 font-size:0.80rem;
 text-align:center;
-margin:2px auto 8px;
 }
 .summary {
 margin:0px auto 8px;
@@ -609,6 +603,36 @@ line-height:1.8;
 display:inline-block;
 border:1px solid #555;
 border-width:1px 0px 1px 0px;
+}
+.corporateaddresstop {
+display:none;
+}
+.corporateaddresstopmobile {
+display:block;
+font-family:Montserrat-LightItalic;
+font-size:0.90rem;
+font-weight:bold;
+}
+.corporateaddressbottom {
+display:none;
+}
+.corporateaddressbottommobile {
+display:block;
+font-family:Montserrat-LightItalic;
+font-size:0.90rem;
+font-weight:normal;
+}
+.email {
+display:none;
+}
+.corporateidnumber {
+display:none;
+}
+.corporateidnumbermobile {
+display:block;
+font-family:Montserrat-LightItalic;
+font-weight:normal;
+font-size:0.90rem;
 }
 .footerimage {
 max-width:90px;
@@ -1752,10 +1776,6 @@ text-align:center;
 justify-content:space-around;
 }
 .header {
-display:flex;
-margin: 0px 0px 3px;
-justify-content:space-between;
-align-items:center;
 line-height:1;
 }
 .titlecorners {
@@ -1766,15 +1786,46 @@ opacity:1.0;
 }
 .title {
 font-family:ITCEDSCR;
-font-size:2.5rem;
+font-size:2.4rem;
 text-align:center;
-margin:-6px auto 0px;
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
-font-size:0.95rem;
+font-size:0.90rem;
 text-align:center;
-margin:2px auto 8px;
+}
+.corporateaddresstop {
+display:block;
+font-family:Montserrat-LightItalic;
+font-size:0.75rem;
+font-weight:bold;
+}
+.corporateaddresstopmobile {
+display:none;
+}
+.corporateaddressbottom {
+display:block;
+font-family:Montserrat-LightItalic;
+font-size:0.75rem;
+font-weight:normal;
+}
+.corporateaddressbottommobile {
+display:none;
+}
+.email {
+display:block;
+font-family:Montserrat-LightItalic;
+font-size:0.75rem;
+font-weight:bold;
+}
+.corporateidnumber {
+display:block;
+font-family:Montserrat-LightItalic;
+font-weight:normal;
+font-size:0.75rem;
+}
+.corporateidnumbermobile {
+display:none;
 }
 .footerimage {
 max-width:100px;
@@ -2499,6 +2550,39 @@ margin-right:15px;
 .anticultheadings {
 clear:both;
 }
+.corporateaddresstop {
+display:block;
+font-family:Montserrat-LightItalic;
+font-size:0.85rem;
+font-weight:bold;
+}
+.corporateaddresstopmobile {
+display:none;
+}
+.corporateaddressbottom {
+display:block;
+font-family:Montserrat-LightItalic;
+font-size:0.85rem;
+font-weight:normal;
+}
+.corporateaddressbottommobile {
+display:none;
+}
+.email {
+display:block;
+font-family:Montserrat-LightItalic;
+font-size:0.85rem;
+font-weight:bold;
+}
+.corporateidnumber {
+display:block;
+font-family:Montserrat-LightItalic;
+font-weight:normal;
+font-size:0.85rem;
+}
+.corporateidnumbermobile {
+display:none;
+}
 }
 
 /* Desktop Layout: 1280px to a max of 1366px - Everything above Ipad Pro 11-inch. Inherits styles from: Mobile Layout and Tablet Layout. */
@@ -2956,10 +3040,6 @@ text-align:center;
 justify-content:space-around;
 }
 .header {
-display:flex;
-margin:0px 0px 0px;
-justify-content:space-between;
-align-items:center;
 line-height:1;
 }
 .titlecorners {
@@ -2972,13 +3052,46 @@ opacity:1.0;
 font-family:ITCEDSCR;
 font-size:2.7rem;
 text-align:center;
-margin:-6px auto 0px;
+flex: 4;
+line-height:1;
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
 font-size:0.95rem;
 text-align:center;
-margin:2px auto 10px;
+}
+.corporateaddresstop {
+display:block;
+font-family:Montserrat-LightItalic;
+font-size:0.90rem;
+font-weight:bold;
+}
+.corporateaddresstopmobile {
+display:none;
+}
+.corporateaddressbottom {
+display:block;
+font-family:Montserrat-LightItalic;
+font-size:0.90rem;
+font-weight:normal;
+}
+.corporateaddressbottommobile {
+display:none;
+}
+.email {
+display:block;
+font-family:Montserrat-LightItalic;
+font-size:0.90rem;
+font-weight:bold;
+}
+.corporateidnumber {
+display:block;
+font-family:Montserrat-LightItalic;
+font-weight:normal;
+font-size:0.90rem;
+}
+.corporateidnumbermobile {
+display:none;
 }
 .footerimage {
 max-width:100px;
