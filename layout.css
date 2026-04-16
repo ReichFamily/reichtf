@@ -670,7 +670,7 @@ margin:-4px auto auto;
 font-family:Montserrat-LightItalic;
 font-size:0.80rem;
 text-align:center;
-margin:4px auto auto;
+margin:auto auto auto;
 }
 footer {
 margin-top:10px;
@@ -1835,13 +1835,13 @@ font-size:0.75rem;
 display:none;
 }
 .footerimage {
-max-width:100px;
+max-width:90px;
 display:block;
 margin:auto;
 }
 .footertitle {
 font-family:ITCEDSCR;
-font-size:2.4rem;
+font-size:2.1rem;
 text-align:center;
 margin:auto;
 }
@@ -1861,9 +1861,9 @@ margin:-4px auto auto;
 }
 .footercopyright {
 font-family:Montserrat-LightItalic;
-font-size:0.90rem;
+font-size:0.80rem;
 text-align:center;
-margin:4px auto auto;
+margin:auto auto auto;
 }
 footer {
 margin-top:15px;
@@ -3059,8 +3059,6 @@ opacity:1.0;
 font-family:ITCEDSCR;
 font-size:2.7rem;
 text-align:center;
-flex: 4;
-line-height:1;
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
@@ -3129,7 +3127,7 @@ margin:-4px auto auto;
 font-family:Montserrat-LightItalic;
 font-size:0.90rem;
 text-align:center;
-margin:4px auto auto;
+margin:auto auto auto;
 }
 footer {
 margin-top:15px;
