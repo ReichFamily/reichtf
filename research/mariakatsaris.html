@@ -181,12 +181,27 @@ document.addEventListener('keyup', (e) => {
 
 <div class="bodytypography">
 
-<div class="header">
-<div style="margin:auto;">
-<p class="title">Reich Family</p>
-<p class="subtitle">Reich Family Genealogical Research Project</p>
+<div style="margin-top:-15px;"></div>
+
+<div class="" style="display:flex; justify-content:space-between; align-items:center;height:75px;">
+
+<div style="flex: 1;text-align:left">
+<p class="corporateaddresstop">110 16<sup>th</sup> Street Suite 1460<a href="/#corporate-address"></a><br><span class="corporateaddressbottom">Denver Colorado 80202-5269</span></p>
 </div>
+
+<div style="flex: 2;line-height:1;">
+<div class="title">Reich Family</div>
+<div class="subtitle">Reich Family Genealogical Research Project</div>
 </div>
+
+<div style="flex: 1;text-align:right;">
+<p class="email">Email: <a style="color:#000066;" href="mailto:family@reich.tf">family@reich.tf</a><br><span class="corporateidnumber"><a style="color:#000066;"  href="https://www.sos.state.co.us/biz/BusinessEntityDetail.do?masterFileId=20261456940" target="_blank">Colorado Corporation 
+#20261456940</a></span></p>
+</div>
+
+</div>
+
+<div class="articlehr"></div>
 
 <figure class="motherdaughterfacade" style="margin:auto auto 20px;">
 <div class="photolayout">
@@ -228,11 +243,24 @@ document.addEventListener('keyup', (e) => {
 
 <div class="bodytypography">
 
-<div class="header">
-<div style="margin:auto;">
-<p class="title">Maria Katsaris</p>
-<p class="subtitle">Reich Family Genealogical Research Project</p>
+<div style="margin-top:-15px;"></div>
+
+<div class="" style="display:flex; justify-content:space-between; align-items:center;height:75px;">
+
+<div style="flex: 1;text-align:left">
+<p class="corporateaddresstop">110 16<sup>th</sup> Street Suite 1460<a href="/#corporate-address"></a><br><span class="corporateaddressbottom">Denver Colorado 80202-5269</span></p>
 </div>
+
+<div style="flex: 2;line-height:1;">
+<div class="title">Reich Family</div>
+<div class="subtitle">Reich Family Genealogical Research Project</div>
+</div>
+
+<div style="flex: 1;text-align:right;">
+<p class="email">Email: <a style="color:#000066;" href="mailto:family@reich.tf">family@reich.tf</a><br><span class="corporateidnumber"><a style="color:#000066;"  href="https://www.sos.state.co.us/biz/BusinessEntityDetail.do?masterFileId=20261456940" target="_blank">Colorado Corporation 
+#20261456940</a></span></p>
+</div>
+
 </div>
 
 <div class="articlehr"></div>
@@ -681,6 +709,208 @@ video.addEventListener('ended', function() {
 </div>
 
 </div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  function normalizeUrl(url) {
+    return url.replace(/\+/g, '%20').replace(/\/$/, '');
+  }
+
+  // Map URLs to source paragraphs
+  let urlToSourceMap = {};
+  document.querySelectorAll('div.sources p').forEach((p) => {
+    let a = p.querySelector('a');
+    if (a) {
+      urlToSourceMap[normalizeUrl(a.href)] = p;
+      p.style.scrollMarginTop = '15px';
+    }
+  });
+
+  // First pass: collect all occurrences
+  let urlInfo = {};
+  let nextNumber = 1;
+
+document.querySelectorAll('body a[href^="http"], body a[href^="/"]').forEach((link) => {
+  if (link.closest('.sidebar')) return; // Skip sidebar links
+  if (link.closest('div.sources')) return; // Skip source links
+  if (link.offsetParent === null) return; // Skip hidden links (display: none)
+  
+  let url = normalizeUrl(link.href);
+  let sourceP = urlToSourceMap[url];
+  if (!sourceP) return;
+
+  if (!urlInfo[url]) {
+    urlInfo[url] = {
+      number: nextNumber,
+      occurrences: [],
+      sourceP: sourceP
+    };
+    sourceP.id = 'source-' + nextNumber;
+    nextNumber++;
+  }
+
+    let parent = link.closest('p, h1, h2, h3, h4, li, div:not(.sources)');
+    urlInfo[url].occurrences.push({ link, parent });
+  });
+
+  // Second pass: create anchors, backlinks, superscripts
+  Object.keys(urlInfo).forEach((url) => {
+    let info = urlInfo[url];
+    let sourceNumber = info.number;
+    let sourceP = info.sourceP;
+    let total = info.occurrences.length;
+
+    info.occurrences.forEach((occ, index) => {
+      let link = occ.link;
+      let parent = occ.parent;
+      let occurrenceIndex = index + 1;
+
+      // Create stable anchor before parent
+      let anchorId = `citation-location-${sourceNumber}-${occurrenceIndex}`;
+      if (parent && !document.getElementById(anchorId)) {
+        let anchor = document.createElement('span');
+        anchor.id = anchorId;
+        anchor.style.display = 'block';
+        anchor.style.position = 'relative';
+        parent.insertBefore(anchor, parent.firstChild);
+      }
+
+      // Create backlink
+      let backlink = document.createElement('a');
+      backlink.href = '#' + anchorId;
+      backlink.style.textDecoration = 'none';
+      backlink.style.marginLeft = '5px';
+      
+      // Add click handler for better scroll positioning
+      backlink.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Get the citation link element
+        let targetLink = link;
+        
+        // Calculate position with 15px margin from top
+        let rect = targetLink.getBoundingClientRect();
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        let targetPosition = rect.top + scrollTop - 4; // 15px margin from top
+        
+        // Smooth scroll to position
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'auto'
+        });
+      });
+
+let arrowSpan = document.createElement('span');
+arrowSpan.textContent = '↩';
+arrowSpan.style.display = 'inline-block';
+arrowSpan.style.transform = 'rotate(90deg)';
+
+if (total === 1) {
+  backlink.appendChild(arrowSpan);
+} else {
+  backlink.appendChild(arrowSpan);
+  let sup = document.createElement('sup');
+  sup.textContent = '[' + occurrenceIndex + ']';
+  backlink.appendChild(sup);
+}
+
+      sourceP.appendChild(backlink);
+
+      // Add superscript after link if missing
+      let sibling = link.nextSibling;
+      while (sibling && sibling.nodeType === 3 && !sibling.textContent.trim()) {
+        sibling = sibling.nextSibling;
+      }
+
+      let hasSup = sibling && sibling.nodeName === 'SUP' &&
+                   sibling.querySelector(`a[href="#source-${sourceNumber}"]`);
+
+      if (!hasSup) {
+        // Find the first non-whitespace text node after the link
+        let textNode = link.nextSibling;
+        while (textNode && textNode.nodeType === 3 && !textNode.textContent.trim()) {
+          textNode = textNode.nextSibling;
+        }
+        
+        if (textNode && textNode.nodeType === 3) {
+          let text = textNode.textContent;
+          let match = text.match(/^([,:.])/);
+          
+          if (match) {
+            // Found comma, colon, or period immediately after whitespace
+            let punctuation = match[1];
+            let restOfText = text.substring(1);
+            
+            // Update the text node to just contain the punctuation
+            textNode.textContent = punctuation;
+            
+            // Create space + superscript
+            let space = document.createTextNode(' ');
+            let sup = document.createElement('sup');
+            let supLink = document.createElement('a');
+            supLink.href = `#source-${sourceNumber}`;
+            supLink.textContent = `[${sourceNumber}]`;
+            supLink.style.color = '#990000'; // Sup link color
+            // REMOVED target="_blank" - now opens in same window
+            sup.appendChild(supLink);
+            
+            // Insert space then sup after the punctuation
+            textNode.parentNode.insertBefore(space, textNode.nextSibling);
+            textNode.parentNode.insertBefore(sup, space.nextSibling);
+            
+            // If there's remaining text, insert it after the sup
+            if (restOfText) {
+              let restNode = document.createTextNode(restOfText);
+              textNode.parentNode.insertBefore(restNode, sup.nextSibling);
+            }
+          } else {
+            // No punctuation, use original spacing logic (space + sup)
+            link.insertAdjacentHTML(
+              'afterend',
+              ` <sup><a href="#source-${sourceNumber}" style="color: #990000;">[${sourceNumber}]</a></sup>` // REMOVED target="_blank"
+            );
+          }
+        } else {
+          // No text node after, use original spacing logic
+          link.insertAdjacentHTML(
+            'afterend',
+           ` <sup><a href="#source-${sourceNumber}" style="color: #990000;">[${sourceNumber}]</a></sup>` // REMOVED target="_blank"
+          );
+        }
+      }
+    });
+  });
+  
+  Object.keys(urlInfo).forEach((url) => {
+    let info = urlInfo[url];
+    let sourceP = info.sourceP;
+    let sourceNumber = info.number;
+    
+    let sup = document.createElement('sup');
+    sup.textContent = sourceNumber;  // Just the number, no brackets
+    sup.style.color = '#990000';
+    
+    sourceP.insertBefore(sup, sourceP.firstChild);
+    sourceP.insertBefore(document.createTextNode(' '), sourceP.firstChild.nextSibling);
+  });
+  
+  // Sort sources by number
+  let sourcesDiv = document.querySelector('div.sources');
+  if (sourcesDiv) {
+    let sourceParagraphs = Array.from(sourcesDiv.querySelectorAll('p'));
+    sourceParagraphs.sort((a, b) => {
+      let numA = parseInt(a.querySelector('sup')?.textContent || '0');
+      let numB = parseInt(b.querySelector('sup')?.textContent || '0');
+      return numA - numB;
+    });
+    sourceParagraphs.forEach(p => sourcesDiv.appendChild(p));
+  }
+
+});
+
+</script>
 
 <script>
   (function() {
