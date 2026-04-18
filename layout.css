@@ -569,7 +569,7 @@ word-wrap: break-word !important;
 -ms-word-break: break-all !important;
 hyphens: none !important;
 }
-.sources {
+.sources, .sourcesupplement {
 display:flex;
 flex-direction:column;
 font-size: 0.9rem;
@@ -1785,11 +1785,11 @@ word-wrap: break-word !important;
 -ms-word-break: break-all !important;
 hyphens: none !important;
 }
-.sources {
+.sources, .sourcesupplement {
 display:flex;
 flex-direction:column;
 font-size: 1.0rem;
-margin:26px auto 26px;
+margin:-26px auto 26px;
 max-width:870px;
 text-align:center;
 justify-content:space-around;
@@ -2539,7 +2539,7 @@ word-wrap: break-word !important;
 -ms-word-break: break-all !important;
 hyphens: none !important;
 }
-.sources {
+.sources, .sourcesupplement {
 display:flex;
 flex-direction:column;
 font-size: 1.0rem;
@@ -3067,11 +3067,11 @@ word-wrap: break-word !important;
 -ms-word-break: break-all !important;
 hyphens: none !important;
 }
-.sources {
+.sources, .sourcesupplement {
 display:flex;
 flex-direction:column;
 font-size: 1.0rem;
-margin:26px auto 26px;
+margin:-20px auto 26px;
 max-width:870px;
 text-align:center;
 justify-content:space-around;
