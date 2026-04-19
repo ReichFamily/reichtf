@@ -1695,9 +1695,9 @@ margin-right:15px;
 }
 .stevenkatsaris {
 position: relative;
-max-width: 700px;
-margin-left:auto;
-margin-right:auto;
+max-width:500px;
+float:left;
+margin-right:15px;
 border:0px solid #555;
 border-radius:0px;
 }
