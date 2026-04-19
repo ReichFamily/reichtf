@@ -951,6 +951,11 @@ position: relative;
 margin-left:auto;
 margin-right:auto;
 }
+.mariakatsarisright {
+position: relative;
+margin-left:auto;
+margin-right:auto;
+}
 .mariakatsaristeen {
 position: relative;
 margin-left:auto;
@@ -1658,10 +1663,11 @@ max-width:500px;
 float:left;
 margin-right:15px;
 }
-.mariakatsaristeen {
+.mariakatsarisright {
 position: relative;
-margin-left:auto;
-margin-right:auto;
+max-width:500px;
+float:right;
+margin-left:15px;
 }
 .mariakatsaristeen {
 position: relative;
@@ -2575,6 +2581,12 @@ max-width:700px;
 float:left;
 margin-right:15px;
 }
+.mariakatsarisright {
+position: relative;
+max-width:700px;
+float:right;
+margin-left:15px;
+}
 .anticultheadings {
 clear:both;
 }
@@ -2954,6 +2966,12 @@ position: relative;
 max-width:700px;
 float:left;
 margin-right:15px;
+}
+.mariakatsarisright {
+position: relative;
+max-width:700px;
+float:right;
+margin-left:15px;
 }
 .mariakatsaristeen {
 position: relative;
