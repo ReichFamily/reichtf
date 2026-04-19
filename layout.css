@@ -1698,8 +1698,6 @@ position: relative;
 max-width:500px;
 float:left;
 margin-right:15px;
-border:0px solid #555;
-border-radius:0px;
 }
 .eugenereed {
 position:relative;
@@ -2558,11 +2556,6 @@ justify-content:space-around;
 max-width: 700px;
 float:left;
 margin-right:15px;
-margin-top:5px;
-margin-bottom:0px;
-border:0px solid #555;
-border-radius:0px;
-display:block;
 }
 .sylviaralyareinsch {
 position:relative;
@@ -3002,11 +2995,6 @@ position: relative;
 max-width: 700px;
 float:left;
 margin-right:15px;
-margin-top:5px;
-margin-bottom:0px;
-border:0px solid #555;
-border-radius:0px;
-display:block;
 }
 .eugenereed {
 position:relative;
