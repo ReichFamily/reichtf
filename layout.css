@@ -650,7 +650,7 @@ font-size:0.90rem;
 .footerimage {
 max-width:90px;
 display:block;
-margin:auto;
+margin:35px auto auto;
 }
 .footertitle {
 font-family:ITCEDSCR;
@@ -670,13 +670,13 @@ font-family:Montserrat-LightItalic;
 font-size:0.86rem;
 font-weight:bold;
 text-align:center;
-margin:-4px auto auto;
+margin:-2px auto 5px;
 }
 .footercopyright {
 font-family:Montserrat-LightItalic;
 font-size:0.80rem;
 text-align:center;
-margin:auto auto auto;
+margin:auto auto 30px;
 }
 footer {
 margin-top:10px;
@@ -1879,7 +1879,7 @@ font-family:Montserrat-LightItalic;
 font-size:0.95rem;
 font-weight:bold;
 text-align:center;
-margin:-4px auto auto;
+margin:-2px auto 5px;
 }
 .footercopyright {
 font-family:Montserrat-LightItalic;
@@ -3163,7 +3163,7 @@ font-family:Montserrat-LightItalic;
 font-size:0.95rem;
 font-weight:bold;
 text-align:center;
-margin:-4px auto auto;
+margin:-2px auto 5px;
 }
 .footercopyright {
 font-family:Montserrat-LightItalic;
