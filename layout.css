@@ -659,7 +659,7 @@ font-family:Montserrat-LightItalic;
 font-size:0.86rem;
 font-weight:bold;
 text-align:center;
-margin:-2px auto 4px;
+margin:-14px auto 4px;
 }
 .footeremail {
 font-family:Montserrat-LightItalic;
@@ -1847,7 +1847,7 @@ font-weight:bold;
 display:block;
 font-family:Montserrat-LightItalic;
 font-weight:normal;
-font-size:0.75rem;
+font-size:0.85rem;
 margin:-12px auto -12px;
 }
 .footerimage {
@@ -1863,10 +1863,10 @@ margin:auto;
 }
 .footerresearch {
 font-family:Montserrat-LightItalic;
-font-size:0.95rem;
+font-size:0.90rem;
 font-weight:bold;
 text-align:center;
-margin:-2px auto 4px;
+margin:-14px auto 4px;
 }
 .footeremail {
 font-family:Montserrat-LightItalic;
@@ -3145,7 +3145,7 @@ font-family:Montserrat-LightItalic;
 font-size:0.95rem;
 font-weight:bold;
 text-align:center;
-margin:-2px auto 4px;
+margin:-16px auto 4px;
 }
 .footeremail {
 font-family:Montserrat-LightItalic;
