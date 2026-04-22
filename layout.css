@@ -637,13 +637,11 @@ font-size:0.86rem;
 font-weight:bold;
 }
 .corporateidnumber {
-display:none;
-}
-.corporateidnumbermobile {
 display:block;
 font-family:Montserrat-LightItalic;
 font-weight:normal;
 font-size:0.84rem;
+margin:-12px auto -12px;
 }
 .footerimage {
 max-width:90px;
@@ -1850,9 +1848,7 @@ display:block;
 font-family:Montserrat-LightItalic;
 font-weight:normal;
 font-size:0.75rem;
-}
-.corporateidnumbermobile {
-display:none;
+margin:-12px auto -12px;
 }
 .footerimage {
 max-width:90px;
@@ -2616,9 +2612,7 @@ display:block;
 font-family:Montserrat-LightItalic;
 font-weight:normal;
 font-size:0.85rem;
-}
-.corporateidnumbermobile {
-display:none;
+margin:-12px auto -12px;
 }
 .footercopyright {
 font-size:0.85rem;
@@ -3134,9 +3128,6 @@ display:block;
 font-family:Montserrat-LightItalic;
 font-weight:normal;
 font-size:0.90rem;
-}
-.corporateidnumbermobile {
-display:none;
 }
 .footerimage {
 max-width:90px;
