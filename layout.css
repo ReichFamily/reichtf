@@ -611,13 +611,11 @@ display:none;
 display:inline-block;
 border:1px solid #555;
 border-width:1px 0px 1px 0px;
-padding:15px 0px 10px 0px;
-margin: 30px auto 25px;
 }
 .corporateaddresstopmobile {
 display:block;
 font-family:Montserrat-LightItalic;
-font-size:0.90rem;
+font-size:0.86rem;
 font-weight:bold;
 }
 .corporateaddressbottom {
@@ -626,7 +624,7 @@ display:none;
 .corporateaddressbottommobile {
 display:block;
 font-family:Montserrat-LightItalic;
-font-size:0.90rem;
+font-size:0.86rem;
 font-weight:normal;
 }
 .email {
@@ -635,7 +633,7 @@ display:none;
 .emailmobile {
 display:block;
 font-family:Montserrat-LightItalic;
-font-size:0.90rem;
+font-size:0.86rem;
 font-weight:bold;
 }
 .corporateidnumber {
@@ -645,7 +643,7 @@ display:none;
 display:block;
 font-family:Montserrat-LightItalic;
 font-weight:normal;
-font-size:0.90rem;
+font-size:0.84rem;
 }
 .footerimage {
 max-width:90px;
@@ -663,7 +661,7 @@ font-family:Montserrat-LightItalic;
 font-size:0.86rem;
 font-weight:bold;
 text-align:center;
-margin:0px auto 4px;
+margin:-2px auto 4px;
 }
 .footeremail {
 font-family:Montserrat-LightItalic;
@@ -1872,7 +1870,7 @@ font-family:Montserrat-LightItalic;
 font-size:0.95rem;
 font-weight:bold;
 text-align:center;
-margin:0px auto 4px;
+margin:-2px auto 4px;
 }
 .footeremail {
 font-family:Montserrat-LightItalic;
@@ -3156,7 +3154,7 @@ font-family:Montserrat-LightItalic;
 font-size:0.95rem;
 font-weight:bold;
 text-align:center;
-margin:0px auto 4px;
+margin:-2px auto 4px;
 }
 .footeremail {
 font-family:Montserrat-LightItalic;
