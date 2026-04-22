@@ -1757,7 +1757,7 @@ button.close-btn:hover {
 <div style="display:flex; justify-content:space-between; align-items:center;">
 
 <div class="corporateaddresstop" style="flex: 2;text-align:left">
-<p class="corporateaddresstop">110 16<sup>th</sup> Street Suite 1460<a href="/#corporate-address"></a><span class="corporateaddressbottom">Denver Colorado 80202-5269</span></p>
+<p class="corporateaddresstop"><span class="corporateaddressbottom">Corporate Address <a href="/#corporate-address"></a></span>110 16<sup>th</sup> Street Suite 1460<span class="corporateaddressbottom">Denver Colorado 80202-5269</span></p>
 </div>
 
 <div style="flex: 3;text-align:center;">
@@ -1770,7 +1770,7 @@ button.close-btn:hover {
 </div>
 
 <div class="corporateaddresstop" style="flex: 2;text-align:right;">
-<p class="corporateaddresstop">Unit 166301 PO Box 7169<a href="/#uk-address"></a><span class="corporateaddressbottom">Poole BH15 9EL United Kingdom</span></p>
+<p class="corporateaddresstop"><span class="corporateaddressbottom">Mailing Address <a href="/#uk-address"></a></span>Unit 166301 PO Box 7169</span><span class="corporateaddressbottom">Poole BH15 9EL United Kingdom</span></p>
 </div>
 
 </div>
@@ -1781,9 +1781,9 @@ button.close-btn:hover {
 
 <p><b>Sequential Citation Index</b></p>
 
-<p style="text-align:justify;"><a href="/#corporate-address"></a>The Reich Family non-profit corporation maintains its principal office at 110 16th Street Suite 1460, Denver Colorado 80202-5269. This address serves as our official legal domicile and registered agent location for service of process and state records as required under Colorado law. <b>It is not a mailing address and does not receive general correspondence.</b> Our corporate records, including Articles of Incorporation, bylaws, and financial statements, are maintained internally by the organisation.</p>
+<p style="text-align:justify;"><a href="/#corporate-address"></a>The Reich Family non-profit corporation maintains its principal office at 110 16th Street Suite 1460, Denver Colorado 80202-5269. This address serves as our official legal domicile and registered agent location for service of process and state records as required under Colorado law. It is not a mailing address and does not receive general correspondence. Our corporate records, including Articles of Incorporation, bylaws, and financial statements, are maintained internally by the organisation.</p>
 
-<p style="text-align:center;"><a href="/#uk-address"></a>Our mailing address is:<br><b><i>Reich Family</b><br>Unit 166301 PO Box 7169<br>Poole BH15 9EL<br>United Kingdom.</i></p>
+<p style="text-align:center;"><a href="/#uk-address"></a>Our mailing address is <i>Reich Family, Unit 166301 PO Box 7169, Poole BH15 9EL, United Kingdom.</i></p>
 
 <p>Reich Family Nonprofit Corporation Registry. <i>Colorado Secretary of State</i>, State of Colorado, <a href="https://www.sos.state.co.us/biz/BusinessEntityDetail.do?masterFileId=20261456940" target="_blank">https://www.sos.state.co.us/biz/BusinessEntityDetail.do?masterFileId=20261456940</a>. Accessed 16 Apr. 2026.</p>
 
@@ -2122,7 +2122,7 @@ button.close-btn:hover {
 <div style="display:flex; justify-content:space-between; align-items:center;">
 
 <div class="corporateaddresstop" style="flex: 2;text-align:left">
-<p class="corporateaddresstop">110 16<sup>th</sup> Street Suite 1460<a href="/#corporate-address"></a><span class="corporateaddressbottom">Denver Colorado 80202-5269</span></p>
+<p class="corporateaddresstop"><span class="corporateaddressbottom">Corporate Address <a href="/#corporate-address"></a></span>110 16<sup>th</sup> Street Suite 1460<span class="corporateaddressbottom">Denver Colorado 80202-5269</span></p>
 </div>
 
 <div style="flex: 3;text-align:center;">
@@ -2135,7 +2135,7 @@ button.close-btn:hover {
 </div>
 
 <div class="corporateaddresstop" style="flex: 2;text-align:right;">
-<p class="corporateaddresstop">Unit 166301 PO Box 7169<a href="/#uk-address"></a><span class="corporateaddressbottom">Poole BH15 9EL United Kingdom</span></p>
+<p class="corporateaddresstop"><span class="corporateaddressbottom">Mailing Address <a href="/#uk-address"></a></span>Unit 166301 PO Box 7169</span><span class="corporateaddressbottom">Poole BH15 9EL United Kingdom</span></p>
 </div>
 
 </div>
@@ -2244,12 +2244,22 @@ arrowSpan.textContent = '↩';
 arrowSpan.style.display = 'inline-block';
 arrowSpan.style.transform = 'rotate(90deg)';
 
+// Count how many visible backlinks we've made for this source so far
+if (typeof window.visibleCounter === 'undefined') {
+  window.visibleCounter = {};
+}
+if (!window.visibleCounter[sourceNumber]) {
+  window.visibleCounter[sourceNumber] = 0;
+}
+window.visibleCounter[sourceNumber]++;
+let visibleNumber = window.visibleCounter[sourceNumber];
+
 if (total === 1) {
   backlink.appendChild(arrowSpan);
 } else {
   backlink.appendChild(arrowSpan);
   let sup = document.createElement('sup');
-  sup.textContent = '[' + occurrenceIndex + ']';
+  sup.textContent = '[' + visibleNumber + ']';
   backlink.appendChild(sup);
 }
 
@@ -2344,6 +2354,8 @@ if (total === 1) {
     });
     sourceParagraphs.forEach(p => sourcesDiv.appendChild(p));
   }
+  
+	window.visibleCounter = {};
 
 });
 
@@ -2388,7 +2400,7 @@ document.querySelectorAll('.sidebar a').forEach(link => {
 });
 
 </script> 
-  
+   
 <script>
 (function() {
   const collector = 'https://stats.reich.tf';
