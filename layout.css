@@ -578,7 +578,11 @@ text-align:center;
 justify-content:space-around;
 }
 .header {
-line-height:1;
+display:flex; 
+justify-content:space-between;
+align-items:center;
+height:70px;
+margin-top:-10px;
 }
 .titlecorners {
 display:none;
@@ -1795,7 +1799,11 @@ text-align:center;
 justify-content:space-around;
 }
 .header {
-line-height:1;
+display:flex; 
+justify-content:space-between;
+align-items:center;
+height:90px;
+margin-top:-15px;
 }
 .titlecorners {
 display:block;
@@ -3075,7 +3083,11 @@ text-align:center;
 justify-content:space-around;
 }
 .header {
-line-height:1;
+display:flex; 
+justify-content:space-between;
+align-items:center;
+height:90px;
+margin-top:-15px;
 }
 .titlecorners {
 display:block;
