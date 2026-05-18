@@ -1,4 +1,10 @@
 @charset "utf-8";
+.phoneemail {
+display:none;
+}
+.phoneemailmobile {
+display:none;
+}
 html {
 font-size:100%;
 scrollbar-width: none;
@@ -23,7 +29,6 @@ background-color:#ffedd0;
 color:black;
 text-decoration:none;
 }
-
 .ordination-grid-1 {
     column-count: 3;  /* 3 columns on desktop */
     column-gap: 40px;
@@ -541,6 +546,11 @@ font-size:0.95rem;
 text-align:center;
 margin:-15px auto -5px;
 }
+.articletitleresearch {
+font-family:TrajanPro3-Regular;
+text-align:center;
+font-size:0.95rem;
+}
 .whatsoeverborder {
 border:1px solid #555;
 border-radius:0px;
@@ -578,11 +588,11 @@ text-align:center;
 justify-content:space-around;
 }
 .header {
-display:flex; 
-justify-content:space-between;
-align-items:center;
-height:70px;
-margin-top:-10px;
+display: flex;
+line-height:1.6;
+align-items: center;
+justify-content: space-between;
+min-height:65px;
 }
 .titlecorners {
 display:none;
@@ -592,12 +602,29 @@ opacity:1.0;
 }
 .title {
 font-family:ITCEDSCR;
-font-size:2.1rem;
+font-size:2.3rem;
 text-align:center;
+line-height:1;
+transform: translateY(-0.6rem);
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
-font-size:0.80rem;
+font-size:0.87rem;
+margin-top:-16px;
+text-align:center;
+}
+.phoneemail a {
+display:none;
+font-family:Montserrat-LightItalic;
+font-size:0.86rem;
+color:#000066;
+text-align:center;
+}
+.phoneemailmobile a {
+display:inline;
+font-family:Montserrat-LightItalic;
+font-size:0.86rem;
+color:#000066;
 text-align:center;
 }
 .summary {
@@ -645,7 +672,7 @@ display:block;
 font-family:Montserrat-LightItalic;
 font-weight:normal;
 font-size:0.84rem;
-margin:-12px auto -12px;
+margin:0px auto 0px;
 }
 .footerimage {
 max-width:90px;
@@ -665,22 +692,27 @@ font-weight:bold;
 text-align:center;
 margin:-14px auto 4px;
 }
-.footeremail {
+.footerphoneemail {
 font-family:Montserrat-LightItalic;
 font-size:0.86rem;
 font-weight:bold;
 text-align:center;
-margin:-2px auto 5px;
+}
+.footercorporateidnumber {
+font-family:Montserrat-LightItalic;
+font-size:0.86rem;
+text-align:center;
+margin-top:-10px;
 }
 .footercopyright {
 font-family:Montserrat-LightItalic;
-font-size:0.80rem;
+font-size:0.86rem;
 text-align:center;
-margin:auto auto 30px;
 }
 footer {
-margin-top:10px;
-margin-bottom:auto;
+line-height: 1.6;
+margin-top:-13px;
+margin-bottom:15px;
 }
 .headings {
 font-family:Cinzel-Regular;
@@ -717,7 +749,7 @@ padding: 10px;
 }
 .bodytypography {
 font-family:OpenSans-Regular;
-font-size:1.0rem;
+font-size:0.98rem;
 line-height:1.9;
 }
 
@@ -1409,6 +1441,11 @@ font-size:0.95rem;
 text-align:center;
 margin:-15px auto -5px;
 }
+.articletitleresearch {
+font-family:TrajanPro3-Regular;
+text-align:center;
+font-size:0.95rem;
+}
 .photolayout {
 display:flex;
 flex-wrap:wrap;
@@ -1439,7 +1476,7 @@ padding: 15px;
 }
 .bodytypography {
 font-family:OpenSans-Regular;
-font-size:1.09rem;
+font-size:1.0rem;
 line-height:1.6;
 }
 .footeralwaysbottom {
@@ -1799,11 +1836,11 @@ text-align:center;
 justify-content:space-around;
 }
 .header {
-display:flex; 
-justify-content:space-between;
-align-items:center;
-height:90px;
-margin-top:-15px;
+display: flex;
+line-height:1.6;
+align-items: center;
+justify-content: space-between;
+min-height:70px;
 }
 .titlecorners {
 display:block;
@@ -1813,18 +1850,35 @@ opacity:1.0;
 }
 .title {
 font-family:ITCEDSCR;
-font-size:2.5rem;
+font-size:2.3rem;
 text-align:center;
+line-height:1;
+transform: translateY(-0.8rem);
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
 font-size:0.85rem;
+margin-top:-16px;
+text-align:center;
+}
+.phoneemail a {
+display:inline;
+font-family:Montserrat-LightItalic;
+font-size:0.80rem;
+color:#000066;
+text-align:center;
+}
+.phoneemailmobile a {
+display:none;
+font-family:Montserrat-LightItalic;
+font-size:0.80rem;
+color:#000066;
 text-align:center;
 }
 .corporateaddresstop {
 display:block;
 font-family:Montserrat-LightItalic;
-font-size:0.75rem;
+font-size:0.80rem;
 font-weight:bold;
 }
 .corporateaddresstopmobile {
@@ -1833,7 +1887,7 @@ display:none;
 .corporateaddressbottom {
 display:block;
 font-family:Montserrat-LightItalic;
-font-size:0.75rem;
+font-size:0.80rem;
 font-weight:normal;
 }
 .corporateaddressbottommobile {
@@ -1876,22 +1930,27 @@ font-weight:bold;
 text-align:center;
 margin:-14px auto 4px;
 }
-.footeremail {
+.footerphoneemail {
 font-family:Montserrat-LightItalic;
-font-size:0.95rem;
+font-size:0.85rem;
 font-weight:bold;
 text-align:center;
-margin:-2px auto 5px;
+}
+.footercorporateidnumber {
+font-family:Montserrat-LightItalic;
+font-size:0.85rem;
+text-align:center;
+margin-top:-10px;
 }
 .footercopyright {
 font-family:Montserrat-LightItalic;
 font-size:0.85rem;
 text-align:center;
-margin:auto auto auto;
 }
 footer {
+line-height: 1.6;
 margin-top:15px;
-margin-bottom:auto;
+margin-bottom:0px;
 }
 .holybible {
 max-width:450px;
@@ -2585,6 +2644,33 @@ margin-left:15px;
 .anticultheadings {
 clear:both;
 }
+.title {
+font-family:ITCEDSCR;
+font-size:2.5rem;
+text-align:center;
+line-height:1;
+transform: translateY(-0.8rem);
+}
+.subtitle {
+font-family:Montserrat-LightItalic;
+font-size:0.90rem;
+margin-top:-16px;
+text-align:center;
+}
+.phoneemail a {
+display:inline;
+font-family:Montserrat-LightItalic;
+font-size:0.85rem;
+color:#000066;
+text-align:center;
+}
+.phoneemailmobile a {
+display:none;
+font-family:Montserrat-LightItalic;
+font-size:0.86rem;
+color:#000066;
+text-align:center;
+}
 .corporateaddresstop {
 display:block;
 font-family:Montserrat-LightItalic;
@@ -2718,6 +2804,11 @@ font-weight:bold;
 font-size:0.95rem;
 text-align:center;
 margin:-15px auto -5px;
+}
+.articletitleresearch {
+font-family:TrajanPro3-Regular;
+text-align:center;
+font-size:0.95rem;
 }
 .photolayout {
 display:flex;
@@ -3083,11 +3174,11 @@ text-align:center;
 justify-content:space-around;
 }
 .header {
-display:flex; 
-justify-content:space-between;
-align-items:center;
-height:90px;
-margin-top:-15px;
+display: flex;
+line-height:1.6;
+align-items: center;
+justify-content: space-between;
+min-height:70px;
 }
 .titlecorners {
 display:block;
@@ -3099,16 +3190,33 @@ opacity:1.0;
 font-family:ITCEDSCR;
 font-size:2.7rem;
 text-align:center;
+line-height:1;
+transform: translateY(-0.7rem);
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
+font-size:0.95rem;
+margin-top:-16px;
+text-align:center;
+}
+.phoneemail a {
+display:inline;
+font-family:Montserrat-LightItalic;
 font-size:0.90rem;
+color:#000066;
+text-align:center;
+}
+.phoneemailmobile a {
+display:none;
+font-family:Montserrat-LightItalic;
+font-size:0.86rem;
+color:#000066;
 text-align:center;
 }
 .corporateaddresstop {
 display:block;
 font-family:Montserrat-LightItalic;
-font-size:0.90rem;
+font-size:0.86rem;
 font-weight:bold;
 }
 .corporateaddresstopmobile {
@@ -3117,7 +3225,7 @@ display:none;
 .corporateaddressbottom {
 display:block;
 font-family:Montserrat-LightItalic;
-font-size:0.90rem;
+font-size:0.86rem;
 font-weight:normal;
 }
 .corporateaddressbottommobile {
@@ -3151,6 +3259,7 @@ font-family:ITCEDSCR;
 font-size:2.1rem;
 text-align:center;
 margin:auto;
+margin-top:-6px;
 }
 .footerresearch {
 font-family:Montserrat-LightItalic;
@@ -3159,22 +3268,28 @@ font-weight:bold;
 text-align:center;
 margin:-16px auto 4px;
 }
-.footeremail {
+.footercorporateidnumber {
 font-family:Montserrat-LightItalic;
-font-size:0.95rem;
+font-size:0.90rem;
+font-weight:normal;
+text-align:center;
+margin-top:-10px;
+}
+.footerphoneemail {
+font-family:Montserrat-LightItalic;
+font-size:0.90rem;
 font-weight:bold;
 text-align:center;
-margin:-2px auto 5px;
 }
 .footercopyright {
 font-family:Montserrat-LightItalic;
 font-size:0.90rem;
 text-align:center;
-margin:auto auto auto;
 }
 footer {
+line-height: 1.6;
 margin-top:15px;
-margin-bottom:auto;
+margin-bottom:0px;
 }
 .summary {
 max-width:1000px;
