@@ -586,7 +586,7 @@ display: flex;
 line-height:1.6;
 align-items: center;
 justify-content: space-between;
-min-height:65px;
+min-height:85px;
 }
 .titlecorners {
 display:none;
@@ -604,21 +604,7 @@ transform: translateY(-0.6rem);
 .subtitle {
 font-family:Montserrat-LightItalic;
 font-size:0.87rem;
-margin-top:-16px;
-text-align:center;
-}
-.phoneemail a {
-display:none;
-font-family:Montserrat-LightItalic;
-font-size:0.86rem;
-color:#000066;
-text-align:center;
-}
-.phoneemailmobile a {
-display:inline;
-font-family:Montserrat-LightItalic;
-font-size:0.86rem;
-color:#000066;
+margin-top:-14px;
 text-align:center;
 }
 .summary {
@@ -652,14 +638,25 @@ font-family:Montserrat-LightItalic;
 font-size:0.86rem;
 font-weight:normal;
 }
-.email {
+.phone {
 display:none;
+font-family:Montserrat-LightItalic;
+font-size:0.86rem;
 }
-.emailmobile {
+.phonemobile {
 display:block;
 font-family:Montserrat-LightItalic;
 font-size:0.86rem;
-font-weight:bold;
+}
+.email {
+display:block;
+font-family:Montserrat-LightItalic;
+font-size:0.86rem;
+}
+.emailmobile {
+display:none;
+font-family:Montserrat-LightItalic;
+font-size:0.86rem;
 }
 .corporateidnumber {
 display:block;
@@ -686,11 +683,11 @@ font-weight:bold;
 text-align:center;
 margin:-14px auto 4px;
 }
-.footerphoneemail {
+.footeremail {
 font-family:Montserrat-LightItalic;
 font-size:0.86rem;
-font-weight:bold;
 text-align:center;
+margin:-9px auto 10px;
 }
 .footercorporateidnumber {
 font-family:Montserrat-LightItalic;
@@ -1331,6 +1328,9 @@ scroll-margin-top:15px;
 #irstaxexempt {
 scroll-margin-top:15px;
 }
+#smsoptin {
+scroll-margin-top:15px;
+}
 /* Tablet Layout Ipad Mini down to 480px
 This section is for exceptions. All CSS
 must be followed by !important to override the
@@ -1834,7 +1834,7 @@ display: flex;
 line-height:1.6;
 align-items: center;
 justify-content: space-between;
-min-height:70px;
+min-height:85px;
 }
 .titlecorners {
 display:block;
@@ -1887,17 +1887,26 @@ font-weight:normal;
 .corporateaddressbottommobile {
 display:none;
 }
+.phone {
+display:block;
+font-family:Montserrat-LightItalic;
+font-size:0.80rem;
+}
+.phonemobile {
+display:none;
+font-family:Montserrat-LightItalic;
+font-size:0.80rem;
+}
 .email {
 display:block;
 font-family:Montserrat-LightItalic;
-font-size:0.75rem;
-font-weight:bold;
+font-size:0.86rem;
 }
 .emailmobile {
 display:none;
 font-family:Montserrat-LightItalic;
-font-size:0.75rem;
-font-weight:bold;
+font-size:0.86rem;
+text-align:center;
 }
 .corporateidnumber {
 display:block;
@@ -1924,11 +1933,11 @@ font-weight:bold;
 text-align:center;
 margin:-14px auto 4px;
 }
-.footerphoneemail {
+.footeremail {
 font-family:Montserrat-LightItalic;
 font-size:0.85rem;
-font-weight:bold;
 text-align:center;
+margin:-9px auto 10px;
 }
 .footercorporateidnumber {
 font-family:Montserrat-LightItalic;
@@ -2237,6 +2246,9 @@ scroll-margin-top:15px;
 scroll-margin-top:15px;
 }
 #irstaxexempt {
+scroll-margin-top:15px;
+}
+#smsoptin {
 scroll-margin-top:15px;
 }
 }
@@ -2682,18 +2694,6 @@ font-weight:normal;
 }
 .corporateaddressbottommobile {
 display:none;
-}
-.email {
-display:block;
-font-family:Montserrat-LightItalic;
-font-size:0.85rem;
-font-weight:bold;
-}
-.emailmobile {
-display:none;
-font-family:Montserrat-LightItalic;
-font-size:0.85rem;
-font-weight:bold;
 }
 .corporateidnumber {
 display:block;
@@ -3172,7 +3172,7 @@ display: flex;
 line-height:1.6;
 align-items: center;
 justify-content: space-between;
-min-height:70px;
+min-height:85px;
 }
 .titlecorners {
 display:block;
@@ -3185,7 +3185,7 @@ font-family:ITCEDSCR;
 font-size:2.7rem;
 text-align:center;
 line-height:1;
-transform: translateY(-0.7rem);
+transform: translateY(-0.8rem);
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
@@ -3193,19 +3193,26 @@ font-size:0.95rem;
 margin-top:-16px;
 text-align:center;
 }
-.phoneemail a {
-display:inline;
+.phone {
+display:block;
 font-family:Montserrat-LightItalic;
-font-size:0.90rem;
-color:#000066;
-text-align:center;
+font-size:0.86rem;
 }
-.phoneemailmobile a {
+.phonemobile {
 display:none;
 font-family:Montserrat-LightItalic;
 font-size:0.86rem;
+}
+.email {
+display:block;
+font-family:Montserrat-LightItalic;
+font-size:0.90rem;
 color:#000066;
-text-align:center;
+}
+.emailmobile {
+display:none;
+font-family:Montserrat-LightItalic;
+font-size:0.90rem;
 }
 .corporateaddresstop {
 display:block;
@@ -3224,18 +3231,6 @@ font-weight:normal;
 }
 .corporateaddressbottommobile {
 display:none;
-}
-.email {
-display:block;
-font-family:Montserrat-LightItalic;
-font-size:0.90rem;
-font-weight:bold;
-}
-.emailmobile {
-display:none;
-font-family:Montserrat-LightItalic;
-font-size:0.90rem;
-font-weight:bold;
 }
 .corporateidnumber {
 display:block;
@@ -3262,18 +3257,18 @@ font-weight:bold;
 text-align:center;
 margin:-16px auto 4px;
 }
+.footeremail {
+font-family:Montserrat-LightItalic;
+font-size:0.90rem;
+text-align:center;
+margin:-9px auto 10px;
+}
 .footercorporateidnumber {
 font-family:Montserrat-LightItalic;
 font-size:0.90rem;
 font-weight:normal;
 text-align:center;
 margin-top:-10px;
-}
-.footerphoneemail {
-font-family:Montserrat-LightItalic;
-font-size:0.90rem;
-font-weight:bold;
-text-align:center;
 }
 .footercopyright {
 font-family:Montserrat-LightItalic;
@@ -3597,6 +3592,9 @@ scroll-margin-top:15px;
 scroll-margin-top:15px;
 }
 #irstaxexempt {
+scroll-margin-top:15px;
+}
+#smsoptin {
 scroll-margin-top:15px;
 }
 }
