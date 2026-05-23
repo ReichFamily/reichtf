@@ -604,7 +604,7 @@ transform: translateY(-0.6rem);
 .subtitle {
 font-family:Montserrat-LightItalic;
 font-size:0.87rem;
-margin-top:-14px;
+margin:-14px auto -2px;
 text-align:center;
 }
 .summary {
@@ -1852,7 +1852,7 @@ transform: translateY(-0.8rem);
 .subtitle {
 font-family:Montserrat-LightItalic;
 font-size:0.85rem;
-margin-top:-16px;
+margin:-16px auto -2px;
 text-align:center;
 }
 .phoneemail a {
@@ -2660,7 +2660,7 @@ transform: translateY(-0.8rem);
 .subtitle {
 font-family:Montserrat-LightItalic;
 font-size:0.90rem;
-margin-top:-16px;
+margin:-16px auto -2px;
 text-align:center;
 }
 .phoneemail a {
@@ -3190,7 +3190,7 @@ transform: translateY(-0.8rem);
 .subtitle {
 font-family:Montserrat-LightItalic;
 font-size:0.95rem;
-margin-top:-16px;
+margin:-16px auto -1px;
 text-align:center;
 }
 .phone {
