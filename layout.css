@@ -672,10 +672,11 @@ margin:20px auto auto;
 }
 .wisebusinesssubtitlemobile {
 font-family:Montserrat-LightItalic;
-font-size:0.55rem;
+font-size:0.60rem;
+font-weight:bold;
 display:block;
 text-align:center;
-color:#006600;
+color:#003300;
 margin:6px auto auto 10px;
 }
 .wisebusiness {
@@ -1960,7 +1961,9 @@ margin:auto;
 }
 .wisebusinesssubtitle {
 font-family:Montserrat-LightItalic;
-font-size:0.55rem;
+font-size:0.60rem;
+color:#003300;
+font-weight:bold;
 display:block;
 text-align:center;
 margin:6px auto auto 10px;
@@ -3307,8 +3310,9 @@ margin:auto;
 }
 .wisebusinesssubtitle {
 font-family:Montserrat-LightItalic;
-font-size:0.55rem;
-color:#006600;
+font-size:0.60rem;
+font-weight:bold;
+color:#003300;
 display:block;
 text-align:center;
 margin:6px auto auto 10px;
