@@ -665,6 +665,31 @@ font-weight:normal;
 font-size:0.84rem;
 margin:0px auto 0px;
 }
+.wisebusinessmobile {
+max-width:140px;
+display:block;
+margin:20px auto auto;
+}
+.wisebusinesssubtitlemobile {
+font-family:Montserrat-LightItalic;
+font-size:0.55rem;
+display:block;
+text-align:center;
+color:#006600;
+margin:6px auto auto 10px;
+}
+.wisebusiness {
+max-width:140px;
+display:none;
+margin:auto;
+}
+.wisebusinesssubtitle {
+font-family:Montserrat-LightItalic;
+font-size:0.86rem;
+display:none;
+text-align:center;
+margin:-9px auto 10px;
+}
 .footerimage {
 max-width:90px;
 display:block;
@@ -1914,6 +1939,31 @@ font-family:Montserrat-LightItalic;
 font-weight:normal;
 font-size:0.85rem;
 margin:-12px auto -12px;
+}
+.wisebusinessmobile {
+max-width:140px;
+display:none;
+margin:auto;
+}
+.wisebusinesssubtitlemobile {
+font-family:Montserrat-LightItalic;
+font-size:0.60rem;
+color:#006600;
+display:none;
+text-align:center;
+margin:4px auto 0px;
+}
+.wisebusiness {
+max-width:130px;
+display:block;
+margin:auto;
+}
+.wisebusinesssubtitle {
+font-family:Montserrat-LightItalic;
+font-size:0.55rem;
+display:block;
+text-align:center;
+margin:6px auto auto 10px;
 }
 .footerimage {
 max-width:90px;
@@ -3237,6 +3287,31 @@ display:block;
 font-family:Montserrat-LightItalic;
 font-weight:normal;
 font-size:0.90rem;
+}
+.wisebusinessmobile {
+max-width:140px;
+display:none;
+margin:auto;
+}
+.wisebusinesssubtitlemobile {
+font-family:Montserrat-LightItalic;
+font-size:0.60rem;
+display:none;
+text-align:center;
+margin:4px auto 0px;
+}
+.wisebusiness {
+max-width:130px;
+display:block;
+margin:auto;
+}
+.wisebusinesssubtitle {
+font-family:Montserrat-LightItalic;
+font-size:0.55rem;
+color:#006600;
+display:block;
+text-align:center;
+margin:6px auto auto 10px;
 }
 .footerimage {
 max-width:90px;
