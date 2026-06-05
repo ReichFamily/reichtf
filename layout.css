@@ -995,6 +995,11 @@ position: relative;
 margin-left:auto;
 margin-right:auto;
 }
+.zadavegetarian {
+position: relative;
+margin-left:auto;
+margin-right:auto;
+}
 .mariakatsaris {
 position: relative;
 margin-left:auto;
@@ -1714,9 +1719,15 @@ font-size: 1.0rem;
 line-height:1.8;
 text-align:justify;
 }
-.mariakatsaris {
+.zadavegetarian {
 position: relative;
 max-width:500px;
+float:left;
+margin-right:15px;
+}
+.mariakatsaris {
+position: relative;
+max-width:400px;
 float:left;
 margin-right:15px;
 }
@@ -2688,6 +2699,12 @@ position: relative;
 margin-left:auto;
 margin-right:auto;
 }
+.zadavegetarian {
+position: relative;
+max-width:500px;
+float:left;
+margin-right:15px;
+}
 .mariakatsaris {
 position: relative;
 max-width:700px;
@@ -3091,6 +3108,12 @@ line-height:1.8;
 text-align:justify;
 max-width:420px;
 font-size: 1.0rem;
+}
+.zadavegetarian {
+position: relative;
+max-width:500px;
+float:left;
+margin-right:15px;
 }
 .mariakatsaris {
 position: relative;
