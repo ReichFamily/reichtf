@@ -586,7 +586,7 @@ display: flex;
 line-height:1.6;
 align-items: center;
 justify-content: space-between;
-min-height:85px;
+min-height:45px;
 }
 .titlecorners {
 display:none;
@@ -596,10 +596,10 @@ opacity:1.0;
 }
 .title {
 font-family:ITCEDSCR;
-font-size:2.3rem;
+font-size:2.5rem;
 text-align:center;
 line-height:1;
-transform: translateY(-0.6rem);
+transform: translateY(-0.3rem);
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
@@ -1882,7 +1882,7 @@ display: flex;
 line-height:1.6;
 align-items: center;
 justify-content: space-between;
-min-height:85px;
+min-height:55px;
 }
 .titlecorners {
 display:block;
@@ -1892,10 +1892,10 @@ opacity:1.0;
 }
 .title {
 font-family:ITCEDSCR;
-font-size:2.3rem;
+font-size:2.8rem;
 text-align:center;
 line-height:1;
-transform: translateY(-0.8rem);
+transform: translateY(-0.4rem);
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
@@ -3271,7 +3271,7 @@ display: flex;
 line-height:1.6;
 align-items: center;
 justify-content: space-between;
-min-height:85px;
+min-height:55px;
 }
 .titlecorners {
 display:block;
@@ -3281,10 +3281,10 @@ opacity:1.0;
 }
 .title {
 font-family:ITCEDSCR;
-font-size:2.7rem;
+font-size:2.9rem;
 text-align:center;
 line-height:1;
-transform: translateY(-0.8rem);
+transform: translateY(-0.4rem);
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
