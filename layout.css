@@ -809,6 +809,9 @@ border-radius:0px;
 .articlehr {
 display:none;
 }
+.articlehrdesktop {
+display:none;
+}
 .articlehralways {
 margin:10px auto 0px;
 border:1px solid #555;
@@ -1547,6 +1550,9 @@ display:block;
 margin:0px auto 15px;
 border:1px solid #555;
 border-width:0px 0px 1px 0px;
+}
+.articlehrdesktop {
+display:none;
 }
 .articlehralways {
 margin:15px auto 15px;
@@ -2379,6 +2385,12 @@ margin:0px auto 15px;
 border:1px solid #555;
 border-width:0px 0px 1px 0px;
 }
+.articlehrdesktop {
+display:block;
+margin:0px auto 15px;
+border:1px solid #555;
+border-width:0px 0px 1px 0px;
+}
 .articlehralways {
 display:block;
 margin:15px auto 15px;
@@ -2792,6 +2804,12 @@ margin:-12px auto -12px;
 .footercopyright {
 font-size:0.85rem;
 }
+.pollyklaas {
+position: relative;
+max-width:700px;
+float:left;
+margin-right:15px;
+}
 }
 
 /* Desktop Layout: 1280px to a max of 1366px - Everything above Ipad Pro 11-inch. Inherits styles from: Mobile Layout and Tablet Layout. */
@@ -2954,6 +2972,12 @@ border-radius:12px;
 max-width:1000px;
 }
 .articlehr {
+display:block;
+margin:0px auto 15px;
+border:1px solid #555;
+border-width:0px 0px 1px 0px;
+}
+.articlehrdesktop {
 display:block;
 margin:0px auto 15px;
 border:1px solid #555;
