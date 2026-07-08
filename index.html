@@ -2378,67 +2378,81 @@ button.close-btn:hover {
 </div>
 
 <script>
-
 document.addEventListener('DOMContentLoaded', function() {
-
   function normalizeUrl(url) {
     return url.replace(/\+/g, '%20').replace(/\/$/, '');
   }
 
   // Map URLs to source paragraphs
-  let urlToSourceMap = {};
-  document.querySelectorAll('div.sources p').forEach((p) => {
-    let a = p.querySelector('a');
+  const urlToSourceMap = new Map();
+  const sourceParagraphs = document.querySelectorAll('div.sources p');
+  
+  for (let i = 0; i < sourceParagraphs.length; i++) {
+    const p = sourceParagraphs[i];
+    const a = p.querySelector('a');
     if (a) {
-      urlToSourceMap[normalizeUrl(a.href)] = p;
+      urlToSourceMap.set(normalizeUrl(a.href), p);
       p.style.scrollMarginTop = '15px';
     }
-  });
-
-  // First pass: collect all occurrences
-  let urlInfo = {};
-  let nextNumber = 1;
-
-document.querySelectorAll('body a[href^="http"], body a[href^="/"]').forEach((link) => {
-  if (link.closest('.sidebar')) return; // Skip sidebar links
-  if (link.closest('div.sources')) return; // Skip source links
-
-  
-  let url = normalizeUrl(link.href);
-  let sourceP = urlToSourceMap[url];
-  if (!sourceP) return;
-
-  if (!urlInfo[url]) {
-    urlInfo[url] = {
-      number: nextNumber,
-      occurrences: [],
-      sourceP: sourceP
-    };
-    sourceP.id = 'source-' + nextNumber;
-    nextNumber++;
   }
 
-    let parent = link.closest('p, h1, h2, h3, h4, li, div:not(.sources)');
-    urlInfo[url].occurrences.push({ link, parent });
-  });
+  // First pass: collect all occurrences
+  const urlInfo = new Map();
+  let nextNumber = 1;
+
+  const allLinks = document.querySelectorAll('body a[href^="http"], body a[href^="/"]');
+  
+  for (let i = 0; i < allLinks.length; i++) {
+    const link = allLinks[i];
+    if (link.closest('.sidebar')) continue;
+    if (link.closest('div.sources')) continue;
+
+    const url = normalizeUrl(link.href);
+    const sourceP = urlToSourceMap.get(url);
+    if (!sourceP) continue;
+
+    let info = urlInfo.get(url);
+    if (!info) {
+      info = {
+        number: nextNumber,
+        occurrences: [],
+        sourceP: sourceP
+      };
+      sourceP.id = 'source-' + nextNumber;
+      urlInfo.set(url, info);
+      nextNumber++;
+    }
+
+    const parent = link.closest('p, h1, h2, h3, h4, li, div:not(.sources)');
+    if (parent) {
+      info.occurrences.push({ link, parent });
+    }
+  }
 
   // Second pass: create anchors, backlinks, superscripts
-  Object.keys(urlInfo).forEach((url) => {
-    let info = urlInfo[url];
-    let sourceNumber = info.number;
-    let sourceP = info.sourceP;
-    let total = info.occurrences.length;
+  const urlInfoArray = Array.from(urlInfo.entries());
+  
+  for (let i = 0; i < urlInfoArray.length; i++) {
+    const [url, info] = urlInfoArray[i];
+    const sourceNumber = info.number;
+    const sourceP = info.sourceP;
+    const total = info.occurrences.length;
+    
+    // Initialize counter for this source
+    let visibleCounter = 0;
 
-    info.occurrences.forEach((occ, index) => {
-      let link = occ.link;
-      let parent = occ.parent;
-      let occurrenceIndex = index + 1;
-	  if (link.offsetParent === null) return;
+    for (let j = 0; j < info.occurrences.length; j++) {
+      const occ = info.occurrences[j];
+      const link = occ.link;
+      const parent = occ.parent;
+      const occurrenceIndex = j + 1;
+      
+      if (link.offsetParent === null) continue;
 
       // Create stable anchor before parent
-      let anchorId = `citation-location-${sourceNumber}-${occurrenceIndex}`;
+      const anchorId = `citation-location-${sourceNumber}-${occurrenceIndex}`;
       if (parent && !document.getElementById(anchorId)) {
-        let anchor = document.createElement('span');
+        const anchor = document.createElement('span');
         anchor.id = anchorId;
         anchor.style.display = 'block';
         anchor.style.position = 'relative';
@@ -2446,7 +2460,7 @@ document.querySelectorAll('body a[href^="http"], body a[href^="/"]').forEach((li
       }
 
       // Create backlink
-      let backlink = document.createElement('a');
+      const backlink = document.createElement('a');
       backlink.href = '#' + anchorId;
       backlink.style.textDecoration = 'none';
       backlink.style.marginLeft = '5px';
@@ -2458,10 +2472,10 @@ document.querySelectorAll('body a[href^="http"], body a[href^="/"]').forEach((li
         // Get the citation link element
         let targetLink = link;
         
-        // Calculate position with 15px margin from top
+        // Calculate position with 4px margin from top
         let rect = targetLink.getBoundingClientRect();
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        let targetPosition = rect.top + scrollTop - 4; // 15px margin from top
+        let targetPosition = rect.top + scrollTop - 4;
         
         // Smooth scroll to position
         window.scrollTo({
@@ -2470,29 +2484,21 @@ document.querySelectorAll('body a[href^="http"], body a[href^="/"]').forEach((li
         });
       });
 
-let arrowSpan = document.createElement('span');
-arrowSpan.textContent = '↩';
-arrowSpan.style.display = 'inline-block';
-arrowSpan.style.transform = 'rotate(90deg)';
+      const arrowSpan = document.createElement('span');
+      arrowSpan.textContent = '↩';
+      arrowSpan.style.display = 'inline-block';
+      arrowSpan.style.transform = 'rotate(90deg)';
+      backlink.appendChild(arrowSpan);
 
-// Count how many visible backlinks we've made for this source so far
-if (typeof window.visibleCounter === 'undefined') {
-  window.visibleCounter = {};
-}
-if (!window.visibleCounter[sourceNumber]) {
-  window.visibleCounter[sourceNumber] = 0;
-}
-window.visibleCounter[sourceNumber]++;
-let visibleNumber = window.visibleCounter[sourceNumber];
+      // Use local counter instead of global
+      visibleCounter++;
+      const visibleNumber = visibleCounter;
 
-if (total === 1) {
-  backlink.appendChild(arrowSpan);
-} else {
-  backlink.appendChild(arrowSpan);
-  let sup = document.createElement('sup');
-  sup.textContent = '[' + visibleNumber + ']';
-  backlink.appendChild(sup);
-}
+      if (total > 1) {
+        const sup = document.createElement('sup');
+        sup.textContent = '[' + visibleNumber + ']';
+        backlink.appendChild(sup);
+      }
 
       sourceP.appendChild(backlink);
 
@@ -2530,8 +2536,7 @@ if (total === 1) {
             let supLink = document.createElement('a');
             supLink.href = `#source-${sourceNumber}`;
             supLink.textContent = `[${sourceNumber}]`;
-            supLink.style.color = '#990000'; // Sup link color
-            // REMOVED target="_blank" - now opens in same window
+            supLink.style.color = '#990000';
             sup.appendChild(supLink);
             
             // Insert space then sup after the punctuation
@@ -2547,35 +2552,37 @@ if (total === 1) {
             // No punctuation, use original spacing logic (space + sup)
             link.insertAdjacentHTML(
               'afterend',
-              ` <sup><a href="#source-${sourceNumber}" style="color: #990000;">[${sourceNumber}]</a></sup>` // REMOVED target="_blank"
+              ` <sup><a href="#source-${sourceNumber}" style="color: #990000;">[${sourceNumber}]</a></sup>`
             );
           }
         } else {
           // No text node after, use original spacing logic
           link.insertAdjacentHTML(
             'afterend',
-           ` <sup><a href="#source-${sourceNumber}" style="color: #990000;">[${sourceNumber}]</a></sup>` // REMOVED target="_blank"
+            ` <sup><a href="#source-${sourceNumber}" style="color: #990000;">[${sourceNumber}]</a></sup>`
           );
         }
       }
-    });
-  });
+    }
+  }
   
-  Object.keys(urlInfo).forEach((url) => {
-    let info = urlInfo[url];
-    let sourceP = info.sourceP;
-    let sourceNumber = info.number;
+  // Add source numbers to source paragraphs
+  const urlInfoArray2 = Array.from(urlInfo.entries());
+  for (let i = 0; i < urlInfoArray2.length; i++) {
+    const [url, info] = urlInfoArray2[i];
+    const sourceP = info.sourceP;
+    const sourceNumber = info.number;
     
-    let sup = document.createElement('sup');
-    sup.textContent = sourceNumber;  // Just the number, no brackets
+    const sup = document.createElement('sup');
+    sup.textContent = sourceNumber;
     sup.style.color = '#990000';
     
     sourceP.insertBefore(sup, sourceP.firstChild);
     sourceP.insertBefore(document.createTextNode(' '), sourceP.firstChild.nextSibling);
-  });
+  }
   
   // Sort sources by number
-  let sourcesDiv = document.querySelector('div.sources');
+  const sourcesDiv = document.querySelector('div.sources');
   if (sourcesDiv) {
     let sourceParagraphs = Array.from(sourcesDiv.querySelectorAll('p'));
     sourceParagraphs.sort((a, b) => {
@@ -2583,11 +2590,11 @@ if (total === 1) {
       let numB = parseInt(b.querySelector('sup')?.textContent || '0');
       return numA - numB;
     });
-    sourceParagraphs.forEach(p => sourcesDiv.appendChild(p));
+    for (let i = 0; i < sourceParagraphs.length; i++) {
+      sourcesDiv.appendChild(sourceParagraphs[i]);
+    }
   }
-  
 });
-
 </script>
 
 <script>
