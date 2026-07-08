@@ -5,6 +5,226 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reich Family Trinitarian Religious Organisation</title>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  function normalizeUrl(url) {
+    return url.replace(/\+/g, '%20').replace(/\/$/, '');
+  }
+
+  // Map URLs to source paragraphs
+  const urlToSourceMap = new Map();
+  const sourceParagraphs = document.querySelectorAll('div.sources p');
+  
+  for (let i = 0; i < sourceParagraphs.length; i++) {
+    const p = sourceParagraphs[i];
+    const a = p.querySelector('a');
+    if (a) {
+      urlToSourceMap.set(normalizeUrl(a.href), p);
+      p.style.scrollMarginTop = '15px';
+    }
+  }
+
+  // First pass: collect all occurrences
+  const urlInfo = new Map();
+  let nextNumber = 1;
+
+  const allLinks = document.querySelectorAll('body a[href^="http"], body a[href^="/"]');
+  
+  for (let i = 0; i < allLinks.length; i++) {
+    const link = allLinks[i];
+    if (link.closest('.sidebar')) continue;
+    if (link.closest('div.sources')) continue;
+
+    const url = normalizeUrl(link.href);
+    const sourceP = urlToSourceMap.get(url);
+    if (!sourceP) continue;
+
+    let info = urlInfo.get(url);
+    if (!info) {
+      info = {
+        number: nextNumber,
+        occurrences: [],
+        sourceP: sourceP
+      };
+      sourceP.id = 'source-' + nextNumber;
+      urlInfo.set(url, info);
+      nextNumber++;
+    }
+
+    const parent = link.closest('p, h1, h2, h3, h4, li, div:not(.sources)');
+    if (parent) {
+      info.occurrences.push({ link, parent });
+    }
+  }
+
+  // Second pass: create anchors, backlinks, superscripts
+  const urlInfoArray = Array.from(urlInfo.entries());
+  
+  for (let i = 0; i < urlInfoArray.length; i++) {
+    const [url, info] = urlInfoArray[i];
+    const sourceNumber = info.number;
+    const sourceP = info.sourceP;
+    const total = info.occurrences.length;
+    
+    // Initialize counter for this source
+    let visibleCounter = 0;
+
+    for (let j = 0; j < info.occurrences.length; j++) {
+      const occ = info.occurrences[j];
+      const link = occ.link;
+      const parent = occ.parent;
+      const occurrenceIndex = j + 1;
+      
+      if (link.offsetParent === null) continue;
+
+      // Create stable anchor before parent
+      const anchorId = `citation-location-${sourceNumber}-${occurrenceIndex}`;
+      if (parent && !document.getElementById(anchorId)) {
+        const anchor = document.createElement('span');
+        anchor.id = anchorId;
+        anchor.style.display = 'block';
+        anchor.style.position = 'relative';
+        parent.insertBefore(anchor, parent.firstChild);
+      }
+
+      // Create backlink
+      const backlink = document.createElement('a');
+      backlink.href = '#' + anchorId;
+      backlink.style.textDecoration = 'none';
+      backlink.style.marginLeft = '5px';
+      
+      // Add click handler for better scroll positioning
+      backlink.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Get the citation link element
+        let targetLink = link;
+        
+        // Calculate position with 4px margin from top
+        let rect = targetLink.getBoundingClientRect();
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        let targetPosition = rect.top + scrollTop - 4;
+        
+        // Smooth scroll to position
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'auto'
+        });
+      });
+
+      const arrowSpan = document.createElement('span');
+      arrowSpan.textContent = '↩';
+      arrowSpan.style.display = 'inline-block';
+      arrowSpan.style.transform = 'rotate(90deg)';
+      backlink.appendChild(arrowSpan);
+
+      // Use local counter instead of global
+      visibleCounter++;
+      const visibleNumber = visibleCounter;
+
+      if (total > 1) {
+        const sup = document.createElement('sup');
+        sup.textContent = '[' + visibleNumber + ']';
+        backlink.appendChild(sup);
+      }
+
+      sourceP.appendChild(backlink);
+
+      // Add superscript after link if missing
+      let sibling = link.nextSibling;
+      while (sibling && sibling.nodeType === 3 && !sibling.textContent.trim()) {
+        sibling = sibling.nextSibling;
+      }
+
+      let hasSup = sibling && sibling.nodeName === 'SUP' &&
+                   sibling.querySelector(`a[href="#source-${sourceNumber}"]`);
+
+      if (!hasSup) {
+        // Find the first non-whitespace text node after the link
+        let textNode = link.nextSibling;
+        while (textNode && textNode.nodeType === 3 && !textNode.textContent.trim()) {
+          textNode = textNode.nextSibling;
+        }
+        
+        if (textNode && textNode.nodeType === 3) {
+          let text = textNode.textContent;
+          let match = text.match(/^([,:.])/);
+          
+          if (match) {
+            // Found comma, colon, or period immediately after whitespace
+            let punctuation = match[1];
+            let restOfText = text.substring(1);
+            
+            // Update the text node to just contain the punctuation
+            textNode.textContent = punctuation;
+            
+            // Create space + superscript
+            let space = document.createTextNode(' ');
+            let sup = document.createElement('sup');
+            let supLink = document.createElement('a');
+            supLink.href = `#source-${sourceNumber}`;
+            supLink.textContent = `[${sourceNumber}]`;
+            supLink.style.color = '#990000';
+            sup.appendChild(supLink);
+            
+            // Insert space then sup after the punctuation
+            textNode.parentNode.insertBefore(space, textNode.nextSibling);
+            textNode.parentNode.insertBefore(sup, space.nextSibling);
+            
+            // If there's remaining text, insert it after the sup
+            if (restOfText) {
+              let restNode = document.createTextNode(restOfText);
+              textNode.parentNode.insertBefore(restNode, sup.nextSibling);
+            }
+          } else {
+            // No punctuation, use original spacing logic (space + sup)
+            link.insertAdjacentHTML(
+              'afterend',
+              ` <sup><a href="#source-${sourceNumber}" style="color: #990000;">[${sourceNumber}]</a></sup>`
+            );
+          }
+        } else {
+          // No text node after, use original spacing logic
+          link.insertAdjacentHTML(
+            'afterend',
+            ` <sup><a href="#source-${sourceNumber}" style="color: #990000;">[${sourceNumber}]</a></sup>`
+          );
+        }
+      }
+    }
+  }
+  
+  // Add source numbers to source paragraphs
+  const urlInfoArray2 = Array.from(urlInfo.entries());
+  for (let i = 0; i < urlInfoArray2.length; i++) {
+    const [url, info] = urlInfoArray2[i];
+    const sourceP = info.sourceP;
+    const sourceNumber = info.number;
+    
+    const sup = document.createElement('sup');
+    sup.textContent = sourceNumber;
+    sup.style.color = '#990000';
+    
+    sourceP.insertBefore(sup, sourceP.firstChild);
+    sourceP.insertBefore(document.createTextNode(' '), sourceP.firstChild.nextSibling);
+  }
+  
+  // Sort sources by number
+  const sourcesDiv = document.querySelector('div.sources');
+  if (sourcesDiv) {
+    let sourceParagraphs = Array.from(sourcesDiv.querySelectorAll('p'));
+    sourceParagraphs.sort((a, b) => {
+      let numA = parseInt(a.querySelector('sup')?.textContent || '0');
+      let numB = parseInt(b.querySelector('sup')?.textContent || '0');
+      return numA - numB;
+    });
+    for (let i = 0; i < sourceParagraphs.length; i++) {
+      sourcesDiv.appendChild(sourceParagraphs[i]);
+    }
+  }
+});
+</script>
+
 <!--Schema Markup-->
 <script type="application/ld+json">
 {
@@ -2376,226 +2596,6 @@ button.close-btn:hover {
 </div>
 
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  function normalizeUrl(url) {
-    return url.replace(/\+/g, '%20').replace(/\/$/, '');
-  }
-
-  // Map URLs to source paragraphs
-  const urlToSourceMap = new Map();
-  const sourceParagraphs = document.querySelectorAll('div.sources p');
-  
-  for (let i = 0; i < sourceParagraphs.length; i++) {
-    const p = sourceParagraphs[i];
-    const a = p.querySelector('a');
-    if (a) {
-      urlToSourceMap.set(normalizeUrl(a.href), p);
-      p.style.scrollMarginTop = '15px';
-    }
-  }
-
-  // First pass: collect all occurrences
-  const urlInfo = new Map();
-  let nextNumber = 1;
-
-  const allLinks = document.querySelectorAll('body a[href^="http"], body a[href^="/"]');
-  
-  for (let i = 0; i < allLinks.length; i++) {
-    const link = allLinks[i];
-    if (link.closest('.sidebar')) continue;
-    if (link.closest('div.sources')) continue;
-
-    const url = normalizeUrl(link.href);
-    const sourceP = urlToSourceMap.get(url);
-    if (!sourceP) continue;
-
-    let info = urlInfo.get(url);
-    if (!info) {
-      info = {
-        number: nextNumber,
-        occurrences: [],
-        sourceP: sourceP
-      };
-      sourceP.id = 'source-' + nextNumber;
-      urlInfo.set(url, info);
-      nextNumber++;
-    }
-
-    const parent = link.closest('p, h1, h2, h3, h4, li, div:not(.sources)');
-    if (parent) {
-      info.occurrences.push({ link, parent });
-    }
-  }
-
-  // Second pass: create anchors, backlinks, superscripts
-  const urlInfoArray = Array.from(urlInfo.entries());
-  
-  for (let i = 0; i < urlInfoArray.length; i++) {
-    const [url, info] = urlInfoArray[i];
-    const sourceNumber = info.number;
-    const sourceP = info.sourceP;
-    const total = info.occurrences.length;
-    
-    // Initialize counter for this source
-    let visibleCounter = 0;
-
-    for (let j = 0; j < info.occurrences.length; j++) {
-      const occ = info.occurrences[j];
-      const link = occ.link;
-      const parent = occ.parent;
-      const occurrenceIndex = j + 1;
-      
-      if (link.offsetParent === null) continue;
-
-      // Create stable anchor before parent
-      const anchorId = `citation-location-${sourceNumber}-${occurrenceIndex}`;
-      if (parent && !document.getElementById(anchorId)) {
-        const anchor = document.createElement('span');
-        anchor.id = anchorId;
-        anchor.style.display = 'block';
-        anchor.style.position = 'relative';
-        parent.insertBefore(anchor, parent.firstChild);
-      }
-
-      // Create backlink
-      const backlink = document.createElement('a');
-      backlink.href = '#' + anchorId;
-      backlink.style.textDecoration = 'none';
-      backlink.style.marginLeft = '5px';
-      
-      // Add click handler for better scroll positioning
-      backlink.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        // Get the citation link element
-        let targetLink = link;
-        
-        // Calculate position with 4px margin from top
-        let rect = targetLink.getBoundingClientRect();
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        let targetPosition = rect.top + scrollTop - 4;
-        
-        // Smooth scroll to position
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'auto'
-        });
-      });
-
-      const arrowSpan = document.createElement('span');
-      arrowSpan.textContent = '↩';
-      arrowSpan.style.display = 'inline-block';
-      arrowSpan.style.transform = 'rotate(90deg)';
-      backlink.appendChild(arrowSpan);
-
-      // Use local counter instead of global
-      visibleCounter++;
-      const visibleNumber = visibleCounter;
-
-      if (total > 1) {
-        const sup = document.createElement('sup');
-        sup.textContent = '[' + visibleNumber + ']';
-        backlink.appendChild(sup);
-      }
-
-      sourceP.appendChild(backlink);
-
-      // Add superscript after link if missing
-      let sibling = link.nextSibling;
-      while (sibling && sibling.nodeType === 3 && !sibling.textContent.trim()) {
-        sibling = sibling.nextSibling;
-      }
-
-      let hasSup = sibling && sibling.nodeName === 'SUP' &&
-                   sibling.querySelector(`a[href="#source-${sourceNumber}"]`);
-
-      if (!hasSup) {
-        // Find the first non-whitespace text node after the link
-        let textNode = link.nextSibling;
-        while (textNode && textNode.nodeType === 3 && !textNode.textContent.trim()) {
-          textNode = textNode.nextSibling;
-        }
-        
-        if (textNode && textNode.nodeType === 3) {
-          let text = textNode.textContent;
-          let match = text.match(/^([,:.])/);
-          
-          if (match) {
-            // Found comma, colon, or period immediately after whitespace
-            let punctuation = match[1];
-            let restOfText = text.substring(1);
-            
-            // Update the text node to just contain the punctuation
-            textNode.textContent = punctuation;
-            
-            // Create space + superscript
-            let space = document.createTextNode(' ');
-            let sup = document.createElement('sup');
-            let supLink = document.createElement('a');
-            supLink.href = `#source-${sourceNumber}`;
-            supLink.textContent = `[${sourceNumber}]`;
-            supLink.style.color = '#990000';
-            sup.appendChild(supLink);
-            
-            // Insert space then sup after the punctuation
-            textNode.parentNode.insertBefore(space, textNode.nextSibling);
-            textNode.parentNode.insertBefore(sup, space.nextSibling);
-            
-            // If there's remaining text, insert it after the sup
-            if (restOfText) {
-              let restNode = document.createTextNode(restOfText);
-              textNode.parentNode.insertBefore(restNode, sup.nextSibling);
-            }
-          } else {
-            // No punctuation, use original spacing logic (space + sup)
-            link.insertAdjacentHTML(
-              'afterend',
-              ` <sup><a href="#source-${sourceNumber}" style="color: #990000;">[${sourceNumber}]</a></sup>`
-            );
-          }
-        } else {
-          // No text node after, use original spacing logic
-          link.insertAdjacentHTML(
-            'afterend',
-            ` <sup><a href="#source-${sourceNumber}" style="color: #990000;">[${sourceNumber}]</a></sup>`
-          );
-        }
-      }
-    }
-  }
-  
-  // Add source numbers to source paragraphs
-  const urlInfoArray2 = Array.from(urlInfo.entries());
-  for (let i = 0; i < urlInfoArray2.length; i++) {
-    const [url, info] = urlInfoArray2[i];
-    const sourceP = info.sourceP;
-    const sourceNumber = info.number;
-    
-    const sup = document.createElement('sup');
-    sup.textContent = sourceNumber;
-    sup.style.color = '#990000';
-    
-    sourceP.insertBefore(sup, sourceP.firstChild);
-    sourceP.insertBefore(document.createTextNode(' '), sourceP.firstChild.nextSibling);
-  }
-  
-  // Sort sources by number
-  const sourcesDiv = document.querySelector('div.sources');
-  if (sourcesDiv) {
-    let sourceParagraphs = Array.from(sourcesDiv.querySelectorAll('p'));
-    sourceParagraphs.sort((a, b) => {
-      let numA = parseInt(a.querySelector('sup')?.textContent || '0');
-      let numB = parseInt(b.querySelector('sup')?.textContent || '0');
-      return numA - numB;
-    });
-    for (let i = 0; i < sourceParagraphs.length; i++) {
-      sourcesDiv.appendChild(sourceParagraphs[i]);
-    }
-  }
-});
-</script>
 
 <script>
 function toggleMenu() {
