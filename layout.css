@@ -586,7 +586,7 @@ display: flex;
 line-height:1.6;
 align-items: center;
 justify-content: space-between;
-min-height:45px;
+min-height:58px;
 }
 .titlecorners {
 display:none;
@@ -596,15 +596,15 @@ opacity:1.0;
 }
 .title {
 font-family:ITCEDSCR;
-font-size:2.5rem;
+font-size:2.3rem;
 text-align:center;
 line-height:1;
-transform: translateY(-0.3rem);
+transform: translateY(-0.2rem);
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
-font-size:0.87rem;
-margin:-14px auto -2px;
+font-size:0.82rem;
+margin:-10px auto 4px;
 text-align:center;
 }
 .summary {
@@ -1898,15 +1898,15 @@ opacity:1.0;
 }
 .title {
 font-family:ITCEDSCR;
-font-size:2.8rem;
+font-size:2.6rem;
 text-align:center;
 line-height:1;
 transform: translateY(-0.4rem);
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
-font-size:0.85rem;
-margin:-16px auto -2px;
+font-size:0.86rem;
+margin:-12px auto 5px;
 text-align:center;
 }
 .phoneemail a {
@@ -2751,15 +2751,15 @@ clear:both;
 }
 .title {
 font-family:ITCEDSCR;
-font-size:2.5rem;
+font-size:2.7rem;
 text-align:center;
 line-height:1;
-transform: translateY(-0.8rem);
+transform: translateY(-0.4rem);
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
-font-size:0.90rem;
-margin:-16px auto -2px;
+font-size:0.88rem;
+margin:-12px auto 5px;
 text-align:center;
 }
 .phoneemail a {
@@ -3305,15 +3305,15 @@ opacity:1.0;
 }
 .title {
 font-family:ITCEDSCR;
-font-size:2.9rem;
+font-size:2.75rem;
 text-align:center;
 line-height:1;
 transform: translateY(-0.4rem);
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
-font-size:0.95rem;
-margin:-16px auto -1px;
+font-size:0.90rem;
+margin:-12px auto 5px;
 text-align:center;
 }
 .phone {
