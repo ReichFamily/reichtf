@@ -1888,7 +1888,7 @@ display: flex;
 line-height:1.6;
 align-items: center;
 justify-content: space-between;
-min-height:55px;
+min-height:50px;
 }
 .titlecorners {
 display:block;
@@ -3295,7 +3295,7 @@ display: flex;
 line-height:1.6;
 align-items: center;
 justify-content: space-between;
-min-height:55px;
+min-height:50px;
 }
 .titlecorners {
 display:block;
