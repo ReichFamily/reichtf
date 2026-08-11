@@ -586,7 +586,10 @@ display: flex;
 line-height:1.6;
 align-items: center;
 justify-content: space-between;
-min-height:58px;
+border:1px solid #555;
+border-width:0px 0px 0px 0px;
+margin:0px auto 0px;
+height:58px;
 }
 .titlecorners {
 display:none;
@@ -599,7 +602,6 @@ font-family:ITCEDSCR;
 font-size:2.3rem;
 text-align:center;
 line-height:1;
-transform: translateY(-0.2rem);
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
@@ -1888,7 +1890,10 @@ display: flex;
 line-height:1.6;
 align-items: center;
 justify-content: space-between;
-min-height:65px;
+border:1px solid #555;
+border-width:0px 0px 1px 0px;
+margin:-13px auto 15px;
+height:80px;
 }
 .titlecorners {
 display:block;
@@ -1901,12 +1906,11 @@ font-family:ITCEDSCR;
 font-size:2.6rem;
 text-align:center;
 line-height:1;
-transform: translateY(-0.4rem);
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
 font-size:0.86rem;
-margin:-10px auto 6px;
+margin:-3px auto 0px;
 text-align:center;
 }
 .phoneemail a {
@@ -2754,12 +2758,11 @@ font-family:ITCEDSCR;
 font-size:2.7rem;
 text-align:center;
 line-height:1;
-transform: translateY(-0.4rem);
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
 font-size:0.88rem;
-margin:-10px auto 6px;
+margin:0px auto 0px;
 text-align:center;
 }
 .phoneemail a {
@@ -3295,7 +3298,10 @@ display: flex;
 line-height:1.6;
 align-items: center;
 justify-content: space-between;
-min-height:50px;
+border:1px solid #555;
+border-width:0px 0px 1px 0px;
+margin:-13px auto 15px;
+height:80px;
 }
 .titlecorners {
 display:block;
@@ -3308,12 +3314,11 @@ font-family:ITCEDSCR;
 font-size:2.75rem;
 text-align:center;
 line-height:1;
-transform: translateY(-0.4rem);
 }
 .subtitle {
 font-family:Montserrat-LightItalic;
 font-size:0.90rem;
-margin:-8px auto 6px;
+margin:-3px auto 0px;
 text-align:center;
 }
 .phone {
