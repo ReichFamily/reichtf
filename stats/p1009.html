@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stanley Clayton</title>
+<meta name="robots" content="noindex, nofollow">
+<!--CSS Referrals-->
+<link rel="canonical" href="https://reich.tf/" />
+<link href="../layout.css" rel="stylesheet" type="text/css">
+<link href="../boilerplate.css" rel="stylesheet" type="text/css">
+<link rel="shortcut icon" href="../favicon.ico">
+<!--Favicon-->
+<link rel="shortcut icon" href="../favicon.ico">
+<!--Fonts-->
+<link rel="preload" href="../fonts/ITCEDSCR.TTF" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="../fonts/OpenSans-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="../fonts/TrajanPro3-Regular.otf" as="font" type="font/otf" crossorigin>
+<link rel="preload" href="../fonts/Montserrat-Light.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="../fonts/Montserrat-LightItalic.ttf" as="font" type="font/ttf" crossorigin>
+
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #1a1e24;
+	    color:white;
+            padding: 20px;
+        }
+
+@font-face {
+  font-family:ITCEDSCR;
+  src: url(../fonts/ITCEDSCR.TTF);
+  font-display: block;
+}
+@font-face {
+  font-family:TrajanPro3-Regular;
+  src: url(../fonts/TrajanPro3-Regular.otf);
+  font-display: block;
+}
+@font-face {
+  font-family:OpenSans-Light;
+  src: url(../fonts/OpenSans-Light.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:OpenSans-Italic;
+  src: url(../fonts/OpenSans-Italic.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:OpenSans-Regular;
+  src: url(../fonts/OpenSans-Regular.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:Montserrat-Light;
+  src: url(../fonts/Montserrat-Light.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:Montserrat-ThinItalic;
+  src: url(../fonts/Montserrat-ThinItalic.ttf);
+  font-display: block;
+}
+@font-face {
+  font-family:Montserrat-LightItalic;
+  src: url(../fonts/Montserrat-LightItalic.ttf);
+  font-display: block;
+}
+
+
+        /* Center the content */
+        .container {
+            max-width: 990px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .sc-header {
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content:center;
+            align-items: center;
+
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        /* Content area */
+        .content {
+            background: #1a1e24;
+            margin-top:-20px;
+        }
+
+        /* Page header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        /* Stats widgets */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-widget {
+            background: #252a33;
+            border-radius: 4px;
+            border: 1px solid #374151;
+            padding: 15px;
+        }
+
+        .stat-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #9ca3af;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .stat-sub {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 5px;
+        }
+
+        /* Filter bar */
+        .filter-bar {
+            background: #252a33;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #9ca3af;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-select {
+            padding: 5px 10px;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            font-size: 12px;
+            background: #1a1e24;
+            color: #e5e7eb;
+        }
+
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #e5e7eb;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid #374151;
+            background: #252a33;
+            color: #e5e7eb;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            border-color: #1d4ed8;
+        }
+
+        .btn-outline {
+            background: #252a33;
+            color: #e5e7eb;
+        }
+
+        /* Table */
+        .table-container {
+            background: #252a33;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            overflow: auto;
+        }
+
+        .table-header {
+            padding: 12px 15px;
+            background: #1f2937;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .table-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        :root {
+        --fs: 13px;   /* Main text size */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size:var(--fs);
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 15px;
+            background: #1f2937;
+            color: #e5e7eb;
+            font-weight: 600;
+            border-bottom: 1px solid #374151;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #374151;
+            background: #252a33;
+            color: #e5e7eb;
+            white-space: nowrap;
+        }
+
+        tr:hover td {
+            background: #2d3748;
+        }
+
+        /* Badges */
+        .badge-bot {
+            background: #7f1d1d;
+            color: #fecaca;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .badge-real {
+            background: #14532d;
+            color: #dcfce7;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .device-icon {
+            display: inline-block;
+            width: 16px;
+            text-align: center;
+            margin-right: 4px;
+        }
+
+/* For the next column to prevent overlap */
+td:nth-child(7) { /* Adjust this number based on which column follows location */
+    word-break: break-word;
+    max-width: 300px;
+}
+
+.location-cell {
+    max-width: 150px;
+    line-height: 1.4;
+}
+.location-city-line {
+    font-weight: 500;
+}
+.location-state-line {
+    color: #6f8fae;
+}
+.location-country-line {
+    color: #8a9fb0;
+}
+
+        .location-city {
+            color: #9ca3af;
+        }
+
+        .hostname {
+            color: #f87171;
+            font-weight: 500;
+        }
+
+        .page-url {
+            color: #60a5fa;
+            text-decoration: none;
+            max-width: 250px;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .page-url:hover {
+            text-decoration: underline;
+        }
+
+        .referrer {
+            color: #4ade80;
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display:block;
+        }
+
+        .mag-icon {
+            color: #9ca3af;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #9ca3af;
+        }
+
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: #f87171;
+        }
+
+	.flag-icon {
+        width: 18px;
+        height: 12px;
+        background: transparent;
+        display:block;
+        margin-right: 5px;
+        vertical-align: middle;
+        margin-top: 14px;
+       }
+
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+<div class="header">
+<div style="margin:auto;">
+<p class="title">Reich Family</p>
+<p class="subtitle">Stanley Clayton</p>
+</div>
+</div>
+<!-- Main content area -->
+<div class="content">
+<!-- Page header -->
+<div class="page-header">
+</div>
+<!-- Stats widgets -->
+<div class="stats-grid" id="statsGrid">
+<div class="stat-widget">
+<div class="stat-title">Total Visitors</div>
+<div class="stat-value" id="totalVisitors">-</div>
+<div class="stat-sub">Last 100 visits</div>
+</div>
+<div class="stat-widget">
+<div class="stat-title">Unique Sessions</div>
+<div class="stat-value" id="uniqueSessions">-</div>
+<div class="stat-sub">Based on session ID</div>
+</div>
+<div class="stat-widget">
+<div class="stat-title">Bot Traffic</div>
+<div class="stat-value" id="botCount">-</div>
+<div class="stat-sub" id="botPercentage">-</div>
+</div>
+<div class="stat-widget">
+<div class="stat-title">Top Country</div>
+<div class="stat-value" id="topCountry">-</div>
+<div class="stat-sub" id="topCountryPercent">-</div>
+</div>
+</div>
+<!-- Filter bar -->
+<div class="filter-bar">
+<div class="filter-group">
+<span class="filter-label">FILTERS</span>
+<label class="filter-checkbox">
+<input type="checkbox" id="excludeBots" checked> Exclude bots
+</label>
+<label class="filter-checkbox">
+<input type="checkbox" id="showOnlyBots"> Show only bots
+</label>
+</div>
+<div class="filter-group">
+<select id="countryFilter" class="filter-select">
+<option value="">All countries</option>
+</select>
+<select id="deviceFilter" class="filter-select">
+<option value="">All devices</option>
+<option value="desktop">Desktop</option>
+<option value="mobile">Mobile</option>
+<option value="tablet">Tablet</option>
+</select>
+<select id="limitSelect" class="filter-select">
+<option value="50">50 rows</option>
+<option value="100" selected>100 rows</option>
+<option value="250">250 rows</option>
+</select>
+</div>
+<div style="margin-left: auto; display: flex; gap: 8px;">
+<button id="refreshBtn" class="btn btn-primary">🔄 Refresh</button>
+<button id="clearFiltersBtn" class="btn btn-outline">Clear</button>
+</div>
+</div>
+<!-- Main table -->
+<div class="table-container">
+<div class="table-header">
+<div class="table-title">
+Visitor Log - Stanley Clayton
+<span id="rowCount" style="color: #6f8fae; margin-left: 10px; font-weight: normal;"></span>
+</div>
+<div class="table-controls">
+<button id="exportBtn" class="btn btn-outline" style="font-size: 11px;">📥 Export CSV</button>
+<button id="deleteAllBtn" class="btn btn-outline" style="color: #c00; border-color: #c00;">🗑️ Delete All</button>
+</div>
+</div>
+<div style="overflow-x: auto;">
+<table id="visitorTable">
+<thead>
+<tr>
+<th>Date</th>
+<th>Time</th>
+<th>System</th>
+<th>Browser/OS/Screen</th>
+<th></th>
+<th>Location</th>
+<th>Host Name/Web Page/Referrer</th>
+</tr>
+</thead>
+<tbody id="tableBody">
+<tr>
+<td colspan="7" class="loading">Loading visitor data...</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+    // CONFIGURATION
+    const API_URL = 'https://weathered-voice-debf.reich-family.workers.dev';
+    const PAGE_ID = 'p1009';
+
+    let visitorData = [];
+    let isLoading = false;
+
+function getCountryName(code) {
+    const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+    try {
+        return regionNames.of(code);
+    } catch {
+        return code;
+    }
+}
+
+function formatInEasternTime(timestamp) {
+    if (!timestamp) return { date: '—', time: '—' };
+
+    try {
+        const date = new Date(timestamp);
+        
+        const dateStr = date.toLocaleDateString('en-US', {
+            timeZone: 'America/New_York',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+        
+        const timeStr = date.toLocaleTimeString('en-US', {
+            timeZone: 'America/New_York',
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        
+        return { date: dateStr, time: timeStr };
+        
+    } catch {
+        return { date: '—', time: '—' };
+    }
+}
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadData();
+        
+        document.getElementById('refreshBtn').addEventListener('click', () => loadData(true));
+        document.getElementById('clearFiltersBtn').addEventListener('click', clearFilters);
+        document.getElementById('exportBtn').addEventListener('click', exportToCSV);
+        
+        ['excludeBots', 'showOnlyBots', 'countryFilter', 'deviceFilter', 'limitSelect'].forEach(id => {
+            document.getElementById(id).addEventListener('change', () => loadData(true));
+        });
+        
+        document.getElementById('showOnlyBots').addEventListener('change', function() {
+            if (this.checked) document.getElementById('excludeBots').checked = false;
+        });
+        
+        document.getElementById('excludeBots').addEventListener('change', function() {
+            if (this.checked) document.getElementById('showOnlyBots').checked = false;
+        });
+        
+        document.getElementById('deleteAllBtn').addEventListener('click', deleteAllData);
+        
+    });
+
+    async function loadData(showLoader = true) {
+        if (isLoading) return;
+        
+        try {
+            isLoading = true;
+            if (showLoader) {
+                document.getElementById('tableBody').innerHTML = '<tr><td colspan="7" class="loading">📡 Fetching analytics data for Stanley Clayton...</td></tr>';
+            }
+            
+            const params = new URLSearchParams();
+            params.append('pageId', PAGE_ID); // Filter for this project
+            
+            if (document.getElementById('excludeBots').checked) params.append('exclude_bots', '1');
+            
+            const country = document.getElementById('countryFilter').value;
+            if (country) params.append('country', country);
+            
+            const limit = document.getElementById('limitSelect').value;
+            params.append('limit', limit);
+            
+            const url = `${API_URL}?${params.toString()}`;
+            
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            
+            const data = await response.json();
+            
+            if (data.ok && Array.isArray(data.rows)) {
+                visitorData = data.rows;
+                
+                if (document.getElementById('showOnlyBots').checked) {
+                    visitorData = visitorData.filter(row => row.bot === 1 || row.bot === true);
+                }
+                
+                updateDashboard();
+            } else {
+                throw new Error(data.error || 'Invalid response');
+            }
+            
+        } catch (error) {
+            document.getElementById('tableBody').innerHTML = `
+                <tr><td colspan="7" class="error">❌ Failed to load analytics data: ${error.message}</td></tr>
+            `;
+            console.error('Load error:', error);
+        } finally {
+            isLoading = false;
+        }
+    }
+
+    function updateDashboard() {
+        updateStats();
+        updateCountryFilter();
+        renderTable();
+        document.getElementById('rowCount').innerText = `${visitorData.length} visitors`;
+    }
+
+    function updateStats() {
+        const total = visitorData.length;
+        const uniqueSessions = new Set(visitorData.map(v => v.session_id).filter(Boolean)).size;
+        const bots = visitorData.filter(v => v.bot === 1 || v.bot === true).length;
+        const botPercentage = total ? ((bots / total) * 100).toFixed(1) : 0;
+        
+        const countryCounts = {};
+        visitorData.forEach(v => {
+            if (v.country) countryCounts[v.country] = (countryCounts[v.country] || 0) + 1;
+        });
+        
+        let topCountry = '—';
+        let topCountryPercent = '';
+        if (Object.keys(countryCounts).length > 0) {
+            const top = Object.entries(countryCounts).sort((a,b) => b[1] - a[1])[0];
+            topCountry = top[0];
+            topCountryPercent = `${((top[1] / total) * 100).toFixed(1)}%`;
+        }
+
+	const stateCounts = {};
+	visitorData.forEach(v => {
+    	if (v.state) stateCounts[v.state] = (stateCounts[v.state] || 0) + 1;
+	});
+	console.log('Visitors by state:', stateCounts);
+        
+        document.getElementById('totalVisitors').innerText = total;
+        document.getElementById('uniqueSessions').innerText = uniqueSessions;
+        document.getElementById('botCount').innerHTML = `${bots} <span style="font-size: 14px; color: #6f8fae;">(${botPercentage}%)</span>`;
+        document.getElementById('botPercentage').innerText = `${botPercentage}% of traffic`;
+        document.getElementById('topCountry').innerText = topCountry;
+        document.getElementById('topCountryPercent').innerText = topCountryPercent;
+    }
+
+    function updateCountryFilter() {
+        const countries = new Set();
+        visitorData.forEach(v => {
+            if (v.country) countries.add(v.country);
+        });
+        
+        const currentValue = document.getElementById('countryFilter').value;
+        const select = document.getElementById('countryFilter');
+        
+        select.innerHTML = '<option value="">All countries</option>';
+        
+        [...countries].sort().forEach(country => {
+            const option = document.createElement('option');
+            option.value = country;
+            option.textContent = country;
+            select.appendChild(option);
+        });
+        
+        if (currentValue && countries.has(currentValue)) {
+            select.value = currentValue;
+        }
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('tableBody');
+        
+        if (visitorData.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="loading">📭 No visitor data found for Stanley Clayton</td></tr>';
+            return;
+        }
+        
+        let html = '';
+        visitorData.forEach((row) => {
+            // Use the Eastern Time formatter
+            const easternTime = formatInEasternTime(row.ts);
+            
+            const browserDisplay = row.browser || 'Unknown';
+            const osDisplay = row.os || 'Unknown';
+            const screenDisplay = row.screen_width ? (row.screen_height ? `${row.screen_width}x${row.screen_height}` : String(row.screen_width)) : '—';
+            
+            const deviceIcon = row.device === 'mobile' ? '📱' : row.device === 'tablet' ? '📟' : '💻';
+            
+            const locationParts = [];
+            if (row.city) locationParts.push(row.city);
+            if (row.state) locationParts.push(row.state); 
+            if (row.region) locationParts.push(row.region);
+            if (row.country) locationParts.push(row.country);
+            const locationDisplay = locationParts.join(', ') || '—';
+            
+            // Country flag
+            const countryCode = row.country ? row.country.toLowerCase() : '';
+            const flagHtml = countryCode 
+                ? `<img src="https://flagcdn.com/16x12/${countryCode}.png" 
+                    onerror="this.style.display='none'"
+                    class="flag-icon"
+                    alt="${row.country} flag">`
+                : '<span class="flag-icon"></span>';
+                    
+            const pageUrl = row.url || '/';
+            const fullPageUrl = pageUrl.startsWith('http') ? pageUrl : `https://reich.tf${pageUrl}`;
+            const displayUrl = fullPageUrl.length > 60 ? fullPageUrl.substring(0, 60) + '…' : fullPageUrl;
+            
+let ref = (row.referrer || '').trim();
+let displayReferrer = '(No referring link)';
+
+// No referrer at all
+if (!ref) {
+  displayReferrer = '(No referring link)';
+}
+// Homepage referrer → treat as no referrer
+else if (
+  ref === 'https://reich.tf/' ||
+  ref === 'https://reich.tf' ||
+  ref === '/'
+) {
+  displayReferrer = '(No referring link)';
+}
+// Path-only internal referrer → normalize
+else if (ref.startsWith('/')) {
+  displayReferrer = 'https://reich.tf' + ref;
+}
+// Everything else → show exactly what collector stored
+else {
+  displayReferrer = ref;
+}
+
+          
+            const hostname = row.isp || row.hostname || (row.ip ? `IP ${row.ip}` : '—');
+            
+            html += `<tr>
+<td>${easternTime.date}</td>
+<td>${easternTime.time}</td>
+<td><span class="device-icon">${deviceIcon}</span></td>
+<td>
+    <!-- Browser -->
+    <div>${browserDisplay}</div>
+
+    <!-- Operating System with version (ONLY for desktop) -->
+    ${row.device !== 'mobile' ? `<div>${row.os_version ? `${row.os} ${row.os_version}` : row.os}</div>` : ''}
+
+    <!-- Device Model (only for mobile) -->
+    ${row.device === 'mobile' ? `<div>${row.device_model || 'Unknown Device'}</div>` : ''}
+
+    <!-- Screen resolution -->
+    <div style="color: #6f8fae;">${screenDisplay}</div>
+</td>
+
+                <td style="padding: 0; line-height: 0; font-size: 0; margin-top:10px;">${flagHtml}</td>
+<td class="location-cell">
+    <div class="location-city-line">${row.city || ''}</div>
+    <div class="location-state-line">${row.state || row.region || ''}</div>
+    <div class="location-country-line">
+        ${row.country ? getCountryName(row.country) : ''}
+        ${row.language ? ' / ' + row.language.split(',')[0].toLowerCase() : ''}
+    </div>
+</td>
+<td>
+<div><span class="hostname">${hostname}</span></div>
+<div><span><a href="https://www.ip2location.com/demo/${row.ip || ''}" target="_blank" rel="noopener noreferrer" style="color: #66b0ff !important;">${row.ip || 'No IP'}</a></span></div>
+<div><a href="${fullPageUrl}" target="_blank" class="page-url" title="${fullPageUrl}">${displayUrl}</a></div>
+<div><span class="referrer" title="${ref}">${displayReferrer}</span></div>
+</td>
+
+            </tr>`;
+        });
+        
+        tbody.innerHTML = html;
+    }
+
+    function clearFilters() {
+        document.getElementById('excludeBots').checked = true;
+        document.getElementById('showOnlyBots').checked = false;
+        document.getElementById('countryFilter').value = '';
+        document.getElementById('deviceFilter').value = '';
+        document.getElementById('limitSelect').value = '100';
+        loadData(true);
+    }
+
+    async function deleteAllData() {
+        if (!confirm('⚠️ Delete ALL Stanley Clayton visitor data? This cannot be undone.')) return;
+        
+        try {
+            const response = await fetch(`${API_URL}?pageId=${PAGE_ID}`, { method: 'DELETE' });
+            if (response.ok) {
+                visitorData = [];
+                updateDashboard();
+                alert('All Stanley Clayton data deleted successfully');
+            }
+        } catch (e) {
+            alert('Delete failed: ' + e.message);
+        }
+    }
+
+    function exportToCSV() {
+        if (visitorData.length === 0) {
+            alert('No data to export');
+            return;
+        }
+        
+        const headers = ['Timestamp (US Eastern Time)', 'IP', 'Country', 'City', 'Device', 'URL', 'Referrer', 'Browser', 'OS', 'Screen', 'Bot'];
+        
+        const rows = visitorData.map(row => {
+            const easternTime = formatInEasternTime(row.ts);
+            const easternTimestamp = `${easternTime.date} ${easternTime.time}`;
+            
+            return [
+                easternTimestamp,
+                row.ip || '',
+                row.country || '',
+                row.city || '',
+                row.device || '',
+                row.url || '',
+                row.referrer || '',
+                row.browser || '',
+                row.os || '',
+                row.screen_width ? `${row.screen_width}${row.screen_height ? 'x'+row.screen_height : ''}` : '',
+                row.bot ? 'Yes' : 'No'
+            ];
+        });
+        
+        const csvContent = [
+            headers.join(','),
+            ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+        ].join('\n');
+        
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `stanley_clayton_${new Date().toISOString().slice(0,10)}_US_Eastern.csv`;
+        a.click();
+    }
+</script>
+
+</body>
+</html>
