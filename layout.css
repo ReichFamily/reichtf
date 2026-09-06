@@ -1010,6 +1010,16 @@ position: relative;
 margin-left:auto;
 margin-right:auto;
 }
+.janicejohnsongroup {
+position: relative;
+margin-left:auto;
+margin-right:auto;
+}
+.stanleyclayton {
+position: relative;
+margin-left:auto;
+margin-right:auto;
+}
 .mariakatsaris {
 position: relative;
 margin-left:auto;
@@ -1124,6 +1134,11 @@ margin-left:auto;
 margin-right:auto;
 }
 .sacredritestrinity {
+max-width:500px;
+margin-left: auto;
+margin-right: auto;
+}
+.sacredritestrinity2 {
 max-width:500px;
 margin-left: auto;
 margin-right: auto;
@@ -1747,6 +1762,16 @@ max-width:450px;
 float:left;
 margin-right:15px;
 }
+.janicejohnsongroup {
+position: relative;
+margin-left:auto;
+margin-right:auto;
+}
+.stanleyclayton {
+position: relative;
+margin-left:auto;
+margin-right:auto;
+}
 .mariakatsaris {
 position: relative;
 max-width:400px;
@@ -2078,6 +2103,11 @@ float:right;
 margin-left:15px;
 }
 .sacredritestrinity {
+max-width:450px;
+float:right;
+margin-left:15px;
+}
+.sacredritestrinity2 {
 max-width:450px;
 float:right;
 margin-left:15px;
@@ -2469,6 +2499,11 @@ max-width:550px;
 float:right;
 margin-left:15px;
 }
+.sacredritestrinity2 {
+max-width:550px;
+float:right;
+margin-left:15px;
+}
 .incenseburner {
 display:block;
 position: relative;
@@ -2741,6 +2776,18 @@ margin-left:15px;
 .zadavegetarian {
 position: relative;
 max-width:480px;
+float:left;
+margin-right:15px;
+}
+.janicejohnsongroup {
+position: relative;
+max-width:1000px;
+margin-left:auto;
+margin-right:auto;
+}
+.stanleyclayton {
+position: relative;
+max-width:700px;
 float:left;
 margin-right:15px;
 }
@@ -3171,6 +3218,18 @@ max-width:480px;
 float:left;
 margin-right:15px;
 }
+.janicejohnsongroup {
+position: relative;
+max-width:1000px;
+float:right;
+margin-left:15px;
+}
+.stanleyclayton {
+position: relative;
+max-width:800px;
+float:left;
+margin-right:15px;
+}
 .mariakatsaris {
 position: relative;
 max-width:700px;
@@ -3503,6 +3562,11 @@ float:right;
 margin-left:15px;
 }
 .sacredritestrinity {
+max-width:550px;
+float:right;
+margin-left:15px;
+}
+.sacredritestrinity2 {
 max-width:550px;
 float:right;
 margin-left:15px;
