@@ -588,7 +588,7 @@ align-items: center;
 justify-content: space-between;
 border:1px solid #555;
 border-width:0px 0px 0px 0px;
-margin:0px auto 0px;
+margin:0px auto 4px;
 height:58px;
 }
 .titlecorners {
