@@ -3218,6 +3218,19 @@ max-width:480px;
 float:left;
 margin-right:15px;
 }
+.claytonthrowinglog {
+position: relative;
+max-width:700px;
+float:right;
+margin-left:15px;
+}
+
+.claytonkitchen {
+position: relative;
+max-width:950px;
+float:left;
+margin-right:15px;
+}
 .janicejohnsongroup {
 position: relative;
 max-width:1000px;
