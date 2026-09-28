@@ -2521,16 +2521,36 @@ document.addEventListener('DOMContentLoaded', function() {
         backlink.appendChild(sup);
       }
 
-      sourceP.appendChild(backlink);
-
-      // Add superscript after link if missing
-      let sibling = link.nextSibling;
-      while (sibling && sibling.nodeType === 3 && !sibling.textContent.trim()) {
-        sibling = sibling.nextSibling;
+      if (!sourceP.querySelector(`a[href="#${anchorId}"]`)) {
+        sourceP.appendChild(backlink);
       }
 
-      let hasSup = sibling && sibling.nodeName === 'SUP' &&
-                   sibling.querySelector(`a[href="#source-${sourceNumber}"]`);
+      // Add superscript after link if missing
+let sibling = link.nextSibling;
+let hasSup = false;
+
+while (sibling) {
+  if (
+    sibling.nodeType === 3 &&
+    (
+      !sibling.textContent.trim() ||
+      /^[,:.]/.test(sibling.textContent.trim())
+    )
+  ) {
+    sibling = sibling.nextSibling;
+    continue;
+  }
+
+  if (
+    sibling.nodeName === 'SUP' &&
+    sibling.querySelector(`a[href="#source-${sourceNumber}"]`)
+  ) {
+    hasSup = true;
+  }
+
+  break;
+}
+
 
       if (!hasSup) {
         // Find the first non-whitespace text node after the link
@@ -2594,13 +2614,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const sourceP = info.sourceP;
     const sourceNumber = info.number;
     
-    const sup = document.createElement('sup');
-    sup.textContent = sourceNumber;
-    sup.style.color = '#990000';
-    
-    sourceP.insertBefore(sup, sourceP.firstChild);
-    sourceP.insertBefore(document.createTextNode(' '), sourceP.firstChild.nextSibling);
+    const firstItem = sourceP.firstElementChild;
+
+    const sourceNumberAlreadyExists =
+      firstItem &&
+      firstItem.nodeName === 'SUP' &&
+      firstItem.textContent.trim() === String(sourceNumber);
+
+    if (!sourceNumberAlreadyExists) {
+      const sup = document.createElement('sup');
+      sup.textContent = sourceNumber;
+      sup.style.color = '#990000';
+
+      sourceP.insertBefore(sup, sourceP.firstChild);
+      sourceP.insertBefore(
+        document.createTextNode(' '),
+        sup.nextSibling
+      );
+    }
   }
+
   
   // Sort sources by number
   const sourcesDiv = document.querySelector('div.sources');
