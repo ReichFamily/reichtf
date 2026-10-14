@@ -2807,8 +2807,9 @@ margin-left:15px;
 }
 .claytonkitchen {
 position: relative;
-margin-left:auto;
-margin-right:auto;
+max-width:700px;
+float:left;
+margin-right:15px;
 }
 .janicejohnsongroup {
 position: relative;
@@ -3256,7 +3257,7 @@ margin-left:15px;
 }
 .claytonkitchen {
 position: relative;
-max-width:950px;
+max-width:800px;
 float:left;
 margin-right:15px;
 }
